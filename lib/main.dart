@@ -4,14 +4,13 @@ void main() {
   runApp(MyApp());
 }
 
-
 //Angelo Tapullima Del Aguila
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Dee5yh5yh5yhmo',
       theme: ThemeData(
         // This is the theme of your application.
         //
