@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 
@@ -222,8 +223,13 @@ class _LoginPageState extends State<LoginPage> {
     final int code = await bloc.login('${bloc.email}', '${bloc.password}');
 
     if (code == 1) {
+      final preferences = Preferences();
       print(code);
-      Navigator.pushReplacementNamed(context, 'home');
+      if (preferences.numNegocio <= 1) {
+        Navigator.pushReplacementNamed(context, 'home');
+      } else {
+        Navigator.pushReplacementNamed(context, 'elegirNegocio');
+      }
     } else if (code == 2) {
       print(code);
       showToast1('Ocurrio un error', 2, ToastGravity.CENTER);

@@ -78,6 +78,30 @@ class DatabaseProvider {
           'subsidiary_status VARCHAR,'
           'subsidiary_favourite VARCHAR'
           ')');
+
+      await db.execute(' CREATE TABLE Pedidos('
+          ' id_pedido TEXT PRIMARY KEY,'
+          ' id_user TEXT,'
+          ' id_city TEXT,'
+          ' id_subsidiary TEXT,'
+          ' id_company TEXT,'
+          ' delivery_number TEXT,'
+          ' delivery_name TEXT,'
+          ' delivery_email TEXT,'
+          ' delivery_cel TEXT,'
+          ' delivery_address TEXT,'
+          ' delivery_description TEXT,'
+          ' delivery_coord_x TEXT,'
+          ' delivery_coord_y TEXT,'
+          ' delivery_add_info TEXT,'
+          ' delivery_price TEXT,'
+          ' delivery_total_orden TEXT,'
+          ' delivery_payment TEXT,'
+          ' delivery_entrega TEXT,'
+          ' delivery_datetime TEXT,'
+          ' delivery_status TEXT,'
+          ' delivery_mt TEXT'
+          ')');
     });
   }
 }

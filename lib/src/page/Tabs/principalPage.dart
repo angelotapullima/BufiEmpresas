@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/companyModel.dart';
+import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -7,7 +8,6 @@ import 'package:bufi_empresas/src/widgets/sliver_header_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PrincipalPage extends StatelessWidget {
@@ -29,45 +29,24 @@ class PrincipalPage extends StatelessWidget {
                   SizedBox(
                     height: responsive.hp(1),
                   ),
-                  /*
-                  Container(
-                    height: responsive.hp(13),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            IconButton(
-                                icon: Icon(Icons.trending_down),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, "listaCategoriasAll");
-                                }),
-                            Text("Categorias")
-                          ],
-                        ),
-                        SizedBox(
-                          width: responsive.wp(1.5),
-                        ),
-                        Expanded(child: ListCategoriasPrincipal()),
-                      ],
-                    ),
-                  ),*/
-                  //ListCategoriasPrincipal(),
-                  SizedBox(
-                    height: responsive.hp(1),
-                  ),
-
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         height: responsive.hp(10),
                         width: responsive.wp(40),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text('Atendidos',
-                                style: TextStyle(color: Colors.white)),
-                            Text('400'),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(2),
+                                    fontWeight: FontWeight.bold)),
+                            Text('400',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3))),
                           ],
                         ),
                         decoration: BoxDecoration(
@@ -80,14 +59,30 @@ class PrincipalPage extends StatelessWidget {
                       Container(
                         height: responsive.hp(10),
                         width: responsive.wp(40),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Pendientes',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(2),
+                                    fontWeight: FontWeight.bold)),
+                            Text('300',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3))),
+                          ],
+                        ),
                         decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(10)),
                       )
                     ],
                   ),
-                  Negocios(),
-                  Negocios(),
+                  SizedBox(
+                    height: responsive.hp(1.5),
+                  ),
+                  Sucursales(),
                 ]),
               ),
             )
@@ -150,7 +145,7 @@ class HeaderWidget extends StatelessWidget {
                     SizedBox(
                       width: responsive.wp(3),
                     ),
-                    Column(
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Hola, '),
@@ -164,7 +159,6 @@ class HeaderWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
                   ],
                 ),
               ],
@@ -174,11 +168,12 @@ class HeaderWidget extends StatelessWidget {
   }
 }
 
-class Negocios extends StatelessWidget {
+class Sucursales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final negociosBloc = ProviderBloc.negocios(context);
-    negociosBloc.obtenernegocios();
+    final preferences = Preferences();
+    negociosBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
     final responsive = Responsive.of(context);
 
     return Column(
@@ -187,37 +182,16 @@ class Negocios extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Mis Negocios',
+              'Mis Sucursales',
               style: TextStyle(
                   fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
             ),
             //SizedBox(width: 30,),
-            GestureDetector(
-              onTap: () async {
-                final buttonBloc = ProviderBloc.tabs(context);
-                buttonBloc.changePage(3);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.pink,
-                ),
-                padding: EdgeInsets.all(responsive.ip(.8)),
-                child: Text(
-                  "Ver Todos",
-                  style: TextStyle(
-                      fontSize: responsive.ip(1.5),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  //textAlign: TextAlign.end,
-                ),
-              ),
-            ),
           ],
         ),
         Container(
           child: StreamBuilder(
-            stream: negociosBloc.negociosStream,
+            stream: negociosBloc.suscursaStream,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
@@ -231,7 +205,7 @@ class Negocios extends StatelessWidget {
                             context, snapshot.data[index], responsive);
                       });
                 } else {
-                  return Center(child: CupertinoActivityIndicator());
+                  return Center(child: Text('No tiene Sucursales'));
                 }
               } else {
                 return Center(child: CupertinoActivityIndicator());
@@ -243,91 +217,126 @@ class Negocios extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(
-      BuildContext context, CompanyModel servicioData, Responsive responsive) {
+  Widget _crearItem(BuildContext context, SubsidiaryModel servicioData,
+      Responsive responsive) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
+        //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
       },
-      child: Stack(
-        children: <Widget>[
-          Container(
-            width: responsive.wp(42.5),
-            child: Card(
-              elevation: 2,
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 2,
+              offset: Offset(2, 3),
+            ),
+          ],
+        ),
+        margin: EdgeInsets.all(responsive.ip(1)),
+        height: responsive.hp(15),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                width: responsive.wp(42),
+                child: Stack(
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Center(
-                          child: Container(
-                            width: responsive.ip(10),
-                            height: responsive.ip(10),
-                            child: CachedNetworkImage(
-                              //cacheManager: CustomCacheManager(),
-                              placeholder: (context, url) => Image(
-                                  image: AssetImage('assets/jar-loading.gif'),
-                                  fit: BoxFit.cover),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                              imageUrl:
-                                  '$apiBaseURL/${servicioData.companyImage}',
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
+                    CachedNetworkImage(
+                      placeholder: (context, url) => Image(
+                        image: AssetImage('assets/jar-loading.gif'),
+                        fit: BoxFit.cover,
+                      ),
+                      errorWidget: (context, url, error) => Image(
+                          image: AssetImage('assets/carga_fallida.jpg'),
+                          fit: BoxFit.cover),
+                      imageUrl:
+                          'https://i.pinimg.com/564x/23/8f/6b/238f6b5ea5ab93832c281b42d3a1a853.jpg',
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              FontAwesomeIcons.heart,
-                              color: Colors.black54,
-                            ),
-                          ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      left: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                          vertical: responsive.hp(.5),
+                          //horizontal: responsive.wp(2)
                         ),
-                      ],
-                    ),
-                    Text(
-                      '${servicioData.companyName}',
-                      style: TextStyle(
-                        fontSize: responsive.ip(2),
-                        color: Colors.black,
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              '${servicioData.subsidiaryName}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsive.ip(2),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      servicioData.idCompany,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: responsive.ip(1.9),
-                      ),
-                    ),
-                    Text(
-                      '${servicioData.companyType}',
-                      style: TextStyle(
-                          fontSize: responsive.ip(1.9),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
+                    )
                   ],
                 ),
               ),
             ),
-          )
-        ],
+            Container(
+              width: responsive.wp(53),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '${servicioData.subsidiaryName}',
+                    style: TextStyle(
+                        fontSize: responsive.ip(2.3),
+                        fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text('${servicioData.subsidiaryAddress}'),
+                  Text('${servicioData.subsidiaryStatus}'),
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
+                    SizedBox(width: 5),
+                    //Text('${data[index].subsidiaryGoodRating}'),
+                    Text('bien'),
+                    SizedBox(width: 10),
+                  ])
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

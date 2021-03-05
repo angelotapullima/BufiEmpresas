@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/page/Tabs/pedidosPage.dart';
 import 'package:bufi_empresas/src/page/Tabs/principalPage.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     listPages.add(PrincipalPage());
-    /*
-    listPages.add(PointsPage());
-    listPages.add(CarritoPage());
-    listPages.add(NegociosPage());
-    listPages.add(UserPage());*/
+    listPages.add(PedidosPage());
+    listPages.add(PedidosPage());
+    listPages.add(PedidosPage());
 
     super.initState();
   }
@@ -53,15 +52,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.data_usage),
-                  label: "Points",
+                  label: "Pedidos",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.shopping_cart),
-                  label: "Carrito",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.business),
-                  label: "Negocios",
+                  label: "Pagos",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.supervised_user_circle),

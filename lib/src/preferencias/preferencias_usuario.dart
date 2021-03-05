@@ -116,4 +116,20 @@ class Preferences {
   set cargaCategorias(String value) {
     _prefs.setString('cargaCategorias', value);
   }
+
+  get numNegocio {
+    return _prefs.getInt('numNegocio');
+  }
+
+  set numNegocio(int value) {
+    _prefs.setInt('numNegocio', value);
+  }
+
+  get idSeleccionNegocioInicio {
+    return _prefs.getString('idSeleccionNegocioInicio');
+  }
+
+  set idSeleccionNegocioInicio(String value) {
+    _prefs.setString('idSeleccionNegocioInicio', value);
+  }
 }

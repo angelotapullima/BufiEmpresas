@@ -44,6 +44,7 @@ class LoginApi {
         prefs.idRoleUser = prodTemp.idRoleUser;
         prefs.roleName = prodTemp.roleName;
         prefs.token = decodedData['data']['tn'];
+        prefs.numNegocio = decodedData['empresas'].length;
 
         if (decodedData['empresas'].length > 0) {
           for (var i = 0; i < decodedData['empresas'].length; i++) {

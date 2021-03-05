@@ -1,7 +1,6 @@
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pantalla_inicio_bloc.dart';
-import 'package:bufi_empresas/src/bloc/sucursal_bloc.dart';
 import 'package:flutter/material.dart';
 
 class ProviderBloc extends InheritedWidget {
@@ -9,7 +8,6 @@ class ProviderBloc extends InheritedWidget {
 
   final loginBloc = LoginBloc();
   final negociosBloc = PantallaInicioBloc();
-  final sucursalbloc = SucursalBloc();
   final tabsNavigationbloc = TabNavigationBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
