@@ -1,11 +1,9 @@
-import 'package:bufi_empresas/src/api/negocios_api.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:rxdart/subjects.dart';
 
 class SucursalBloc {
   final sucursalDatabase = SubsidiaryDatabase();
-  final sucursalApi = NegociosApi();
 
 //obtener subsidiary por idCompany
   final _sucursalController = BehaviorSubject<List<SubsidiaryModel>>();
@@ -31,25 +29,14 @@ class SucursalBloc {
   void obtenerSucursalporIdCompany(String id) async {
     _sucursalController.sink
         .add(await sucursalDatabase.obtenerSubsidiaryPorIdCompany(id));
-    await sucursalApi.listarSedesPorNegocio(id);
-    _sucursalController.sink
-        .add(await sucursalDatabase.obtenerSubsidiaryPorIdCompany(id));
+  }
+
+  void obtenerSucursales() async {
+    _sucursalController.sink.add(await sucursalDatabase.obtenerSubsidiary());
   }
 
   void obtenerSucursalporId(String id) async {
     _subsidiaryController.sink
-        .add(await sucursalDatabase.obtenerSubsidiaryPorId(id));
-    await sucursalApi.listarSubsidiaryPorId(id);
-    _subsidiaryController.sink
-        .add(await sucursalDatabase.obtenerSubsidiaryPorId(id));
+        .add(await sucursalDatabase.obtenerSubsidiaryPorIdSubsidiary(id));
   }
-
-  // void listarSucursalporId(String id) async {
-  //   _listarsucursalesController.sink
-  //       .add(await sucursalDatabase.obtenerSubsidiaryPorId(id));
-  //   await sucursalApi.listarSedesPorNegocio(id);
-  //   _listarsucursalesController.sink
-  //       .add(await sucursalDatabase.obtenerSubsidiaryPorId(id));
-
-  // }
 }

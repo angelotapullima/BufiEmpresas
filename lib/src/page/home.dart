@@ -1,5 +1,7 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/page/Tabs/pedidosPage.dart';
+import 'package:bufi_empresas/src/page/Tabs/Pagos/pagosPage.dart';
+import 'package:bufi_empresas/src/page/Tabs/Pedidos/pedidosPage.dart';
+import 'package:bufi_empresas/src/page/Tabs/cuenta/cuentaPage.dart';
 import 'package:bufi_empresas/src/page/Tabs/principalPage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +19,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     listPages.add(PrincipalPage());
     listPages.add(PedidosPage());
-    listPages.add(PedidosPage());
-    listPages.add(PedidosPage());
+    listPages.add(PagosPage());
+    listPages.add(CuentaPage());
 
     super.initState();
   }
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final buttonBloc = ProviderBloc.tabs(context);
-    buttonBloc.changePage(0);
+    buttonBloc.changePage(1);
     return Scaffold(
       body: StreamBuilder(
         stream: buttonBloc.selectPageStream,

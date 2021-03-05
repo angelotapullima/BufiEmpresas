@@ -1,8 +1,6 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/models/companyModel.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
-import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/widgets/sliver_header_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';

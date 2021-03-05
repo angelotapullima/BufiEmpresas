@@ -19,7 +19,7 @@ class DatabaseProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    final path = join(documentsDirectory.path, 'bufi.db');
+    final path = join(documentsDirectory.path, 'bufi2.db');
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute('CREATE TABLE User('
@@ -76,7 +76,8 @@ class DatabaseProvider {
           'subsidiary_opening_hours VARCHAR,'
           'subsidiary_principal VARCHAR,'
           'subsidiary_status VARCHAR,'
-          'subsidiary_favourite VARCHAR'
+          'subsidiary_favourite VARCHAR,'
+          'subsidiary_status_pedidos VARCHAR'
           ')');
 
       await db.execute(' CREATE TABLE Pedidos('
@@ -101,6 +102,42 @@ class DatabaseProvider {
           ' delivery_datetime TEXT,'
           ' delivery_status TEXT,'
           ' delivery_mt TEXT'
+          ')');
+
+      await db.execute('CREATE TABLE Producto ('
+          'id_producto VARCHAR  PRIMARY KEY,'
+          'id_subsidiary VARCHAR,'
+          'id_good VARCHAR,'
+          'id_itemsubcategory VARCHAR,'
+          'producto_name VARCHAR,'
+          'producto_price VARCHAR,'
+          'producto_currency VARCHAR,'
+          'producto_image VARCHAR,'
+          'producto_characteristics VARCHAR,'
+          'producto_brand VARCHAR,'
+          'producto_model VARCHAR,'
+          'producto_type VARCHAR,'
+          'producto_size VARCHAR,'
+          'producto_stock VARCHAR,'
+          'producto_measure VARCHAR,'
+          'producto_rating VARCHAR,'
+          'producto_updated VARCHAR,'
+          'producto_status VARCHAR,'
+          'producto_favourite VARCHAR'
+          ')');
+
+      await db.execute('CREATE TABLE Good ('
+          'id_good VARCHAR  PRIMARY KEY,'
+          'good_name VARCHAR,'
+          'good_synonyms VARCHAR'
+          ')');
+
+      await db.execute(' CREATE TABLE DetallePedido('
+          ' id_detalle_pedido TEXT PRIMARY KEY,'
+          ' id_pedido TEXT,'
+          ' id_producto TEXT,'
+          ' cantidad TEXT,'
+          ' delivery_detail_subtotal TEXT'
           ')');
     });
   }

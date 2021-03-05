@@ -1,3 +1,7 @@
+import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/database/subsidiary_db.dart';
+import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
+import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast/toast.dart' as T;
@@ -21,6 +25,37 @@ String format(double n) {
   return n.toStringAsFixed(n.truncateToDouble() == n ? 2 : 2);
 }
 
+void actualizarEstadoSucursal(BuildContext context, String idSucursal) async {
+  final subsidiaryDatabase = SubsidiaryDatabase();
+  final sucursalesBloc = ProviderBloc.negocios(context);
+  final preferences = Preferences();
+
+  await subsidiaryDatabase.updateStatusPedidos();
+
+  final listSucursal =
+      await subsidiaryDatabase.obtenerSubsidiaryPorIdSubsidiary(idSucursal);
+
+  SubsidiaryModel smodel = SubsidiaryModel();
+
+  smodel.idSubsidiary = listSucursal[0].idSubsidiary;
+  smodel.idCompany = listSucursal[0].idCompany;
+  smodel.subsidiaryName = listSucursal[0].subsidiaryName;
+  smodel.subsidiaryCellphone = listSucursal[0].subsidiaryCellphone;
+  smodel.subsidiaryCellphone = listSucursal[0].subsidiaryCellphone2;
+  smodel.subsidiaryEmail = listSucursal[0].subsidiaryEmail;
+  smodel.subsidiaryCoordX = listSucursal[0].subsidiaryCoordX;
+  smodel.subsidiaryCoordY = listSucursal[0].subsidiaryCoordY;
+  smodel.subsidiaryOpeningHours = listSucursal[0].subsidiaryOpeningHours;
+  smodel.subsidiaryPrincipal = listSucursal[0].subsidiaryPrincipal;
+  smodel.subsidiaryStatus = listSucursal[0].subsidiaryStatus;
+  smodel.subsidiaryAddress = listSucursal[0].subsidiaryAddress;
+
+  smodel.subsidiaryStatusPedidos = "1";
+
+  await subsidiaryDatabase.updateSubsidiary(smodel);
+
+  sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
+}
 //Actualizar Negocio
 /*  void actualizarNegocio(
       BuildContext context, CompanySubsidiaryModel model) async {

@@ -11,12 +11,12 @@ class SubsidiaryDatabase {
       final res = await db.rawInsert(
           "INSERT OR REPLACE INTO Subsidiary (id_subsidiary,id_company,subsidiary_name,subsidiary_address,"
           "subsidiary_cellphone,subsidiary_cellphone_2,subsidiary_email,subsidiary_coord_x,subsidiary_coord_y,"
-          "subsidiary_opening_hours,subsidiary_principal,subsidiary_status,subsidiary_favourite) "
+          "subsidiary_opening_hours,subsidiary_principal,subsidiary_status,subsidiary_favourite, subsidiary_status_pedidos) "
           "VALUES('${subsidiaryModel.idSubsidiary}','${subsidiaryModel.idCompany}','${subsidiaryModel.subsidiaryName}',"
           "'${subsidiaryModel.subsidiaryAddress}','${subsidiaryModel.subsidiaryCellphone}','${subsidiaryModel.subsidiaryCellphone2}',"
           "'${subsidiaryModel.subsidiaryEmail}','${subsidiaryModel.subsidiaryCoordX}','${subsidiaryModel.subsidiaryCoordY}',"
           "'${subsidiaryModel.subsidiaryOpeningHours}','${subsidiaryModel.subsidiaryPrincipal}','${subsidiaryModel.subsidiaryStatus}',"
-          "'${subsidiaryModel.subsidiaryFavourite}')");
+          "'${subsidiaryModel.subsidiaryFavourite}', '${subsidiaryModel.subsidiaryStatusPedidos}')");
 
       return res;
     } catch (exception) {
@@ -45,7 +45,8 @@ class SubsidiaryDatabase {
     return list;
   }
 
-  Future<List<SubsidiaryModel>> obtenerSubsidiaryPorId(String id) async {
+  Future<List<SubsidiaryModel>> obtenerSubsidiaryPorIdSubsidiary(
+      String id) async {
     final db = await dbProvider.database;
     final res = await db
         .rawQuery("SELECT * FROM Subsidiary WHERE id_subsidiary= '$id' ");
@@ -72,8 +73,24 @@ class SubsidiaryDatabase {
           "subsidiary_opening_hours='${subsidiaryModel.subsidiaryOpeningHours}',"
           "subsidiary_principal='${subsidiaryModel.subsidiaryPrincipal}',"
           "subsidiary_status= '${subsidiaryModel.subsidiaryStatus}',"
-          "subsidiary_favourite= '${subsidiaryModel.subsidiaryFavourite}' "
+          "subsidiary_favourite= '${subsidiaryModel.subsidiaryFavourite}',"
+          "subsidiary_status_pedidos='${subsidiaryModel.subsidiaryStatusPedidos}'"
           "WHERE id_subsidiary='${subsidiaryModel.idSubsidiary}' ");
+
+      // print('database actualizada $res');
+      return res;
+    } catch (exception) {
+      print(exception);
+    }
+  }
+
+  updateStatusPedidos() async {
+    try {
+      final db = await dbProvider.database;
+
+      final res = await db
+          .rawUpdate("UPDATE Subsidiary SET subsidiary_status_pedidos= '0'"
+              "WHERE subsidiary_status_pedidos='1' ");
 
       // print('database actualizada $res');
       return res;

@@ -17,7 +17,11 @@ class _SplashState extends State<Splash> with AfterLayoutMixin {
     final preferences = Preferences();
 
     if (preferences.personName != null) {
-      Navigator.pushReplacementNamed(context, 'login');
+      if (preferences.numNegocio <= 1) {
+        Navigator.pushReplacementNamed(context, 'home');
+      } else {
+        Navigator.pushReplacementNamed(context, 'elegirNegocio');
+      }
     } else {
       Navigator.pushReplacementNamed(context, 'login');
     }

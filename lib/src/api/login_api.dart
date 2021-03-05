@@ -73,10 +73,43 @@ class LoginApi {
             cmodel.companyJoin = decodedData['empresas'][i]['company_join'];
             cmodel.companyStatus = decodedData['empresas'][i]['company_status'];
             cmodel.companyMt = decodedData['empresas'][i]['company_mt'];
-            cmodel.miNegocio =
-                decodedData['empresas'][i]['mi_negocio'].toString();
 
             await companyDatabase.insertarCompany(cmodel);
+
+            SubsidiaryModel smodel = SubsidiaryModel();
+            smodel.idSubsidiary = decodedData['empresas'][i]['id_subsidiary'];
+            smodel.idCompany = decodedData['empresas'][i]['id_company'];
+            smodel.subsidiaryName =
+                decodedData['empresas'][i]['subsidiary_name'];
+            smodel.subsidiaryCellphone =
+                decodedData['empresas'][i]['subsidiary_cellphone'];
+            smodel.subsidiaryCellphone =
+                decodedData['empresas'][i]['id_subsidiary_cellphone_2'];
+            smodel.subsidiaryEmail =
+                decodedData['empresas'][i]['subsidiary_email'];
+            smodel.subsidiaryCoordX =
+                decodedData['empresas'][i]['subsidiary_coord_x'];
+            smodel.subsidiaryCoordY =
+                decodedData['empresas'][i]['subsidiary_coord_y'];
+            smodel.subsidiaryOpeningHours =
+                decodedData['empresas'][i]['subsidiary_opening_hours'];
+            smodel.subsidiaryPrincipal =
+                decodedData['empresas'][i]['subsidiary_principal'];
+            smodel.subsidiaryStatus =
+                decodedData['empresas'][i]['subsidiary_status'];
+            smodel.subsidiaryAddress =
+                decodedData['empresas'][i]['subsidiary_address'];
+
+            final list =
+                await subsidiaryDatabase.obtenerSubsidiaryPorIdSubsidiary(
+                    decodedData['empresas'][i]['id_subsidiary']);
+
+            if (list.length > 0) {
+              smodel.subsidiaryStatusPedidos = list[0].subsidiaryStatusPedidos;
+            } else {
+              smodel.subsidiaryStatusPedidos = "0";
+            }
+            await subsidiaryDatabase.insertarSubsidiary(smodel);
 
             //final listSucursal = await subsidiaryDatabase.obtenerSubsidiaryPorId(decodedData[i]['id_subsidiary']);
 
@@ -85,6 +118,32 @@ class LoginApi {
 
         if (decodedData['sedes'].length > 0) {
           for (var i = 0; i < decodedData['sedes'].length; i++) {
+            CompanyModel cmodel = CompanyModel();
+            cmodel.idCompany = decodedData['sedes'][i]['id_company'];
+            cmodel.idUser = decodedData['sedes'][i]['id_user'];
+            cmodel.idCity = decodedData['sedes'][i]['id_city'];
+            cmodel.idCategory = decodedData['sedes'][i]['id_category'];
+            cmodel.companyName = decodedData['sedes'][i]['company_name'];
+            cmodel.companyRuc = decodedData['sedes'][i]['company_ruc'];
+            cmodel.companyImage = decodedData['sedes'][i]['company_image'];
+            cmodel.companyType = decodedData['sedes'][i]['company_type'];
+            cmodel.companyShortcode =
+                decodedData['sedes'][i]['company_shortcode'];
+            cmodel.companyDelivery =
+                decodedData['sedes'][i]['company_delivery'];
+            cmodel.companyEntrega = decodedData['sedes'][i]['company_entrega'];
+            cmodel.companyTarjeta = decodedData['sedes'][i]['company_tarjeta'];
+            cmodel.companyVerified =
+                decodedData['sedes'][i]['company_verified'];
+            cmodel.companyRating = decodedData['empresas'][i]['company_rating'];
+            cmodel.companyCreatedAt =
+                decodedData['sedes'][i]['company_created_at'];
+            cmodel.companyJoin = decodedData['sedes'][i]['company_join'];
+            cmodel.companyStatus = decodedData['sedes'][i]['company_status'];
+            cmodel.companyMt = decodedData['sedes'][i]['company_mt'];
+
+            await companyDatabase.insertarCompany(cmodel);
+
             SubsidiaryModel smodel = SubsidiaryModel();
             smodel.idSubsidiary = decodedData['sedes'][i]['id_subsidiary'];
             smodel.idCompany = decodedData['sedes'][i]['id_company'];
@@ -107,6 +166,16 @@ class LoginApi {
                 decodedData['sedes'][i]['subsidiary_status'];
             smodel.subsidiaryAddress =
                 decodedData['sedes'][i]['subsidiary_address'];
+
+            final list =
+                await subsidiaryDatabase.obtenerSubsidiaryPorIdSubsidiary(
+                    decodedData['sedes'][i]['id_subsidiary']);
+
+            if (list.length > 0) {
+              smodel.subsidiaryStatusPedidos = list[0].subsidiaryStatusPedidos;
+            } else {
+              smodel.subsidiaryStatusPedidos = "0";
+            }
             await subsidiaryDatabase.insertarSubsidiary(smodel);
           }
         }
