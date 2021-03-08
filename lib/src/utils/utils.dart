@@ -56,6 +56,11 @@ void actualizarEstadoSucursal(BuildContext context, String idSucursal) async {
 
   sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
 }
+
+void actualizarIdStatus(BuildContext context, String id) {
+  final preferences = Preferences();
+  preferences.idStatusPedidos = id;
+}
 //Actualizar Negocio
 /*  void actualizarNegocio(
       BuildContext context, CompanySubsidiaryModel model) async {

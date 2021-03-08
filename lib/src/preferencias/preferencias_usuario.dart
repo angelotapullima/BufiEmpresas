@@ -132,4 +132,20 @@ class Preferences {
   set idSeleccionNegocioInicio(String value) {
     _prefs.setString('idSeleccionNegocioInicio', value);
   }
+
+  get idSeleccionSubsidiaryPedidos {
+    return _prefs.getString('idSeleccionSubsidiaryPedidos');
+  }
+
+  set idSeleccionSubsidiaryPedidos(String value) {
+    _prefs.setString('idSeleccionSubsidiaryPedidos', value);
+  }
+
+  get idStatusPedidos {
+    return _prefs.getString('idStatusPedidos');
+  }
+
+  set idStatusPedidos(String value) {
+    _prefs.setString('idStatusPedidos', value);
+  }
 }

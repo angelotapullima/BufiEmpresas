@@ -44,6 +44,28 @@ class PedidosDatabase {
     return list;
   }
 
+  Future<List<PedidosModel>> obtenerPedidosXidSubsidiary(
+      String idSubsidiary) async {
+    final db = await dbProvider.database;
+    final res = await db
+        .rawQuery("SELECT * FROM Pedidos WHERE id_subsidiary= '$idSubsidiary'");
+
+    List<PedidosModel> list =
+        res.isNotEmpty ? res.map((c) => PedidosModel.fromJson(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<PedidosModel>> obtenerPedidosXidSubsidiaryAndIdEstado(
+      String idSubsidiary, String idStatus) async {
+    final db = await dbProvider.database;
+    final res = await db.rawQuery(
+        "SELECT * FROM Pedidos WHERE id_subsidiary= '$idSubsidiary' AND delivery_status='$idStatus'");
+
+    List<PedidosModel> list =
+        res.isNotEmpty ? res.map((c) => PedidosModel.fromJson(c)).toList() : [];
+    return list;
+  }
+
   Future<List<PedidosModel>> obtenerPedidosXidEstado(String idEstado) async {
     final db = await dbProvider.database;
     final res = await db

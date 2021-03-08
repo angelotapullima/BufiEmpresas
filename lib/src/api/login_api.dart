@@ -135,7 +135,7 @@ class LoginApi {
             cmodel.companyTarjeta = decodedData['sedes'][i]['company_tarjeta'];
             cmodel.companyVerified =
                 decodedData['sedes'][i]['company_verified'];
-            cmodel.companyRating = decodedData['empresas'][i]['company_rating'];
+            cmodel.companyRating = decodedData['sedes'][i]['company_rating'];
             cmodel.companyCreatedAt =
                 decodedData['sedes'][i]['company_created_at'];
             cmodel.companyJoin = decodedData['sedes'][i]['company_join'];

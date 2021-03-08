@@ -1,6 +1,7 @@
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pantalla_inicio_bloc.dart';
+import 'package:bufi_empresas/src/bloc/pedido_bloc.dart';
 import 'package:flutter/material.dart';
 
 class ProviderBloc extends InheritedWidget {
@@ -9,6 +10,7 @@ class ProviderBloc extends InheritedWidget {
   final loginBloc = LoginBloc();
   final negociosBloc = PantallaInicioBloc();
   final tabsNavigationbloc = TabNavigationBloc();
+  final pedidosBloc = PedidoBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -39,5 +41,11 @@ class ProviderBloc extends InheritedWidget {
   static PantallaInicioBloc negocios(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .negociosBloc;
+  }
+
+  //Pedidos
+  static PedidoBloc pedido(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .pedidosBloc;
   }
 }

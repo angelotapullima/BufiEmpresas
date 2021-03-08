@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:bufi_empresas/src/database/company_db.dart';
 import 'package:bufi_empresas/src/database/detallePedido_database.dart';
 import 'package:bufi_empresas/src/database/good_db.dart';
@@ -14,7 +13,6 @@ import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
-import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 
 class PedidoApi {
@@ -26,10 +24,14 @@ class PedidoApi {
   final sucursalDb = SubsidiaryDatabase();
   final goodDb = GoodDatabase();
 
-  Future<dynamic> obtenerPedidosEnviados(String idEstado) async {
-    final response = await http.post(
-        "$apiBaseURL/api/Pedido/buscar_pedidos_enviados_ws",
-        body: {'estado': '99', 'tn': prefs.token, 'app': 'true'});
+  Future<dynamic> obtenerPedidosPorIdSucursal(String idSucursal) async {
+    final response = await http
+        .post("$apiBaseURL/api/Pedido/pedidos_por_subsidiary_ws", body: {
+      'id_subsidiary': '$idSucursal',
+      'estado': '99',
+      'tn': prefs.token,
+      'app': 'true'
+    });
 
     final decodedData = json.decode(response.body);
 
@@ -95,12 +97,12 @@ class PedidoApi {
       sucursalModel.subsidiaryStatus =
           decodedData["result"][i]['subsidiary_status'];
 
-      //Obtener la lista de sucursales para asignar a favoritos
+      //Obtener la lista de sucursales para asignar a estado seleccion Pedido
       final list = await sucursalDb.obtenerSubsidiaryPorIdSubsidiary(
           decodedData["result"][i]['id_subsidiary']);
 
       if (list.length > 0) {
-        sucursalModel.subsidiaryFavourite = list[0].subsidiaryFavourite;
+        sucursalModel.subsidiaryStatusPedidos = list[0].subsidiaryFavourite;
       } else {
         sucursalModel.subsidiaryFavourite = "0";
       }
