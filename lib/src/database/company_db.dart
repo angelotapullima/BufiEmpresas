@@ -25,6 +25,14 @@ class CompanyDatabase {
     }
   }
 
+  deleteCompany() async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawDelete('DELETE FROM Company');
+
+    return res;
+  }
+
   updateCompany(CompanyModel companyModel) async {
     try {
       final db = await dbProvider.database;

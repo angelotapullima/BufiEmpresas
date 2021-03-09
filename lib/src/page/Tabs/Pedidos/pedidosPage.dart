@@ -1,6 +1,7 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
+import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -27,102 +28,8 @@ class PedidosPage extends StatelessWidget {
             ),
             Container(height: responsive.hp(10), child: ListarSucursales()),
             Container(
-              height: responsive.hp(6.5),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      actualizarIdStatus(context, '3');
-                      print(preferences.idStatusPedidos);
-                      final pedidosBloc = ProviderBloc.pedido(context);
-                      pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                          preferences.idSeleccionSubsidiaryPedidos,
-                          preferences.idStatusPedidos);
-                    },
-                    child: Container(
-                      width: responsive.wp(26),
-                      child: Card(
-                        elevation: 2,
-                        color: (preferences.idStatusPedidos == '3')
-                            ? Colors.red
-                            : Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: Text(
-                            'En Envío',
-                            style: TextStyle(
-                              fontSize: responsive.ip(2),
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      actualizarIdStatus(context, '4');
-                      print(preferences.idStatusPedidos);
-                      final pedidosBloc = ProviderBloc.pedido(context);
-                      pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                          preferences.idSeleccionSubsidiaryPedidos,
-                          preferences.idStatusPedidos);
-                    },
-                    child: Container(
-                      width: responsive.wp(26),
-                      child: Card(
-                        elevation: 2,
-                        color: (preferences.idStatusPedidos == '4')
-                            ? Colors.red
-                            : Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: Text(
-                            'Aceptado',
-                            style: TextStyle(
-                              fontSize: responsive.ip(2),
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      actualizarIdStatus(context, '5');
-                      print(preferences.idStatusPedidos);
-                      final pedidosBloc = ProviderBloc.pedido(context);
-                      pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                          preferences.idSeleccionSubsidiaryPedidos,
-                          preferences.idStatusPedidos);
-                    },
-                    child: Container(
-                      width: responsive.wp(26),
-                      child: Card(
-                        elevation: 2,
-                        color: (preferences.idStatusPedidos == '5')
-                            ? Colors.red
-                            : Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(2)),
-                          child: Text(
-                            'Cancelado',
-                            style: TextStyle(
-                              fontSize: responsive.ip(2),
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              height: responsive.hp(10),
+              child: ListarTiposEstadosPedidos(),
             ),
             Expanded(
               child: ListarPedidosPorIdSubsidiary(
@@ -183,7 +90,6 @@ class ListarSucursales extends StatelessWidget {
         actualizarEstadoSucursal(context, servicioData.idSubsidiary);
         final preferences = new Preferences();
         preferences.idSeleccionSubsidiaryPedidos = servicioData.idSubsidiary;
-        print(preferences.idSeleccionSubsidiaryPedidos);
         final pedidosBloc = ProviderBloc.pedido(context);
         pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
             preferences.idSeleccionSubsidiaryPedidos,
@@ -201,6 +107,81 @@ class ListarSucursales extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
             child: Text(
               '${servicioData.subsidiaryName}',
+              style: TextStyle(
+                fontSize: responsive.ip(2),
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListarTiposEstadosPedidos extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final tipoEstadoPedidos = ProviderBloc.tipoEstadoPedidos(context);
+    tipoEstadoPedidos.obtenerTiposEstadosPedidos();
+    final responsive = Responsive.of(context);
+
+    return Column(
+      children: [
+        Container(
+          height: responsive.hp(10),
+          child: StreamBuilder(
+            //stream: negociosBloc.negociosStream,
+            stream: tipoEstadoPedidos.tiposEstadosPedidosStream,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<TipoEstadoPedidoModel>> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data.length > 0) {
+                  return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return _crearItem(
+                            context, snapshot.data[index], responsive);
+                      });
+                } else {
+                  return Center(child: Text("Lista Vacia"));
+                }
+              } else {
+                return Center(child: Text("Lista Nula"));
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _crearItem(BuildContext context, TipoEstadoPedidoModel tipoEstadodata,
+      Responsive responsive) {
+    return GestureDetector(
+      onTap: () {
+        actualizarIdStatusPedidos(context, tipoEstadodata.idTipoEstado);
+        final preferences = new Preferences();
+        preferences.idStatusPedidos = tipoEstadodata.idTipoEstado;
+
+        final pedidosBloc = ProviderBloc.pedido(context);
+        pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+            preferences.idSeleccionSubsidiaryPedidos,
+            tipoEstadodata.idTipoEstado);
+        //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
+      },
+      child: Container(
+        width: responsive.wp(25),
+        child: Card(
+          elevation: 2,
+          color: (tipoEstadodata.tipoEstadoSelect == '1')
+              ? Colors.red
+              : Colors.white,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+            child: Text(
+              '${tipoEstadodata.tipoEstadoNombre}',
               style: TextStyle(
                 fontSize: responsive.ip(2),
                 color: Colors.black,

@@ -42,6 +42,7 @@ dependencies:
   nuts_activity_indicator: ^0.1.1
   font_awesome_flutter: ^8.8.1
   cached_network_image: ^2.2.0+1
+  flutter_cache_manager: ^1.4.1
 
 dev_dependencies:
   flutter_test:

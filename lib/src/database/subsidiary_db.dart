@@ -84,6 +84,14 @@ class SubsidiaryDatabase {
     }
   }
 
+  deleteSubsidiary() async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawDelete('DELETE FROM Subsidiary');
+
+    return res;
+  }
+
   updateStatusPedidos() async {
     try {
       final db = await dbProvider.database;

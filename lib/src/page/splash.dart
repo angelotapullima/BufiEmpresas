@@ -1,3 +1,4 @@
+import 'package:bufi_empresas/src/api/configuracion_api.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,15 +16,24 @@ class _SplashState extends State<Splash> with AfterLayoutMixin {
   @override
   void afterFirstLayout(BuildContext context) async {
     final preferences = Preferences();
+    final configuracionApi = ConfiguracionApi();
+
+    if (preferences.cargaCategorias == null) {
+      await configuracionApi.obtenerConfiguracion();
+      preferences.cargaCategorias = 'paso';
+    } else {
+      configuracionApi.obtenerConfiguracion();
+    }
 
     if (preferences.personName != null) {
       if (preferences.numNegocio <= 1) {
-        Navigator.pushReplacementNamed(context, 'home');
+        Navigator.pushReplacementNamed(context, 'home'); //home
       } else {
-        Navigator.pushReplacementNamed(context, 'elegirNegocio');
+        Navigator.pushReplacementNamed(
+            context, 'elegirNegocio'); //elegirNegocio
       }
     } else {
-      Navigator.pushReplacementNamed(context, 'login');
+      Navigator.pushReplacementNamed(context, 'login'); //login
     }
   }
 

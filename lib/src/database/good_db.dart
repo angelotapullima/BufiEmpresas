@@ -17,6 +17,14 @@ class GoodDatabase {
     }
   }
 
+  deleteGood() async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawDelete('DELETE FROM Good');
+
+    return res;
+  }
+
   Future<List<BienesModel>> obtenerGood() async {
     final db = await dbProvider.database;
     final res = await db.rawQuery("SELECT * FROM Good");

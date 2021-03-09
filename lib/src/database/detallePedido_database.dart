@@ -21,6 +21,14 @@ class DetallePedidoDatabase {
     }
   }
 
+  deleteDetallePedidos() async {
+    final db = await dbprovider.database;
+
+    final res = await db.rawDelete('DELETE FROM DetallePedido');
+
+    return res;
+  }
+
   Future<List<DetallePedidoModel>> obtenerDetallePedidoxIdPedido(
       String idPedido) async {
     final db = await dbprovider.database;

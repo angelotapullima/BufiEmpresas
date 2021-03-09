@@ -139,6 +139,12 @@ class DatabaseProvider {
           ' cantidad TEXT,'
           ' delivery_detail_subtotal TEXT'
           ')');
+
+      await db.execute('CREATE TABLE EstadoPedido ('
+          'id_tipo_estado TEXT PRIMARY KEY,'
+          'tipo_estado_nombre TEXT,'
+          'tipo_estado_select TEXT'
+          ')');
     });
   }
 }

@@ -2,6 +2,7 @@ import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/page/elegirNegocio_page.dart';
 import 'package:bufi_empresas/src/page/home.dart';
 import 'package:bufi_empresas/src/page/login_page.dart';
+import 'package:bufi_empresas/src/page/pruebas.dart';
 import 'package:bufi_empresas/src/page/splash.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/theme/theme.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
             "login": (BuildContext context) => LoginPage(),
             "home": (BuildContext context) => HomePage(),
             "elegirNegocio": (BuildContext context) => ElegirNegocioPage(),
+            "pruebas": (BuildContext context) => PuebasPage(),
             //"splash": (BuildContext context) => Splash(),
           }),
     );

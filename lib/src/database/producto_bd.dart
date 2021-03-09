@@ -61,6 +61,14 @@ class ProductoDatabase {
     }
   }
 
+  deleteProducto() async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawDelete('DELETE FROM Producto');
+
+    return res;
+  }
+
   Future<List<ProductoModel>> obtenerSubsidiaryGood() async {
     final db = await dbProvider.database;
     final res = await db.rawQuery("SELECT * FROM Producto");

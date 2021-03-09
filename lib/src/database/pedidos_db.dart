@@ -25,6 +25,14 @@ class PedidosDatabase {
     }
   }
 
+  deletePedidos() async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawDelete('DELETE FROM Pedidos');
+
+    return res;
+  }
+
   Future<List<PedidosModel>> obtenerPedidos() async {
     final db = await dbProvider.database;
     final res = await db.rawQuery("SELECT * FROM Pedidos");

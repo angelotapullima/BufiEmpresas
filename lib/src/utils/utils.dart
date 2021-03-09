@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
+import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
@@ -57,9 +58,15 @@ void actualizarEstadoSucursal(BuildContext context, String idSucursal) async {
   sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
 }
 
-void actualizarIdStatus(BuildContext context, String id) {
-  final preferences = Preferences();
-  preferences.idStatusPedidos = id;
+void actualizarIdStatusPedidos(
+    BuildContext context, String idTipoEstadoPago) async {
+  final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
+  final tipoEstadoPedidos = ProviderBloc.tipoEstadoPedidos(context);
+
+  await tiposEstadosPedidosDatabase.desSeleccionarTiposEstadosPedido();
+  await tiposEstadosPedidosDatabase
+      .updateSeleccionarTipoEstadoPedido(idTipoEstadoPago);
+  tipoEstadoPedidos.obtenerTiposEstadosPedidos();
 }
 //Actualizar Negocio
 /*  void actualizarNegocio(
