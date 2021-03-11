@@ -3,6 +3,7 @@ import 'package:bufi_empresas/src/models/companyModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -99,8 +100,8 @@ class Negocios extends StatelessWidget {
         final preferences = Preferences();
 
         preferences.idSeleccionNegocioInicio = servicioData.idCompany;
-        preferences.idSeleccionSubsidiaryPedidos = '0';
-        preferences.idStatusPedidos = '3';
+        obtenerprimerIdSubsidiary(preferences.idSeleccionNegocioInicio);
+        preferences.idStatusPedidos = '99';
         Navigator.pushNamed(context, "home");
       },
       child: Container(

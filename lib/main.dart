@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           darkTheme: lightTheme, //darkTheme,
           //themeMode: ThemeMode.system,
           home: Splash(),
-          //initialRoute:(prefs.idUser=="" || prefs.idUser==null)?'login':'home',
+          //initialRoute: 'pruebas',
           routes: {
             "login": (BuildContext context) => LoginPage(),
             "home": (BuildContext context) => HomePage(),

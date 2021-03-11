@@ -43,6 +43,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   cached_network_image: ^2.2.0+1
   flutter_cache_manager: ^1.4.1
+  platform_date_picker:
 
 dev_dependencies:
   flutter_test:

@@ -68,6 +68,16 @@ void actualizarIdStatusPedidos(
       .updateSeleccionarTipoEstadoPedido(idTipoEstadoPago);
   tipoEstadoPedidos.obtenerTiposEstadosPedidos();
 }
+
+void obtenerprimerIdSubsidiary(String idCompany) async {
+  final subsidiaryDatabase = SubsidiaryDatabase();
+  final preferences = Preferences();
+  final listSucursal =
+      await subsidiaryDatabase.obtenerPrimerIdSubsidiary(idCompany);
+  preferences.idSeleccionSubsidiaryPedidos = listSucursal[0].idSubsidiary;
+  //await subsidiaryDatabase.updateStatusPedidos();
+  await subsidiaryDatabase.updateStatusPedidos1(listSucursal[0].idSubsidiary);
+}
 //Actualizar Negocio
 /*  void actualizarNegocio(
       BuildContext context, CompanySubsidiaryModel model) async {
