@@ -3,6 +3,7 @@ import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/widgets/sliver_header_delegate.dart';
+import 'package:bufi_empresas/src/widgets/widget_SeleccionarNegocio.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -156,6 +157,13 @@ class HeaderWidget extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      width: responsive.wp(10),
+                    ),
+                    Container(
+                      width: responsive.wp(40),
+                      child: SeleccionarNegocio(),
                     ),
                   ],
                 ),
