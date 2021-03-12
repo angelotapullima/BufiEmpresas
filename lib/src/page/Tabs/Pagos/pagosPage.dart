@@ -6,9 +6,10 @@ import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:platform_date_picker/platform_date_picker.dart';
 
-var fechaI = '2021-03-10';
+var fechaI;
 var fechaF;
 
 class PagosPage extends StatelessWidget {
@@ -79,11 +80,21 @@ class PagosPage extends StatelessWidget {
         color: Colors.red,
         textColor: Colors.white,
         onPressed: () {
-          print("Presione el boton");
           final pagosBloc = ProviderBloc.pagos(context);
           final prefs = Preferences();
-          pagosBloc.obtenerPagosXFecha(
-              prefs.idSeleccionSubsidiaryPedidos, fechaI, fechaF);
+          if (fechaI != null && fechaF != null) {
+            if (DateTime.parse(fechaI).isBefore(DateTime.parse(fechaF)) ||
+                DateTime.parse(fechaI) == DateTime.parse(fechaF)) {
+              pagosBloc.obtenerPagosXFecha(
+                  prefs.idSeleccionSubsidiaryPedidos, fechaI, fechaF);
+            } else {
+              showToast1('Fecha Fin debe ser mayor que fecha Inicio', 3,
+                  ToastGravity.CENTER);
+            }
+          } else {
+            showToast1(
+                'Seleccione un rango de fechas valido', 3, ToastGravity.CENTER);
+          }
         }
         //(snapshot.hasData) ? () => _submit(context, bloc) : null,
         );
@@ -102,12 +113,10 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
 
   @override
   Widget build(BuildContext context) {
-    print('sf ${inputfieldDateController.text}');
     String _fecha = '';
     return TextField(
       decoration: InputDecoration(
-        //hintStyle: form2,
-        hintText: 'Fecha Inicio',
+        labelText: 'Fecha Inicio',
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey[300]),
           borderRadius: BorderRadius.all(
@@ -131,12 +140,10 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
     DateTime picked = await PlatformDatePicker.showDate(
       context: context,
       backgroundColor: Colors.white,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 2),
       initialDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 2),
+      lastDate: DateTime.now(),
     );
-
-    print('date $picked');
     if (picked != null) {
       /* print('no se por que se muestra ${picked.year}-${picked.month}-${picked.day}');
       String dia = ''; */
@@ -147,8 +154,6 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
         inputfieldDateController.text = _fecha;
 
         fechaI = _fecha;
-
-        print(fechaI);
       });
     }
   }
@@ -166,12 +171,10 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
 
   @override
   Widget build(BuildContext context) {
-    print('sf ${inputfieldDateController.text}');
     String _fecha = '';
     return TextField(
       decoration: InputDecoration(
-        //hintStyle: form2,
-        hintText: 'Fecha Fin',
+        labelText: 'Fecha Fin',
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey[300]),
           borderRadius: BorderRadius.all(
@@ -195,12 +198,11 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
     DateTime picked = await PlatformDatePicker.showDate(
       context: context,
       backgroundColor: Colors.white,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 2),
       initialDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 2),
+      lastDate: DateTime.now(),
     );
 
-    print('date $picked');
     if (picked != null) {
       /* print('no se por que se muestra ${picked.year}-${picked.month}-${picked.day}');
       String dia = ''; */
@@ -210,7 +212,6 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
             "${picked.year.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
         inputfieldDateController.text = _fecha;
         fechaF = _fecha;
-        print(fechaF);
       });
     }
   }
@@ -309,7 +310,6 @@ class _ListarPagosPorIdSubsidiaryAndFecha
     pagosBloc.obtenerPagosXFecha(
         widget.idSucursal, widget.fechaI, widget.fechaF);
     final responsive = Responsive.of(context);
-    print('Toi en la lissta');
 
     return StreamBuilder(
       stream: pagosBloc.pagosStream,
@@ -330,12 +330,10 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                   return _crearItem(context, snapshot.data[i], responsive);
                 });
           } else {
-            return Center(
-                child:
-                    Text('No tiene Pagos en el Rango de Fecha Seleccionada'));
+            return Center(child: Text('No tiene Pagos'));
           }
         } else {
-          return Center(child: CupertinoActivityIndicator());
+          return Center(child: Text('No tiene pagos'));
         }
       },
     );
@@ -376,7 +374,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                         fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
-                  Text('${pagosData.transferenciaUEMonto}'),
+                  Text('S/. ${pagosData.transferenciaUEMonto}'),
                   Text('${pagosData.transferenciaUENroOperacion}'),
                   Text('${pagosData.transferenciaUEDate}'),
                 ],

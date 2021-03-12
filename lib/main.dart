@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/page/Tabs/cuenta/perfilPage.dart';
 import 'package:bufi_empresas/src/page/elegirNegocio_page.dart';
 import 'package:bufi_empresas/src/page/home.dart';
 import 'package:bufi_empresas/src/page/login_page.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
             "elegirNegocio": (BuildContext context) => ElegirNegocioPage(),
             "pruebas": (BuildContext context) => PuebasPage(),
             //"splash": (BuildContext context) => Splash(),
+
+            //Mi Perfil
+            'perfil': (BuildContext context) => PerfilPage(),
           }),
     );
   }

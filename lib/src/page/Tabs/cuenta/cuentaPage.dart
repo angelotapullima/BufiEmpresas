@@ -120,13 +120,13 @@ class _CuentaPageState extends State<CuentaPage> {
           ),
           _item(responsive, "Mi perfil", "perfil", FontAwesomeIcons.user),
 
-          _item(responsive, "Políticas de Privacidad", "direccion",
+          _item(responsive, "Políticas de Privacidad", "pruebas",
               Icons.privacy_tip_outlined),
 
-          _item(responsive, "Términos y Condiciones", "direccion",
-              Icons.save_alt),
+          _item(
+              responsive, "Términos y Condiciones", "pruebas", Icons.save_alt),
 
-          _item(responsive, "Configuración", "direccion", Icons.settings),
+          _item(responsive, "Configuración", "pruebas", Icons.settings),
 
           //SizedBox(height: responsive.hp(2)),
 
@@ -214,7 +214,7 @@ class _CuentaPageState extends State<CuentaPage> {
           leading: Icon(icon),
           trailing: Icon(Icons.arrow_right_outlined),
           onTap: () {
-            //Navigator.pushNamed(context, ruta);
+            Navigator.pushNamed(context, ruta);
           },
         ));
   }

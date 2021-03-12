@@ -101,7 +101,9 @@ class Negocios extends StatelessWidget {
 
         preferences.idSeleccionNegocioInicio = servicioData.idCompany;
         obtenerprimerIdSubsidiary(preferences.idSeleccionNegocioInicio);
+
         preferences.idStatusPedidos = '99';
+        actualizarIdStatusPedidos(context, preferences.idStatusPedidos);
         Navigator.pushNamed(context, "home");
       },
       child: Container(

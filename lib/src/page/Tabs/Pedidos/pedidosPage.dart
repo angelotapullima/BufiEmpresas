@@ -204,6 +204,7 @@ class _ListarPedidosPorIdSubsidiaryState
                   ),
                   Text('${pedidosData.deliveryName}'),
                   Text('${pedidosData.deliveryAddress}'),
+                  Text('${pedidosData.idSubsidiary}'),
                 ],
               ),
             )
