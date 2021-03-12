@@ -195,29 +195,27 @@ class Sucursales extends StatelessWidget {
             //SizedBox(width: 30,),
           ],
         ),
-        Container(
-          child: StreamBuilder(
-            stream: negociosBloc.suscursaStream,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.length > 0) {
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        return _crearItem(
-                            context, snapshot.data[index], responsive);
-                      });
-                } else {
-                  return Center(child: Text('No tiene Sucursales'));
-                }
+        StreamBuilder(
+          stream: negociosBloc.suscursaStream,
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data.length > 0) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return _crearItem(
+                          context, snapshot.data[index], responsive);
+                    });
               } else {
-                return Center(child: CupertinoActivityIndicator());
+                return Center(child: Text('No tiene Sucursales'));
               }
-            },
-          ),
+            } else {
+              return Center(child: CupertinoActivityIndicator());
+            }
+          },
         ),
       ],
     );
@@ -242,7 +240,7 @@ class Sucursales extends StatelessWidget {
             ),
           ],
         ),
-        margin: EdgeInsets.all(responsive.ip(1)),
+        margin: EdgeInsets.all(responsive.ip(0.1)),
         height: responsive.hp(15),
         child: Row(
           children: [
