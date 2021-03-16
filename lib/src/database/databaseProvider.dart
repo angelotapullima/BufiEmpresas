@@ -60,7 +60,8 @@ class DatabaseProvider {
           'company_join VARCHAR,'
           'company_status VARCHAR,'
           'company_mt VARCHAR,'
-          'mi_negocio VARCHAR'
+          'mi_negocio VARCHAR,'
+          'negocio_estado_seleccion VARCHAR'
           ')');
 
       await db.execute('CREATE TABLE Subsidiary ('

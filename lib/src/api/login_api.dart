@@ -74,6 +74,15 @@ class LoginApi {
             cmodel.companyStatus = decodedData['empresas'][i]['company_status'];
             cmodel.companyMt = decodedData['empresas'][i]['company_mt'];
 
+            final list1 = await companyDatabase
+                .obtenerCompanyPorId(decodedData['empresas'][i]['id_company']);
+
+            if (list1.length > 0) {
+              cmodel.negocioEstadoSeleccion = list1[0].negocioEstadoSeleccion;
+            } else {
+              cmodel.negocioEstadoSeleccion = "0";
+            }
+
             await companyDatabase.insertarCompany(cmodel);
 
             SubsidiaryModel smodel = SubsidiaryModel();
@@ -141,6 +150,15 @@ class LoginApi {
             cmodel.companyJoin = decodedData['sedes'][i]['company_join'];
             cmodel.companyStatus = decodedData['sedes'][i]['company_status'];
             cmodel.companyMt = decodedData['sedes'][i]['company_mt'];
+
+            final list1 = await companyDatabase
+                .obtenerCompanyPorId(decodedData['sedes'][i]['id_company']);
+
+            if (list1.length > 0) {
+              cmodel.negocioEstadoSeleccion = list1[0].negocioEstadoSeleccion;
+            } else {
+              cmodel.negocioEstadoSeleccion = "0";
+            }
 
             await companyDatabase.insertarCompany(cmodel);
 
