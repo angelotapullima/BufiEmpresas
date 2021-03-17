@@ -97,4 +97,29 @@ class CompanyDatabase {
         res.isNotEmpty ? res.map((c) => CompanyModel.fromJson(c)).toList() : [];
     return list;
   }
+
+  desSeleccionarCompany() async {
+    try {
+      final db = await dbProvider.database;
+
+      final res = await db.rawUpdate(
+          "UPDATE Company SET negocio_estado_seleccion='0' WHERE negocio_estado_seleccion='1'");
+      return res;
+    } catch (exception) {
+      print(exception);
+    }
+  }
+
+  updateSeleccionarCompany(String idCompany) async {
+    try {
+      final db = await dbProvider.database;
+
+      final res = await db.rawUpdate("UPDATE Company SET "
+          "negocio_estado_seleccion='1' "
+          "WHERE id_company = '$idCompany'");
+      return res;
+    } catch (exception) {
+      print(exception);
+    }
+  }
 }

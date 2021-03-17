@@ -95,7 +95,7 @@ class PrincipalPage extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            height: responsive.hp(28),
+            height: responsive.hp(25),
             child: MostrarNegocio(),
           ),
           Row(

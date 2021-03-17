@@ -4,6 +4,7 @@ import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
+import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:bufi_empresas/src/widgets/widget_SeleccionarSucursal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,17 @@ class PedidosPage extends StatelessWidget {
     final responsive = Responsive.of(context);
     final preferences = Preferences();
     return Scaffold(
-      body: SafeArea(
+      body: Stack(
+        children: [
+          _backgroundNegocio(responsive),
+          TranslateAnimation(
+            duration: const Duration(milliseconds: 400),
+            child: _contenido(responsive, preferences),
+          )
+        ],
+      ),
+
+      /*SafeArea(
         child: Column(
           children: [
             Text(
@@ -39,6 +50,64 @@ class PedidosPage extends StatelessWidget {
             )
           ],
         ),
+      ),*/
+    );
+  }
+
+  Widget _backgroundNegocio(Responsive responsive) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: responsive.hp(5),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+            height: responsive.hp(17),
+            child: ListarSucursales(),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+            height: responsive.hp(10),
+            child: ListarTiposEstadosPedidos(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _contenido(Responsive responsive, Preferences preferences) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: responsive.hp(5),
+      ),
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.65,
+        minChildSize: 0.65,
+        builder: (context, scrollController) {
+          return Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 4,
+                      blurRadius: 19,
+                      offset: Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                  color: Colors.white),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: ListarPedidosPorIdSubsidiary(
+                  idSucursal: preferences.idSeleccionSubsidiaryPedidos,
+                  idStatus: preferences.idStatusPedidos,
+                ),
+              ));
+        },
       ),
     );
   }

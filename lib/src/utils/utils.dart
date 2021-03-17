@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/database/company_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
@@ -77,6 +78,24 @@ void obtenerprimerIdSubsidiary(String idCompany) async {
   preferences.idSeleccionSubsidiaryPedidos = listSucursal[0].idSubsidiary;
   //await subsidiaryDatabase.updateStatusPedidos();
   await subsidiaryDatabase.updateStatusPedidos1(listSucursal[0].idSubsidiary);
+}
+
+void actualizarSeleccionCompany(BuildContext context, String idCompany) async {
+  final companyDatabase = CompanyDatabase();
+  await companyDatabase.desSeleccionarCompany();
+  await companyDatabase.updateSeleccionarCompany(idCompany);
+  final negociosBloc = ProviderBloc.negocios(context);
+  negociosBloc.obtenernegocios();
+}
+
+void obtenerprimerIdCompany() async {
+  final companyDatabase = CompanyDatabase();
+  final preferences = Preferences();
+  final listCompany = await companyDatabase.obtenerCompany();
+  preferences.idSeleccionNegocioInicio = listCompany[0].idCompany;
+  await companyDatabase.desSeleccionarCompany();
+  await companyDatabase
+      .updateSeleccionarCompany(preferences.idSeleccionNegocioInicio);
 }
 //Actualizar Negocio
 /*  void actualizarNegocio(

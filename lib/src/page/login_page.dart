@@ -223,6 +223,7 @@ class _LoginPageState extends State<LoginPage> {
     final int code = await bloc.login('${bloc.email}', '${bloc.password}');
 
     if (code == 1) {
+      obtenerprimerIdCompany();
       Navigator.pushReplacementNamed(context, 'home');
     } else if (code == 2) {
       print(code);

@@ -1,6 +1,7 @@
 import 'package:bufi_empresas/src/api/configuracion_api.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
@@ -26,6 +27,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin {
     }
 
     if (preferences.personName != null) {
+      obtenerprimerIdCompany();
       Navigator.pushReplacementNamed(context, 'home'); //home
     } else {
       Navigator.pushReplacementNamed(context, 'login'); //login

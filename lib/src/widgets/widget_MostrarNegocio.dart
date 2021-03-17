@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/companyModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
@@ -11,7 +13,7 @@ class MostrarNegocio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _pageController =
-        PageController(viewportFraction: 0.9, initialPage: 0);
+        PageController(viewportFraction: 0.7, initialPage: 0);
     final negociosBloc = ProviderBloc.negocios(context);
     negociosBloc.obtenernegocios();
     final responsive = Responsive.of(context);
@@ -51,6 +53,8 @@ class MostrarNegocio extends StatelessWidget {
 
                         preferences.idSeleccionNegocioInicio =
                             snapshot.data[index].idCompany;
+                        actualizarSeleccionCompany(
+                            context, preferences.idSeleccionNegocioInicio);
                         obtenerprimerIdSubsidiary(
                             preferences.idSeleccionNegocioInicio);
                         negociosBloc.obtenersucursales(
@@ -65,43 +69,25 @@ class MostrarNegocio extends StatelessWidget {
             },
           ),
         ),
-        StreamBuilder(
-          stream: negociosBloc.negociosStream,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              int totalNegociosPage = snapshot.data.length;
-              if (snapshot.data.length > 0) {
-                return StreamBuilder(
-                    stream: contadorBloc.selectContadorStream,
-                    builder: (context, snapshot) {
-                      return Container(
-                        height: responsive.hp(3),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: responsive.wp(2),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey[300]),
-                        ),
-                        margin: EdgeInsets.symmetric(
-                          horizontal: responsive.wp(5),
-                          vertical: responsive.hp(1.3),
-                        ),
-                        child: Text(
-                          (contadorBloc.pageContador + 1).toString() +
-                              '/' +
-                              totalNegociosPage.toString(),
-                        ),
-                      );
-                    });
+        Container(
+          height: responsive.hp(5),
+          child: StreamBuilder(
+            stream: negociosBloc.negociosStream,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data.length > 0) {
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                          snapshot.data.length, (index) => _Puntos(index)));
+                } else {
+                  return Center(child: Text('No tiene Negocios'));
+                }
               } else {
-                return Center(child: Text('No tiene Negocios'));
+                return Center(child: CircularProgressIndicator());
               }
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+            },
+          ),
         ),
       ],
     );
@@ -109,37 +95,22 @@ class MostrarNegocio extends StatelessWidget {
 
   Widget _crearItem(
       BuildContext context, CompanyModel companyData, Responsive responsive) {
-    return
-
-        /*Container(
-      child: Card(
-        elevation: 2,
-        color: (companyData.negocioEstadoSeleccion == '1')
-            ? Colors.red
-            : Colors.white,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-          child: Text(
-            '${companyData.companyName}',
-            style: TextStyle(
-              fontSize: responsive.ip(2),
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );*/
-
-        Container(
+    return Container(
+      height: responsive.hp(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
+        color: Colors
+            .white /*Colors.primaries[Random().nextInt(Colors.primaries.length)]*/,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 2,
-            offset: Offset(2, 3),
+            color: (companyData.negocioEstadoSeleccion == '1')
+                ? Colors.redAccent
+                : Colors.grey.withOpacity(0.5),
+            spreadRadius: (companyData.negocioEstadoSeleccion == '1') ? 4 : 1,
+            blurRadius: (companyData.negocioEstadoSeleccion == '1') ? 4 : 2,
+            offset: (companyData.negocioEstadoSeleccion == '1')
+                ? Offset(0, 0)
+                : Offset(2, 3),
           ),
         ],
       ),
@@ -155,7 +126,7 @@ class MostrarNegocio extends StatelessWidget {
           ),
           Text('${companyData.companyType}'),
           Text('${companyData.companyRating}'),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(
               Icons.star,
               color: Colors.yellow,
@@ -166,6 +137,28 @@ class MostrarNegocio extends StatelessWidget {
             SizedBox(width: 10),
           ])
         ],
+      ),
+    );
+  }
+}
+
+class _Puntos extends StatelessWidget {
+  final int index;
+  _Puntos(this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    final contadorBloc = ProviderBloc.contadorPagina(context);
+    return Container(
+      width: 10,
+      height: 10,
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: (contadorBloc.pageContador >= index - 0.5 &&
+                contadorBloc.pageContador < index + 0.5)
+            ? Colors.redAccent
+            : Colors.grey,
+        shape: BoxShape.circle,
       ),
     );
   }

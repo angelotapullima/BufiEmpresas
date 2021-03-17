@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListNegocio_bloc.dart';
+import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListarSucursales.dart';
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pagos_bloc.dart';
@@ -17,6 +18,7 @@ class ProviderBloc extends InheritedWidget {
   final tipoEstadoPedidosBloc = TiposEstadosPedidosBloc();
   final pagosBloc = PagosBloc();
   final contadorBloc = ContadorPaginaNegocioBloc();
+  final contadorSucursalesBloc = ContadorPaginaListarSucursalesBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -71,5 +73,12 @@ class ProviderBloc extends InheritedWidget {
   static ContadorPaginaNegocioBloc contadorPagina(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .contadorBloc;
+  }
+
+  //Contador Pagina Pedidos Listar Sucursales
+  static ContadorPaginaListarSucursalesBloc contadorListaSucursales(
+      BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .contadorSucursalesBloc;
   }
 }
