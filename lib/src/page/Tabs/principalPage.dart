@@ -1,8 +1,10 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
+import 'package:bufi_empresas/src/utils/colores.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
-import 'package:bufi_empresas/src/widgets/sliver_header_delegate.dart';
+import 'package:bufi_empresas/src/widgets/translate_animation.dart';
+import 'package:bufi_empresas/src/widgets/widget_MostrarNegocio.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,156 +15,173 @@ class PrincipalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final preferences = Preferences();
     final responsive = Responsive.of(context);
-    //final subsidiary = SubsidiaryModel();
+    final negociosBloc = ProviderBloc.negocios(context);
+    negociosBloc.obtenernegocios();
 
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            HeaderWidget(responsive: responsive, preferences: preferences),
-            SliverPadding(
+      body: Stack(
+        children: <Widget>[
+          _backgroundNegocio(context, responsive),
+          SafeArea(
+            child: Container(
               padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  SizedBox(
-                    height: responsive.hp(1),
-                  ),
+              child: Column(
+                children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: responsive.hp(10),
-                        width: responsive.wp(40),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Atendidos',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(2),
-                                    fontWeight: FontWeight.bold)),
-                            Text('400',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(3))),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      SizedBox(
-                        width: responsive.wp(5),
-                      ),
-                      Container(
-                        height: responsive.hp(10),
-                        width: responsive.wp(40),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Pendientes',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(2),
-                                    fontWeight: FontWeight.bold)),
-                            Text('300',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(3))),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10)),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: responsive.hp(1.5),
-                  ),
-                  Sucursales(),
-                ]),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({
-    Key key,
-    @required this.responsive,
-    @required this.preferences,
-  }) : super(key: key);
-
-  final Responsive responsive;
-  final Preferences preferences;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-        floating: true,
-        delegate: SliverCustomHeaderDelegate(
-          maxHeight: responsive.hp(13.5),
-          minHeight: responsive.hp(13.5),
-          child: Container(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: responsive.ip(5),
-                      height: responsive.ip(5),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: CachedNetworkImage(
-                          imageUrl: '${preferences.userImage}',
-                          //cacheManager: CustomCacheManager(),
-                          placeholder: (context, url) => Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            child: Image(
-                                image: AssetImage('assets/loading.gif'),
-                                fit: BoxFit.cover),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hola,  ',
                           ),
-                          errorWidget: (context, url, error) => Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            child: Center(
-                              child: Icon(Icons.error),
+                          Text(
+                            '${preferences.personName}',
+                            style: GoogleFonts.pacifico(
+                              textStyle: TextStyle(
+                                fontSize: responsive.ip(2),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Container(
+                        width: responsive.ip(5),
+                        height: responsive.ip(5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                            imageUrl: '${preferences.userImage}',
+                            //cacheManager: CustomCacheManager(),
+                            placeholder: (context, url) => Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: Image(
+                                  image: AssetImage('assets/loading.gif'),
+                                  fit: BoxFit.cover),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: Center(
+                                child: Icon(Icons.error),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: responsive.wp(3),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Hola, '),
-                        Text(
-                          '${preferences.personName}',
-                          style: GoogleFonts.pacifico(
-                            textStyle: TextStyle(
-                                fontSize: responsive.ip(2),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ));
+          TranslateAnimation(
+            duration: const Duration(milliseconds: 400),
+            child: _contenido(responsive),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _backgroundNegocio(BuildContext context, Responsive responsive) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: responsive.hp(10),
+      ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+            height: responsive.hp(25),
+            child: MostrarNegocio(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: responsive.hp(10),
+                width: responsive.wp(40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Atendidos',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                    Text('400',
+                        style: TextStyle(
+                            color: Colors.white, fontSize: responsive.ip(3))),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+              SizedBox(
+                width: responsive.wp(5),
+              ),
+              Container(
+                height: responsive.hp(10),
+                width: responsive.wp(40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Pendientes',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                    Text('300',
+                        style: TextStyle(
+                            color: Colors.white, fontSize: responsive.ip(3))),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(10)),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _contenido(Responsive responsive) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: responsive.hp(30),
+      ),
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.65,
+        minChildSize: 0.65,
+        builder: (context, scrollController) {
+          return Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 4,
+                      blurRadius: 19,
+                      offset: Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                  color: Colors.white),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Sucursales(),
+              ));
+        },
+      ),
+    );
   }
 }
 
@@ -174,21 +193,36 @@ class Sucursales extends StatelessWidget {
     negociosBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
     final responsive = Responsive.of(context);
 
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Mis Sucursales',
-              style: TextStyle(
-                  fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Container(
+            alignment: Alignment.center,
+            child: Container(
+              width: 50,
+              height: 5,
+              decoration: BoxDecoration(
+                color: LightColor.iconColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
             ),
-            //SizedBox(width: 30,),
-          ],
-        ),
-        Container(
-          child: StreamBuilder(
+          ),
+          SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Mis Sucursales',
+                style: TextStyle(
+                    fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          StreamBuilder(
             stream: negociosBloc.suscursaStream,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
@@ -210,8 +244,8 @@ class Sucursales extends StatelessWidget {
               }
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -234,7 +268,7 @@ class Sucursales extends StatelessWidget {
             ),
           ],
         ),
-        margin: EdgeInsets.all(responsive.ip(1)),
+        margin: EdgeInsets.all(responsive.ip(0.2)),
         height: responsive.hp(15),
         child: Row(
           children: [

@@ -60,7 +60,8 @@ class DatabaseProvider {
           'company_join VARCHAR,'
           'company_status VARCHAR,'
           'company_mt VARCHAR,'
-          'mi_negocio VARCHAR'
+          'mi_negocio VARCHAR,'
+          'negocio_estado_seleccion VARCHAR'
           ')');
 
       await db.execute('CREATE TABLE Subsidiary ('
@@ -144,6 +145,19 @@ class DatabaseProvider {
           'id_tipo_estado TEXT PRIMARY KEY,'
           'tipo_estado_nombre TEXT,'
           'tipo_estado_select TEXT'
+          ')');
+
+      await db.execute('CREATE TABLE Pagos ('
+          'id_transferencia_u_e TEXT PRIMARY KEY,'
+          'id_subsidiary TEXT,'
+          'transferencia_u_e_nro_operacion TEXT,'
+          'id_usuario TEXT,'
+          'id_empresa TEXT,'
+          'id_pago TEXT,'
+          'transferencia_u_e_monto TEXT,'
+          'transferencia_u_e_concepto TEXT,'
+          'transferencia_u_e_date TEXT,'
+          'transferencia_u_e_estado TEXT'
           ')');
     });
   }

@@ -1,5 +1,8 @@
+import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListNegocio_bloc.dart';
+import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListarSucursales.dart';
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
+import 'package:bufi_empresas/src/bloc/pagos_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pantalla_inicio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pedido_bloc.dart';
 import 'package:bufi_empresas/src/bloc/tiposEstadosPedidos_bloc.dart';
@@ -13,6 +16,9 @@ class ProviderBloc extends InheritedWidget {
   final tabsNavigationbloc = TabNavigationBloc();
   final pedidosBloc = PedidoBloc();
   final tipoEstadoPedidosBloc = TiposEstadosPedidosBloc();
+  final pagosBloc = PagosBloc();
+  final contadorBloc = ContadorPaginaNegocioBloc();
+  final contadorSucursalesBloc = ContadorPaginaListarSucursalesBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -55,5 +61,24 @@ class ProviderBloc extends InheritedWidget {
   static TiposEstadosPedidosBloc tipoEstadoPedidos(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .tipoEstadoPedidosBloc;
+  }
+
+  //Pagos
+  static PagosBloc pagos(BuildContext contex) {
+    return (contex.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .pagosBloc;
+  }
+
+  //Contador Pagina Negocio
+  static ContadorPaginaNegocioBloc contadorPagina(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .contadorBloc;
+  }
+
+  //Contador Pagina Pedidos Listar Sucursales
+  static ContadorPaginaListarSucursalesBloc contadorListaSucursales(
+      BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .contadorSucursalesBloc;
   }
 }

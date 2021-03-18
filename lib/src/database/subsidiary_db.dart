@@ -107,6 +107,33 @@ class SubsidiaryDatabase {
     }
   }
 
+  Future<List<SubsidiaryModel>> obtenerPrimerIdSubsidiary(
+      String idCompany) async {
+    final db = await dbProvider.database;
+    final res = await db.rawQuery(
+        "SELECT * FROM Subsidiary WHERE id_company='$idCompany' ORDER BY id_subsidiary");
+
+    List<SubsidiaryModel> list = res.isNotEmpty
+        ? res.map((c) => SubsidiaryModel.fromJson(c)).toList()
+        : [];
+    return list;
+  }
+
+  updateStatusPedidos1(String idSubsidiary) async {
+    try {
+      final db = await dbProvider.database;
+
+      final res = await db
+          .rawUpdate("UPDATE Subsidiary SET subsidiary_status_pedidos= '1'"
+              "WHERE id_subsidiary='$idSubsidiary' ");
+
+      // print('database actualizada $res');
+      return res;
+    } catch (exception) {
+      print(exception);
+    }
+  }
+
   Future<List<SubsidiaryModel>> obtenerSubsidiaryFavoritas() async {
     final db = await dbProvider.database;
     final res = await db.rawQuery(

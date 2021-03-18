@@ -23,6 +23,7 @@ class CompanyModel {
     this.cell,
     this.direccion,
     this.favourite,
+    this.negocioEstadoSeleccion,
   });
 
   String idCompany;
@@ -46,7 +47,7 @@ class CompanyModel {
   String companyMt;
   String miNegocio;
   String favourite;
-
+  String negocioEstadoSeleccion;
   String cell;
   String direccion;
 
@@ -71,6 +72,7 @@ class CompanyModel {
         companyStatus: json["company_status"],
         companyMt: json["company_mt"],
         miNegocio: json["mi_negocio"],
+        negocioEstadoSeleccion: json["negocio_estado_seleccion"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -93,5 +95,6 @@ class CompanyModel {
         "company_status": companyStatus,
         "company_mt": companyMt,
         "mi_negocio": miNegocio,
+        "negocio_estado_seleccion": negocioEstadoSeleccion,
       };
 }
