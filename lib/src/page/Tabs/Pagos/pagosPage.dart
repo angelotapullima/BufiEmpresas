@@ -4,13 +4,12 @@ import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
+import 'package:bufi_empresas/src/widgets/translate_animation.dart';
+import 'package:bufi_empresas/src/widgets/widget_SeleccionarSucursal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:platform_date_picker/platform_date_picker.dart';
-
-var fechaI;
-var fechaF;
 
 class PagosPage extends StatelessWidget {
   const PagosPage({Key key}) : super(key: key);
@@ -18,23 +17,40 @@ class PagosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-    final prefs = Preferences();
+    final preferences = Preferences();
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Text(
-              'Sucursales',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: responsive.ip(2.5),
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(height: responsive.hp(10), child: ListarSucursales()),
-            Row(
+      body: Stack(
+        children: [
+          _backgroundSucursales(context, responsive),
+          TranslateAnimation(
+            duration: const Duration(milliseconds: 400),
+            child: _contenido(responsive, preferences),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _backgroundSucursales(BuildContext context, Responsive responsive) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: responsive.hp(5),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+            height: responsive.hp(17),
+            child: ListarSucursales(),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+            height: responsive.hp(10),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
+                  color: Colors.white,
                   height: responsive.hp(7.5),
                   width: responsive.wp(30),
                   child: ObtenerFecha1(),
@@ -43,6 +59,7 @@ class PagosPage extends StatelessWidget {
                   width: responsive.wp(5),
                 ),
                 Container(
+                  color: Colors.white,
                   height: responsive.hp(7.5),
                   width: responsive.wp(30),
                   child: ObtenerFecha2(),
@@ -57,15 +74,45 @@ class PagosPage extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
-              child: ListarPagosPorIdSubsidiaryAndFecha(
-                idSucursal: prefs.idSeleccionSubsidiaryPedidos,
-                fechaI: fechaI,
-                fechaF: fechaF,
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _contenido(Responsive responsive, Preferences preferences) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: responsive.hp(5),
+      ),
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.65,
+        minChildSize: 0.65,
+        builder: (context, scrollController) {
+          return Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 4,
+                      blurRadius: 19,
+                      offset: Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                  color: Colors.white),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: ListarPagosPorIdSubsidiaryAndFecha(
+                  idSucursal: preferences.idSeleccionSubsidiaryPedidos,
+                  fechaI: preferences.fechaI,
+                  fechaF: preferences.fechaF,
+                ),
+              ));
+        },
       ),
     );
   }
@@ -76,17 +123,24 @@ class PagosPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         //padding: EdgeInsets.all(0.0),
-        child: Text('Buscar'),
-        color: Colors.red,
+        child: Text(
+          'Buscar',
+          style: TextStyle(
+            fontSize: responsive.ip(1.9),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        color: Colors.redAccent,
         textColor: Colors.white,
         onPressed: () {
           final pagosBloc = ProviderBloc.pagos(context);
           final prefs = Preferences();
-          if (fechaI != null && fechaF != null) {
-            if (DateTime.parse(fechaI).isBefore(DateTime.parse(fechaF)) ||
-                DateTime.parse(fechaI) == DateTime.parse(fechaF)) {
-              pagosBloc.obtenerPagosXFecha(
-                  prefs.idSeleccionSubsidiaryPedidos, fechaI, fechaF);
+          if (prefs.fechaI != null && prefs.fechaF != null) {
+            if (DateTime.parse(prefs.fechaI)
+                    .isBefore(DateTime.parse(prefs.fechaF)) ||
+                DateTime.parse(prefs.fechaI) == DateTime.parse(prefs.fechaF)) {
+              pagosBloc.obtenerPagosXFecha(prefs.idSeleccionSubsidiaryPedidos,
+                  prefs.fechaI, prefs.fechaF);
             } else {
               showToast1('Fecha Fin debe ser mayor que fecha Inicio', 3,
                   ToastGravity.CENTER);
@@ -116,6 +170,7 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
     String _fecha = '';
     return TextField(
       decoration: InputDecoration(
+        fillColor: Colors.white,
         labelText: 'Fecha Inicio',
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey[300]),
@@ -152,8 +207,8 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
         _fecha =
             "${picked.year.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
         inputfieldDateController.text = _fecha;
-
-        fechaI = _fecha;
+        final preferences = Preferences();
+        preferences.fechaI = _fecha;
       });
     }
   }
@@ -174,6 +229,7 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
     String _fecha = '';
     return TextField(
       decoration: InputDecoration(
+        fillColor: Colors.white,
         labelText: 'Fecha Fin',
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey[300]),
@@ -211,79 +267,10 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
         _fecha =
             "${picked.year.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
         inputfieldDateController.text = _fecha;
-        fechaF = _fecha;
+        final preferences = Preferences();
+        preferences.fechaF = _fecha;
       });
     }
-  }
-}
-
-class ListarSucursales extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final sucursalesBloc = ProviderBloc.negocios(context);
-    final preferences = Preferences();
-    sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
-    final responsive = Responsive.of(context);
-
-    return Column(
-      children: [
-        Container(
-          height: responsive.hp(8),
-          child: StreamBuilder(
-            //stream: negociosBloc.negociosStream,
-            stream: sucursalesBloc.suscursaStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<SubsidiaryModel>> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.length > 0) {
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        return _crearItem(
-                            context, snapshot.data[index], responsive);
-                      });
-                } else {
-                  return Center(child: Text("No tiene Sucursales"));
-                }
-              } else {
-                return Center(child: Text("Lista Nula"));
-              }
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _crearItem(BuildContext context, SubsidiaryModel servicioData,
-      Responsive responsive) {
-    return GestureDetector(
-      onTap: () {
-        actualizarEstadoSucursal(context, servicioData.idSubsidiary);
-        final preferences = new Preferences();
-        preferences.idSeleccionSubsidiaryPedidos = servicioData.idSubsidiary;
-      },
-      child: Container(
-        width: responsive.wp(22.5),
-        child: Card(
-          elevation: 2,
-          color: (servicioData.subsidiaryStatusPedidos == '1')
-              ? Colors.red
-              : Colors.white,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            child: Text(
-              '${servicioData.subsidiaryName}',
-              style: TextStyle(
-                fontSize: responsive.ip(2),
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
 
