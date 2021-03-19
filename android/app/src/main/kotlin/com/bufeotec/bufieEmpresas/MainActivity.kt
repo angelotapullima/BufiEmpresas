@@ -1,4 +1,4 @@
-package com.example.bufi_empresas
+package com.bufeotec.bufiEmpresas
 
 import io.flutter.embedding.android.FlutterActivity
 
