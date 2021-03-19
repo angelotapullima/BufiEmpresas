@@ -12,7 +12,7 @@ class ListarSucursales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _pageController =
-        PageController(viewportFraction: 0.5, initialPage: 0);
+        PageController(viewportFraction: 0.6, initialPage: 0);
     final sucursalesBloc = ProviderBloc.negocios(context);
     final preferences = Preferences();
     sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
@@ -129,7 +129,7 @@ class ListarSucursales extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                radius: 17,
+                radius: responsive.wp(5),
                 backgroundColor:
                     Colors.primaries[Random().nextInt(Colors.primaries.length)],
                 child: Icon(Icons.store, color: Colors.white),
