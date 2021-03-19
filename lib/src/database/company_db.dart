@@ -68,7 +68,7 @@ class CompanyDatabase {
 
   Future<List<CompanyModel>> obtenerCompany() async {
     final db = await dbProvider.database;
-    final res = await db.rawQuery("SELECT * FROM Company order by id_company ");
+    final res = await db.rawQuery("SELECT * FROM Company ORDER BY id_company ");
 
     List<CompanyModel> list =
         res.isNotEmpty ? res.map((c) => CompanyModel.fromJson(c)).toList() : [];

@@ -19,42 +19,17 @@ class PedidosPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          _backgroundNegocio(responsive),
+          _backgroundSucursales(responsive),
           TranslateAnimation(
             duration: const Duration(milliseconds: 400),
             child: _contenido(responsive, preferences),
           )
         ],
       ),
-
-      /*SafeArea(
-        child: Column(
-          children: [
-            Text(
-              'Sucursales',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: responsive.ip(2.5),
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(height: responsive.hp(10), child: ListarSucursales()),
-            Container(
-              height: responsive.hp(10),
-              child: ListarTiposEstadosPedidos(),
-            ),
-            Expanded(
-              child: ListarPedidosPorIdSubsidiary(
-                idSucursal: preferences.idSeleccionSubsidiaryPedidos,
-                idStatus: preferences.idStatusPedidos,
-              ),
-            )
-          ],
-        ),
-      ),*/
     );
   }
 
-  Widget _backgroundNegocio(Responsive responsive) {
+  Widget _backgroundSucursales(Responsive responsive) {
     return Container(
       margin: EdgeInsets.only(
         top: responsive.hp(5),
@@ -123,7 +98,7 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: responsive.hp(10),
+          height: responsive.hp(9),
           child: StreamBuilder(
             //stream: negociosBloc.negociosStream,
             stream: tipoEstadoPedidos.tiposEstadosPedidosStream,
@@ -166,7 +141,7 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
         //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
       },
       child: Container(
-        width: responsive.wp(25),
+        width: responsive.wp(40),
         child: Card(
           elevation: 2,
           color: (tipoEstadodata.tipoEstadoSelect == '1')
@@ -176,9 +151,15 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
             child: Text(
               '${tipoEstadodata.tipoEstadoNombre}',
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: responsive.ip(2),
-                color: Colors.black,
+                fontSize: responsive.ip(2.2),
+                fontWeight: (tipoEstadodata.tipoEstadoSelect == '1')
+                    ? FontWeight.bold
+                    : FontWeight.normal,
+                color: (tipoEstadodata.tipoEstadoSelect == '1')
+                    ? Colors.white
+                    : Colors.black,
               ),
             ),
           ),

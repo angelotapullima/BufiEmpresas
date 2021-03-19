@@ -148,4 +148,20 @@ class Preferences {
   set idStatusPedidos(String value) {
     _prefs.setString('idStatusPedidos', value);
   }
+
+  get fechaI {
+    return _prefs.getString('fechaI');
+  }
+
+  set fechaI(String value) {
+    _prefs.setString('fechaI', value);
+  }
+
+  get fechaF {
+    return _prefs.getString('fechaF');
+  }
+
+  set fechaF(String value) {
+    _prefs.setString('fechaF', value);
+  }
 }

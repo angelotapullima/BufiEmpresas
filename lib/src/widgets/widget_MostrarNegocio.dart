@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListNegocio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/companyModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
@@ -20,6 +21,7 @@ class MostrarNegocio extends StatelessWidget {
     //contador para el PageView
     final contadorBloc = ProviderBloc.contadorPagina(context);
     contadorBloc.changeContador(0);
+    obtenerprimerIdCompany(context);
     return Column(
       children: [
         Row(
@@ -43,20 +45,19 @@ class MostrarNegocio extends StatelessWidget {
                       itemCount: snapshot.data.length,
                       controller: _pageController,
                       itemBuilder: (BuildContext context, int index) {
-                        return _crearItem(
-                            context, snapshot.data[index], responsive);
+                        return _crearItem(context, snapshot.data[index],
+                            responsive, contadorBloc, index);
                       },
                       onPageChanged: (int index) {
                         contadorBloc.changeContador(index);
                         final negociosBloc = ProviderBloc.negocios(context);
                         final preferences = Preferences();
-
                         preferences.idSeleccionNegocioInicio =
                             snapshot.data[index].idCompany;
                         actualizarSeleccionCompany(
                             context, preferences.idSeleccionNegocioInicio);
                         obtenerprimerIdSubsidiary(
-                            preferences.idSeleccionNegocioInicio);
+                            context, preferences.idSeleccionNegocioInicio);
                         negociosBloc.obtenersucursales(
                             preferences.idSeleccionNegocioInicio);
                       });
@@ -94,7 +95,11 @@ class MostrarNegocio extends StatelessWidget {
   }
 
   Widget _crearItem(
-      BuildContext context, CompanyModel companyData, Responsive responsive) {
+      BuildContext context,
+      CompanyModel companyData,
+      Responsive responsive,
+      ContadorPaginaNegocioBloc contadorBloc,
+      int index) {
     return Container(
       height: responsive.hp(20),
       decoration: BoxDecoration(
@@ -103,12 +108,20 @@ class MostrarNegocio extends StatelessWidget {
             .white /*Colors.primaries[Random().nextInt(Colors.primaries.length)]*/,
         boxShadow: [
           BoxShadow(
-            color: (companyData.negocioEstadoSeleccion == '1')
+            color: (contadorBloc.pageContador >= index - 0.5 &&
+                    contadorBloc.pageContador < index + 0.5)
                 ? Colors.redAccent
                 : Colors.grey.withOpacity(0.5),
-            spreadRadius: (companyData.negocioEstadoSeleccion == '1') ? 4 : 1,
-            blurRadius: (companyData.negocioEstadoSeleccion == '1') ? 4 : 2,
-            offset: (companyData.negocioEstadoSeleccion == '1')
+            spreadRadius: (contadorBloc.pageContador >= index - 0.5 &&
+                    contadorBloc.pageContador < index + 0.5)
+                ? 4
+                : 1,
+            blurRadius: (contadorBloc.pageContador >= index - 0.5 &&
+                    contadorBloc.pageContador < index + 0.5)
+                ? 4
+                : 2,
+            offset: (contadorBloc.pageContador >= index - 0.5 &&
+                    contadorBloc.pageContador < index + 0.5)
                 ? Offset(0, 0)
                 : Offset(2, 3),
           ),
