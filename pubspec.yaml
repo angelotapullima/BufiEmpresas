@@ -45,6 +45,10 @@ dependencies:
   flutter_cache_manager: ^1.4.1
   platform_date_picker:
   calendar_timeline:
+  flutter_ticket_widget: ^0.0.1
+  image_gallery_saver: ^1.6.7
+  screenshot: ^0.2.0
+  esys_flutter_share: ^1.0.2
 
 dev_dependencies:
   flutter_test:

@@ -75,7 +75,7 @@ class ListarSucursales extends StatelessWidget {
                       children: List.generate(
                           snapshot.data.length, (index) => _Puntos(index)));
                 } else {
-                  return Center(child: Text('No tiene Sucursales'));
+                  return Center(child: Text(''));
                 }
               } else {
                 return Center(child: CircularProgressIndicator());

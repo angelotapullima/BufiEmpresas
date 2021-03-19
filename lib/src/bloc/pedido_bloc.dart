@@ -48,14 +48,6 @@ class PedidoBloc {
     }
   }
 
-/*
-  void obtenerPedidosPorIdSucursal(String idSucursal) async {
-    _pedidoController.sink.add(await obtnerDetallePedidosPorIdEstado());
-    pedidoApi.obtenerPedidosPorIdSucursal(idSucursal);
-    _pedidoController.sink.add(await obtnerDetallePedidosPorIdEstado());
-  }
-
-
   void obtenerPedidoPorId(String idPedido) async {
     _pedidoIDController.sink.add(await obtenerPedidosPorIdPedido(idPedido));
   }
@@ -145,7 +137,8 @@ class PedidoBloc {
       //funcion que llama desde la bd a todas las sucursales y compañías
       final listCompany =
           await companyDb.obtenerCompanyPorId(listPedidos[i].idCompany);
-      final listSucursal = await subsidiaryDb.obtenerSubsidiaryPorIdSubsidiary(listPedidos[i].idSubsidiary);
+      final listSucursal = await subsidiaryDb
+          .obtenerSubsidiaryPorIdSubsidiary(listPedidos[i].idSubsidiary);
       final listCompsucursalModel = List<CompanySubsidiaryModel>();
 
       final compSucursalModel = CompanySubsidiaryModel();
@@ -192,6 +185,20 @@ class PedidoBloc {
 
     return listaGeneral;
   }
+
+/*
+  void obtenerPedidosPorIdSucursal(String idSucursal) async {
+    _pedidoController.sink.add(await obtnerDetallePedidosPorIdEstado());
+    pedidoApi.obtenerPedidosPorIdSucursal(idSucursal);
+    _pedidoController.sink.add(await obtnerDetallePedidosPorIdEstado());
+  }
+
+
+  void obtenerPedidoPorId(String idPedido) async {
+    _pedidoIDController.sink.add(await obtenerPedidosPorIdPedido(idPedido));
+  }
+
+  
 
   //Funcion para recorrer las dos tablas
   Future<List<PedidosModel>> obtnerDetallePedidosPorIdEstado() async {

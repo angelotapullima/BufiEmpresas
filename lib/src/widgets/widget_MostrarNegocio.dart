@@ -82,7 +82,7 @@ class MostrarNegocio extends StatelessWidget {
                       children: List.generate(
                           snapshot.data.length, (index) => _Puntos(index)));
                 } else {
-                  return Center(child: Text('No tiene Negocios'));
+                  return Center(child: Text(''));
                 }
               } else {
                 return Center(child: CircularProgressIndicator());
@@ -104,8 +104,7 @@ class MostrarNegocio extends StatelessWidget {
       height: responsive.hp(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors
-            .white /*Colors.primaries[Random().nextInt(Colors.primaries.length)]*/,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: (contadorBloc.pageContador >= index - 0.5 &&

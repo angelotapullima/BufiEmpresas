@@ -2,6 +2,7 @@ import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
+import 'package:bufi_empresas/src/utils/colores.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
@@ -298,31 +299,70 @@ class _ListarPagosPorIdSubsidiaryAndFecha
         widget.idSucursal, widget.fechaI, widget.fechaF);
     final responsive = Responsive.of(context);
 
-    return StreamBuilder(
-      stream: pagosBloc.pagosStream,
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            return ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: snapshot.data.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Text('Pagos');
-                  }
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Container(
+            alignment: Alignment.center,
+            child: Container(
+              width: 50,
+              height: 5,
+              decoration: BoxDecoration(
+                color: LightColor.iconColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          StreamBuilder(
+            stream: pagosBloc.pagosStream,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data.length > 0) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: snapshot.data.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return Text(
+                            'Mis Pagos',
+                            style: TextStyle(
+                                fontSize: responsive.ip(2.5),
+                                fontWeight: FontWeight.bold),
+                          );
+                        }
 
-                  int i = index - 1;
-                  return _crearItem(context, snapshot.data[i], responsive);
-                });
-          } else {
-            return Center(child: Text('No tiene Pagos'));
-          }
-        } else {
-          return Center(child: Text('No tiene pagos'));
-        }
-      },
+                        int i = index - 1;
+                        return _crearItem(
+                            context, snapshot.data[i], responsive);
+                      });
+                } else {
+                  return Center(
+                      child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      Text('No tiene Pagos'),
+                    ],
+                  ));
+                }
+              } else {
+                return Center(
+                    child: Column(
+                  children: [
+                    SizedBox(height: 15),
+                    Text('No tiene Pagos'),
+                  ],
+                ));
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 

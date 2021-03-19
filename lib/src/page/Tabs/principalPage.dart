@@ -261,7 +261,7 @@ class Sucursales extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.grey.withOpacity(0.15),
               spreadRadius: 1,
               blurRadius: 2,
               offset: Offset(2, 3),
