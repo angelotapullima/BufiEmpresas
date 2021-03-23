@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pedidos/detallePedidoPage.dart';
@@ -40,7 +41,7 @@ class PedidosPage extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            height: responsive.hp(17),
+            height: responsive.hp(18),
             child: ListarSucursales(),
           ),
           Container(
@@ -55,7 +56,7 @@ class PedidosPage extends StatelessWidget {
 
   Widget _contenido(Responsive responsive, Preferences preferences) {
     return Container(
-      margin: EdgeInsets.only(top: responsive.hp(35), bottom: 1),
+      margin: EdgeInsets.only(top: responsive.hp(35)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(40),
@@ -70,28 +71,32 @@ class PedidosPage extends StatelessWidget {
             ),
           ],
           color: Colors.white),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Container(
-              alignment: Alignment.center,
-              child: Container(
-                width: 50,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: LightColor.iconColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+      child: Container(
+        margin: EdgeInsets.only(top: responsive.hp(1)),
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Container(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 50,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: LightColor.iconColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
                   ),
                 ),
               ),
-            ),
-            ListarPedidosPorIdSubsidiary(
-              idSucursal: preferences.idSeleccionSubsidiaryPedidos,
-              idStatus: preferences.idStatusPedidos,
-            ),
-          ],
+              ListarPedidosPorIdSubsidiary(
+                idSucursal: preferences.idSeleccionSubsidiaryPedidos,
+                idStatus: preferences.idStatusPedidos,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -207,7 +212,7 @@ class _ListarPedidosPorIdSubsidiaryState
     pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
         widget.idSucursal, widget.idStatus);
     final responsive = Responsive.of(context);
-
+    final preferences = new Preferences();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
       child: StreamBuilder(
@@ -231,10 +236,21 @@ class _ListarPedidosPorIdSubsidiaryState
                     }
 
                     int i = index - 1;
-                    return _crearItem(context, snapshot.data[i], responsive);
+                    return _crearItem(
+                      context,
+                      snapshot.data[i],
+                      responsive,
+                      preferences.idStatusPedidos,
+                    );
                   });
             } else {
-              return Center(child: Text('No tiene Pedidos'));
+              return Center(
+                  child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  Text('No tiene Pedidos'),
+                ],
+              ));
             }
           } else {
             return Center(child: CupertinoActivityIndicator());
@@ -245,7 +261,12 @@ class _ListarPedidosPorIdSubsidiaryState
   }
 
   Widget _crearItem(
-      BuildContext context, PedidosModel pedidosData, Responsive responsive) {
+    BuildContext context,
+    PedidosModel pedidosData,
+    Responsive responsive,
+    String idStatus,
+    /*TipoEstadoPedidoModel tipoEstadodata*/
+  ) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(PageRouteBuilder(
@@ -307,14 +328,28 @@ class _ListarPedidosPorIdSubsidiaryState
               ),
             ),
             Container(
-              child: Text(
-                'S/. ${pedidosData.deliveryTotalOrden}',
-                style: TextStyle(
-                    color: Colors.red,
-                    fontSize: responsive.ip(2),
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
+              child: (idStatus == '99')
+                  ? Column(
+                      children: [
+                        Text(''),
+                        Text(
+                          'S/. ${pedidosData.deliveryTotalOrden}',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: responsive.ip(2),
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                  : Text(
+                      'S/. ${pedidosData.deliveryTotalOrden}',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: responsive.ip(2),
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
             )
           ],
         ),

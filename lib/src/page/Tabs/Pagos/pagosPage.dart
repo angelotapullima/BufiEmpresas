@@ -41,7 +41,7 @@ class PagosPage extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            height: responsive.hp(17),
+            height: responsive.hp(18),
             child: ListarSucursales(),
           ),
           Container(

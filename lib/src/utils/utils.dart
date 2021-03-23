@@ -2,6 +2,7 @@ import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
+import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -88,4 +89,12 @@ void actualizarBusquedaPagos(BuildContext context) {
   final prefs = Preferences();
   pagosBloc.obtenerPagosXFecha(
       prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
+}
+
+obtenerTiposEstadosPedidos() async {
+  final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
+
+  final listEstados =
+      await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedido();
+  return listEstados;
 }

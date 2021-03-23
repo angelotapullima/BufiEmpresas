@@ -6,10 +6,12 @@ import 'package:bufi_empresas/src/models/companyModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class MostrarNegocio extends StatelessWidget {
-  const MostrarNegocio({Key key}) : super(key: key);
+  final CarouselController buttonCarouselController = CarouselController();
+  final ScrollController _scrollController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,46 @@ class MostrarNegocio extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
-                  return PageView.builder(
+                  final size = MediaQuery.of(context).size;
+                  return CarouselSlider.builder(
+                    itemCount: snapshot.data.length,
+                    carouselController: buttonCarouselController,
+                    options: CarouselOptions(
+                      height: size.height,
+                      aspectRatio: 2,
+                      viewportFraction: 0.6,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      /*onScrolled: (data) {
+                        _scrollController.animateTo(
+                          data * size.width,
+                          curve: Curves.ease,
+                          duration: const Duration(milliseconds: 100),
+                        );
+                      },*/
+                      onPageChanged: (index, reason) {
+                        contadorBloc.changeContador(index);
+                        final negociosBloc = ProviderBloc.negocios(context);
+                        final preferences = Preferences();
+                        preferences.idSeleccionNegocioInicio =
+                            snapshot.data[index].idCompany;
+                        actualizarSeleccionCompany(
+                            context, preferences.idSeleccionNegocioInicio);
+                        obtenerprimerIdSubsidiary(
+                            context, preferences.idSeleccionNegocioInicio);
+                        negociosBloc.obtenersucursales(
+                            preferences.idSeleccionNegocioInicio);
+                      },
+                    ),
+                    itemBuilder: (BuildContext context, int index, int) {
+                      return _crearItem(context, snapshot.data[index],
+                          responsive, contadorBloc, index);
+                    },
+                  );
+
+                  /*PageView.builder(
                       itemCount: snapshot.data.length,
                       controller: _pageController,
                       itemBuilder: (BuildContext context, int index) {
@@ -60,7 +101,8 @@ class MostrarNegocio extends StatelessWidget {
                             context, preferences.idSeleccionNegocioInicio);
                         negociosBloc.obtenersucursales(
                             preferences.idSeleccionNegocioInicio);
-                      });
+                      });*/
+
                 } else {
                   return Center(child: Text('No tiene Negocios'));
                 }

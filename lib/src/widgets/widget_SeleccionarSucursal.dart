@@ -6,9 +6,13 @@ import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class ListarSucursales extends StatelessWidget {
+  final CarouselController buttonCarouselController = CarouselController();
+  final ScrollController _scrollController = new ScrollController();
   @override
   Widget build(BuildContext context) {
     final _pageController =
@@ -33,7 +37,7 @@ class ListarSucursales extends StatelessWidget {
           ],
         ),
         Container(
-          height: responsive.hp(8),
+          height: responsive.hp(9),
           child: StreamBuilder(
             //stream: negociosBloc.negociosStream,
             stream: sucursalesBloc.suscursaStream,
@@ -41,7 +45,39 @@ class ListarSucursales extends StatelessWidget {
                 AsyncSnapshot<List<SubsidiaryModel>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
-                  return PageView.builder(
+                  final size = MediaQuery.of(context).size;
+                  return CarouselSlider.builder(
+                    itemCount: snapshot.data.length,
+                    carouselController: buttonCarouselController,
+                    options: CarouselOptions(
+                      height: size.height,
+                      aspectRatio: 2,
+                      viewportFraction: 0.6,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      /*onScrolled: (data) {
+                        _scrollController.animateTo(
+                          data * size.width,
+                          curve: Curves.ease,
+                          duration: const Duration(milliseconds: 100),
+                        );
+                      },*/
+                      onPageChanged: (index, reason) {
+                        contadorBloc.changeContador(index);
+                        actualizarEstadoSucursal(
+                            context, snapshot.data[index].idSubsidiary);
+                        actualizarBusquedaPagos(context);
+                      },
+                    ),
+                    itemBuilder: (BuildContext context, int index, int) {
+                      return _crearItem(context, snapshot.data[index],
+                          responsive, contadorBloc, index);
+                    },
+                  );
+
+                  /*PageView.builder(
                       itemCount: snapshot.data.length,
                       controller: _pageController,
                       itemBuilder: (BuildContext context, int index) {
@@ -53,7 +89,7 @@ class ListarSucursales extends StatelessWidget {
                         actualizarEstadoSucursal(
                             context, snapshot.data[index].idSubsidiary);
                         actualizarBusquedaPagos(context);
-                      });
+                      });*/
                 } else {
                   return Center(child: Text("No tiene Sucursales"));
                 }
