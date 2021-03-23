@@ -1,5 +1,4 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pedidos/detallePedidoPage.dart';
@@ -44,11 +43,6 @@ class PedidosPage extends StatelessWidget {
             height: responsive.hp(18),
             child: ListarSucursales(),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            height: responsive.hp(10),
-            child: ListarTiposEstadosPedidos(),
-          ),
         ],
       ),
     );
@@ -56,7 +50,7 @@ class PedidosPage extends StatelessWidget {
 
   Widget _contenido(Responsive responsive, Preferences preferences) {
     return Container(
-      margin: EdgeInsets.only(top: responsive.hp(35)),
+      margin: EdgeInsets.only(top: responsive.hp(22)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(40),
@@ -78,6 +72,11 @@ class PedidosPage extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+                height: responsive.hp(10),
+                child: ListarTiposEstadosPedidos(),
+              ),
               Container(
                 alignment: Alignment.center,
                 child: Container(
@@ -267,6 +266,7 @@ class _ListarPedidosPorIdSubsidiaryState
     String idStatus,
     /*TipoEstadoPedidoModel tipoEstadodata*/
   ) {
+    var date = obtenerNombreMes(pedidosData.deliveryDatetime);
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(PageRouteBuilder(
@@ -323,7 +323,7 @@ class _ListarPedidosPorIdSubsidiaryState
                   ),
                   Text('${pedidosData.deliveryAddress}'),
                   Text('${pedidosData.deliveryCel}'),
-                  Text('${pedidosData.deliveryDatetime}'),
+                  Text('$date'),
                 ],
               ),
             ),

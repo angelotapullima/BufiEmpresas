@@ -5,7 +5,11 @@ import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pagos_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pantalla_inicio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pedido_bloc.dart';
+import 'package:bufi_empresas/src/bloc/producto/datosProductoBloc.dart';
+import 'package:bufi_empresas/src/bloc/producto/producto_bloc.dart';
+import 'package:bufi_empresas/src/bloc/sucursal_bloc.dart';
 import 'package:bufi_empresas/src/bloc/tiposEstadosPedidos_bloc.dart';
+import 'package:bufi_empresas/src/bloc/servicios/servicios_bloc.dart';
 import 'package:flutter/material.dart';
 
 class ProviderBloc extends InheritedWidget {
@@ -19,6 +23,10 @@ class ProviderBloc extends InheritedWidget {
   final pagosBloc = PagosBloc();
   final contadorBloc = ContadorPaginaNegocioBloc();
   final contadorSucursalesBloc = ContadorPaginaListarSucursalesBloc();
+  final productosBloc = ProductoBloc();
+  final datosProductosBloc = DatosProductoBloc();
+  final serviciosBloc = ServiciosBloc();
+  final sucursalbloc = SucursalBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -80,5 +88,29 @@ class ProviderBloc extends InheritedWidget {
       BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .contadorSucursalesBloc;
+  }
+
+  //Productos
+  static ProductoBloc productos(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .productosBloc;
+  }
+
+  //datos de Productos
+  static DatosProductoBloc datosProductos(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .datosProductosBloc;
+  }
+
+  //Servicios
+
+  static ServiciosBloc servi(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .serviciosBloc;
+  }
+
+  static SucursalBloc sucursal(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .sucursalbloc;
   }
 }

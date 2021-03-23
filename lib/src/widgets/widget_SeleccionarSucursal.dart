@@ -12,11 +12,11 @@ import 'package:flutter/material.dart';
 
 class ListarSucursales extends StatelessWidget {
   final CarouselController buttonCarouselController = CarouselController();
-  final ScrollController _scrollController = new ScrollController();
+  //final ScrollController _scrollController = new ScrollController();
   @override
   Widget build(BuildContext context) {
-    final _pageController =
-        PageController(viewportFraction: 0.6, initialPage: 0);
+    /*final _pageController =
+        PageController(viewportFraction: 0.6, initialPage: 0);*/
     final sucursalesBloc = ProviderBloc.negocios(context);
     final preferences = Preferences();
     sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
@@ -30,7 +30,7 @@ class ListarSucursales extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Mis Sucursales',
+              preferences.nombreCompany,
               style: TextStyle(
                   fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
             ),

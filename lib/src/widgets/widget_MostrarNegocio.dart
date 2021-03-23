@@ -4,19 +4,21 @@ import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListNegocio_b
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/companyModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
+import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class MostrarNegocio extends StatelessWidget {
   final CarouselController buttonCarouselController = CarouselController();
-  final ScrollController _scrollController = new ScrollController();
+  //final ScrollController _scrollController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    final _pageController =
-        PageController(viewportFraction: 0.7, initialPage: 0);
+    /*final _pageController =
+        PageController(viewportFraction: 0.7, initialPage: 0);*/
     final negociosBloc = ProviderBloc.negocios(context);
     negociosBloc.obtenernegocios();
     final responsive = Responsive.of(context);
@@ -68,6 +70,8 @@ class MostrarNegocio extends StatelessWidget {
                         final preferences = Preferences();
                         preferences.idSeleccionNegocioInicio =
                             snapshot.data[index].idCompany;
+                        preferences.nombreCompany =
+                            snapshot.data[index].companyName;
                         actualizarSeleccionCompany(
                             context, preferences.idSeleccionNegocioInicio);
                         obtenerprimerIdSubsidiary(
@@ -169,7 +173,75 @@ class MostrarNegocio extends StatelessWidget {
         ],
       ),
       margin: EdgeInsets.all(responsive.ip(1)),
-      child: Column(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          width: responsive.wp(50),
+          child: Stack(
+            children: <Widget>[
+              CachedNetworkImage(
+                placeholder: (context, url) => Image(
+                  image: AssetImage('assets/jar-loading.gif'),
+                  fit: BoxFit.cover,
+                ),
+                errorWidget: (context, url, error) => Image(
+                    image: AssetImage('assets/carga_fallida.jpg'),
+                    fit: BoxFit.cover),
+                imageUrl: '$apiBaseURL/${companyData.companyImage}',
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 0,
+                left: 0,
+                bottom: 0,
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    vertical: responsive.hp(.5),
+                    //horizontal: responsive.wp(2)
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${companyData.companyName}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+
+      /*Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
@@ -191,7 +263,7 @@ class MostrarNegocio extends StatelessWidget {
             SizedBox(width: 10),
           ])
         ],
-      ),
+      ),*/
     );
   }
 }

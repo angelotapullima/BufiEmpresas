@@ -17,7 +17,7 @@ class SucursalBloc {
       _sucursalController.stream;
 
 //Stream de subsidiary por id
-  Stream<List<SubsidiaryModel>> get subsidiaryStream =>
+  Stream<List<SubsidiaryModel>> get subsidiaryIdStream =>
       _subsidiaryController.stream;
 
   void dispose() {

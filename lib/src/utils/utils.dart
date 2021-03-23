@@ -1,9 +1,16 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
+import 'package:bufi_empresas/src/database/marcaProducto_database.dart';
+import 'package:bufi_empresas/src/database/modeloProducto_database.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
+import 'package:bufi_empresas/src/database/tallaProducto_database.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
-import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
+import 'package:bufi_empresas/src/models/marcaProductoModel.dart';
+import 'package:bufi_empresas/src/models/modeloProductoModel.dart';
+import 'package:bufi_empresas/src/models/tallaProductoModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
+import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:intl/intl.Dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast/toast.dart' as T;
@@ -78,6 +85,7 @@ void obtenerprimerIdCompany(BuildContext context) async {
   final preferences = Preferences();
   final listCompany = await companyDatabase.obtenerCompany();
   preferences.idSeleccionNegocioInicio = listCompany[0].idCompany;
+  preferences.nombreCompany = listCompany[0].companyName;
   final negociosBloc = ProviderBloc.negocios(context);
   negociosBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
   final contadorBloc = ProviderBloc.contadorPagina(context);
@@ -97,4 +105,70 @@ obtenerTiposEstadosPedidos() async {
   final listEstados =
       await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedido();
   return listEstados;
+}
+
+//Talla del producto
+Future<int> cambiarEstadoTalla(
+    BuildContext context, TallaProductoModel tallaModel) async {
+  final datosProdBloc = ProviderBloc.datosProductos(context);
+  final tallaProductoDatabase = TallaProductoDatabase();
+//cambiar todos los estado de la tabla asignada a 0.
+  await tallaProductoDatabase.updateEstadoa0();
+
+  await tallaProductoDatabase.updateEstadoa1(tallaModel);
+
+  datosProdBloc.listarDatosProducto(tallaModel.idProducto);
+  return 1;
+}
+
+//Marca del producto
+Future<int> cambiarEstadoMarca(
+    BuildContext context, MarcaProductoModel marcaModel) async {
+  final datosProdBloc = ProviderBloc.datosProductos(context);
+  final marcaProductoDatabase = MarcaProductoDatabase();
+//cambiar todos los estado de la tabla asignada a 0.
+  await marcaProductoDatabase.updateEstadoa0();
+
+  await marcaProductoDatabase.updateEstadoa1(marcaModel);
+
+  datosProdBloc.listarDatosProducto(marcaModel.idProducto);
+
+  return 1;
+}
+
+//Modelo del producto
+Future<int> cambiarEstadoModelo(
+    BuildContext context, ModeloProductoModel modeloModel) async {
+  final datosProdBloc = ProviderBloc.datosProductos(context);
+  final modeloProductoDatabase = ModeloProductoDatabase();
+
+//cambiar todos los estado de la tabla asignada a 0.
+  await modeloProductoDatabase.updateEstadoa0();
+
+  await modeloProductoDatabase.updateEstadoa1(modeloModel);
+
+  datosProdBloc.listarDatosProducto(modeloModel.idProducto);
+  return 0;
+}
+
+obtenerNombreMes(String date) {
+  /* var meses = {
+    '01': 'Ene',
+    '02': 'Feb',
+    '03': 'Mar',
+    '04': 'Abr',
+    '05': 'May',
+    '06': 'Jun',
+    '07': 'Jul',
+    '08': 'Ago',
+    '09': 'Set',
+    '10': 'Oct',
+    '11': 'Nov',
+    '12': 'Dic'
+  };*/
+  var fecha = DateTime.parse(date);
+  final DateFormat formatter = new DateFormat('dd-MMM-yyyy, H:m');
+  String formatted = formatter.format(fecha);
+
+  return formatted;
 }

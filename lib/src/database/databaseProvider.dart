@@ -159,6 +159,88 @@ class DatabaseProvider {
           'transferencia_u_e_date TEXT,'
           'transferencia_u_e_estado TEXT'
           ')');
+
+      await db.execute('CREATE TABLE Subcategory ('
+          'id_subcategory VARCHAR  PRIMARY KEY,'
+          'id_category VARCHAR,'
+          'subcategory_name VARCHAR'
+          ')');
+
+      await db.execute('CREATE TABLE ItemSubcategorias ('
+          'id_itemsubcategory VARCHAR  PRIMARY KEY,'
+          'id_subcategory VARCHAR,'
+          'itemsubcategory_name VARCHAR'
+          ')');
+
+      await db.execute(' CREATE TABLE galeriaProducto('
+          ' id_producto_galeria TEXT PRIMARY KEY,'
+          ' id_producto TEXT,'
+          ' galeria_foto TEXT,'
+          ' estado TEXT'
+          ')');
+
+      await db.execute(' CREATE TABLE MarcaProducto('
+          ' id_marca_producto TEXT PRIMARY KEY,'
+          ' id_producto TEXT,'
+          ' marca_producto TEXT,'
+          ' marca_status_producto TEXT,'
+          ' estado TEXT'
+          ')');
+
+      await db.execute(' CREATE TABLE ModeloProducto('
+          ' id_modelo_producto TEXT PRIMARY KEY,'
+          ' id_producto TEXT,'
+          ' modelo_producto TEXT,'
+          ' modelo_status_producto TEXT,'
+          ' estado TEXT'
+          ')');
+
+      await db.execute(' CREATE TABLE TallasProducto('
+          ' id_talla_producto TEXT PRIMARY KEY,'
+          ' id_producto TEXT,'
+          ' talla_producto TEXT,'
+          ' talla_status_producto TEXT,'
+          ' estado TEXT'
+          ')');
+
+      await db.execute('CREATE TABLE Carrito ('
+          'idCarrito INTEGER PRIMARY KEY AUTOINCREMENT,'
+          'id_subsidiarygood VARCHAR ,'
+          'id_subsidiary VARCHAR,'
+          'nombre VARCHAR,'
+          'precio VARCHAR,'
+          'marca VARCHAR,'
+          'modelo VARCHAR,'
+          'talla VARCHAR,'
+          'image VARCHAR,'
+          'moneda VARCHAR,'
+          'caracteristicas VARCHAR,'
+          'stock VARCHAR,'
+          'cantidad VARCHAR,'
+          'estado_seleccionado VARCHAR'
+          ')');
+
+      await db.execute('CREATE TABLE Subsidiaryservice ('
+          'id_subsidiaryservice VARCHAR  PRIMARY KEY,'
+          'id_subsidiary VARCHAR,'
+          'id_service VARCHAR,'
+          'id_itemsubcategory VARCHAR,'
+          'subsidiary_service_name VARCHAR,'
+          'subsidiary_service_description VARCHAR,'
+          'subsidiary_service_price VARCHAR,'
+          'subsidiary_service_currency VARCHAR,'
+          'subsidiary_service_image VARCHAR,'
+          'subsidiary_service_rating VARCHAR,'
+          'subsidiary_service_updated VARCHAR,'
+          'subsidiary_service_status VARCHAR,'
+          'subsidiary_service_favourite VARCHAR'
+          ')');
+
+      await db.execute('CREATE TABLE Service ('
+          'id_service VARCHAR  PRIMARY KEY,'
+          'service_name VARCHAR,'
+          'service_synonyms VARCHAR'
+          ')');
     });
   }
 }

@@ -164,4 +164,12 @@ class Preferences {
   set fechaF(String value) {
     _prefs.setString('fechaF', value);
   }
+
+  get nombreCompany {
+    return _prefs.getString('nombreCompany');
+  }
+
+  set nombreCompany(String value) {
+    _prefs.setString('nombreCompany', value);
+  }
 }

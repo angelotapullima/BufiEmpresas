@@ -253,7 +253,8 @@ class Sucursales extends StatelessWidget {
       Responsive responsive) {
     return GestureDetector(
       onTap: () {
-        //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
+        Navigator.pushNamed(context, "detalleSucursal",
+            arguments: servicioData);
       },
       child: Container(
         decoration: BoxDecoration(
