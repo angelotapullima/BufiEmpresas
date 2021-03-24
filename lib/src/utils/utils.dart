@@ -86,6 +86,8 @@ void obtenerprimerIdCompany(BuildContext context) async {
   final listCompany = await companyDatabase.obtenerCompany();
   preferences.idSeleccionNegocioInicio = listCompany[0].idCompany;
   preferences.nombreCompany = listCompany[0].companyName;
+  final empresaNameBloc = ProviderBloc.nameEmpresa(context);
+  empresaNameBloc.changeEmpresaName(preferences.nombreCompany);
   final negociosBloc = ProviderBloc.negocios(context);
   negociosBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
   final contadorBloc = ProviderBloc.contadorPagina(context);
@@ -152,23 +154,29 @@ Future<int> cambiarEstadoModelo(
 }
 
 obtenerNombreMes(String date) {
-  /* var meses = {
-    '01': 'Ene',
-    '02': 'Feb',
-    '03': 'Mar',
-    '04': 'Abr',
-    '05': 'May',
-    '06': 'Jun',
-    '07': 'Jul',
-    '08': 'Ago',
-    '09': 'Set',
-    '10': 'Oct',
-    '11': 'Nov',
-    '12': 'Dic'
-  };*/
+  var meses = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Oct',
+    'Nov',
+    'Dic'
+  ];
+
   var fecha = DateTime.parse(date);
-  final DateFormat formatter = new DateFormat('dd-MMM-yyyy, H:m');
-  String formatted = formatter.format(fecha);
+  var me = fecha.month - 1;
+  final DateFormat dia = new DateFormat('dd');
+  var mes = meses[me];
+  final DateFormat year = new DateFormat('yyyy');
+  final DateFormat hora = new DateFormat('H:m');
+  String formatted =
+      '${dia.format(fecha)}-$mes-${year.format(fecha)}, ${hora.format(fecha)}';
 
   return formatted;
 }

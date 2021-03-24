@@ -23,17 +23,25 @@ class ListarSucursales extends StatelessWidget {
     final responsive = Responsive.of(context);
     final contadorBloc = ProviderBloc.contadorListaSucursales(context);
     contadorBloc.changeContador(0);
+    final empresaNameBloc = ProviderBloc.nameEmpresa(context);
+    empresaNameBloc.changeEmpresaName(preferences.nombreCompany);
+    print(empresaNameBloc.empresaName);
 
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              preferences.nombreCompany,
-              style: TextStyle(
-                  fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
-            ),
+            StreamBuilder(
+                stream: empresaNameBloc.empresaNameStream,
+                builder: (context, snapshot) {
+                  return Text(
+                    empresaNameBloc.empresaName,
+                    style: TextStyle(
+                        fontSize: responsive.ip(2.5),
+                        fontWeight: FontWeight.bold),
+                  );
+                }),
           ],
         ),
         Container(

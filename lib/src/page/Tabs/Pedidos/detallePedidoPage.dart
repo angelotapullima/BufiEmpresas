@@ -3,7 +3,10 @@ import 'dart:typed_data';
 
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
+import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
@@ -36,6 +39,7 @@ class _TickectPedidoState extends State<TickectPedido> {
           builder: (context, AsyncSnapshot<List<PedidosModel>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
+                var fecha = obtenerNombreMes(snapshot.data[0].deliveryDatetime);
                 return Stack(
                   children: [
                     Screenshot(
@@ -58,28 +62,43 @@ class _TickectPedidoState extends State<TickectPedido> {
                                       top: responsive.hp(1),
                                     ),
                                     child: Center(
-                                      child: Image(
-                                        width: responsive.ip(8),
-                                        height: responsive.ip(8),
-                                        image: AssetImage(
-                                            'assets/logo_bufeotec.png'),
-                                        fit: BoxFit.contain,
-                                      ), /* Text(
-                          'Comprobante de Pago',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: responsive.ip(2.5),
-                              fontWeight: FontWeight.bold),
-                        ), */
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) => Image(
+                                          image: AssetImage(
+                                              'assets/jar-loading.gif'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image(
+                                                image: AssetImage(
+                                                    'assets/carga_fallida.jpg'),
+                                                fit: BoxFit.cover),
+                                        imageUrl:
+                                            '$apiBaseURL/${snapshot.data[0].listCompanySubsidiary[0].companyImage}',
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          width: responsive.ip(10),
+                                          height: responsive.ip(10),
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      /*,*/
                                     ),
                                   ),
                                   Center(
                                     child: Text(
-                                      'Detalle del Pedido',
+                                      'Pedido N° ${snapshot.data[0].idPedido}',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: responsive.ip(2.5),
+                                          fontSize: responsive.ip(2.3),
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -93,7 +112,7 @@ class _TickectPedidoState extends State<TickectPedido> {
                                       children: <Widget>[
                                         ticketDetailsWidget(
                                             'Fecha',
-                                            '${snapshot.data[0].deliveryDatetime}',
+                                            '$fecha',
                                             'Cliente',
                                             '${snapshot.data[0].deliveryName} ',
                                             responsive),
@@ -103,8 +122,8 @@ class _TickectPedidoState extends State<TickectPedido> {
                                         ticketDetailsWidget(
                                             'Dirección',
                                             '${snapshot.data[0].deliveryAddress}',
-                                            'Tipo de entrega',
-                                            '${snapshot.data[0].listCompanySubsidiary[0].companyDeliveryPropio}',
+                                            'Celular',
+                                            '${snapshot.data[0].deliveryCel}',
                                             responsive),
                                         SizedBox(
                                           height: responsive.hp(1.15),
@@ -118,8 +137,7 @@ class _TickectPedidoState extends State<TickectPedido> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: responsive.wp(5)),
-                                    child: Text(
-                                        'Datos de la empresa que realiza la venta'),
+                                    child: Text('Datos del Negocio'),
                                   ),
                                   SizedBox(
                                     height: responsive.hp(1),
@@ -293,6 +311,21 @@ class _TickectPedidoState extends State<TickectPedido> {
                                       ],
                                     ),
                                   ),
+                                  Expanded(
+                                      child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: responsive.wp(75),
+                                      ),
+                                      Image(
+                                        width: responsive.ip(7.5),
+                                        height: responsive.ip(7.5),
+                                        image: AssetImage(
+                                            'assets/logo_bufeotec.png'),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ],
+                                  ))
                                 ]),
                           ),
                         ),

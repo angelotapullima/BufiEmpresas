@@ -3,13 +3,14 @@ import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pedidos/detallePedidoPage.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
-import 'package:bufi_empresas/src/utils/colores.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:bufi_empresas/src/widgets/widget_SeleccionarSucursal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PedidosPage extends StatelessWidget {
   const PedidosPage({Key key}) : super(key: key);
@@ -68,34 +69,45 @@ class PedidosPage extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(top: responsive.hp(1)),
         height: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-                height: responsive.hp(10),
-                child: ListarTiposEstadosPedidos(),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 50,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: LightColor.iconColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+              height: responsive.hp(10),
+              child: ListarTiposEstadosPedidos(),
+            ),
+            Container(
+              width: double.infinity,
+              height: responsive.hp(3.5),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
                 ),
               ),
-              ListarPedidosPorIdSubsidiary(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: responsive.wp(3),
+                  ),
+                  Text(
+                    'Mis pedidos',
+                    style: TextStyle(
+                      fontSize: responsive.ip(2),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListarPedidosPorIdSubsidiary(
                 idSucursal: preferences.idSeleccionSubsidiaryPedidos,
                 idStatus: preferences.idStatusPedidos,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -170,14 +182,14 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
           ],
         ),
         margin: EdgeInsets.all(responsive.ip(1)),
-        width: responsive.wp(40),
+        width: responsive.wp(30),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+          padding: EdgeInsets.symmetric(horizontal: responsive.wp(1)),
           child: Text(
             '${tipoEstadodata.tipoEstadoNombre}',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: responsive.ip(2.2),
+              fontSize: responsive.ip(2),
               fontWeight: (tipoEstadodata.tipoEstadoSelect == '1')
                   ? FontWeight.bold
                   : FontWeight.normal,
@@ -205,6 +217,7 @@ class ListarPedidosPorIdSubsidiary extends StatefulWidget {
 
 class _ListarPedidosPorIdSubsidiaryState
     extends State<ListarPedidosPorIdSubsidiary> {
+  ValueNotifier<bool> switchFiltro = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     final pedidosBloc = ProviderBloc.pedido(context);
@@ -215,44 +228,129 @@ class _ListarPedidosPorIdSubsidiaryState
     return Container(
       padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
       child: StreamBuilder(
-        stream: pedidosBloc.pedidoStream,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        stream: pedidosBloc.cargandoItemsStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data.length > 0) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: snapshot.data.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Text(
-                        'Mis Pedidos',
-                        style: TextStyle(
-                            fontSize: responsive.ip(2.5),
-                            fontWeight: FontWeight.bold),
-                      );
-                    }
-
-                    int i = index - 1;
-                    return _crearItem(
-                      context,
-                      snapshot.data[i],
-                      responsive,
-                      preferences.idStatusPedidos,
+            if (snapshot.data) {
+              bool _enabled = true;
+              return Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300],
+                        highlightColor: Colors.grey[100],
+                        enabled: _enabled,
+                        child: ListView.builder(
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 48.0,
+                                  height: 48.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width: double.infinity,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2.0),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2.0),
+                                      ),
+                                      Container(
+                                        width: 40.0,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          itemCount: 6,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return ValueListenableBuilder(
+                  valueListenable: switchFiltro,
+                  builder: (BuildContext context, bool data, Widget child) {
+                    return Column(
+                      children: [
+                        StreamBuilder(
+                            stream: pedidosBloc.pedidoStream,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<dynamic> snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data.length > 0) {
+                                } else {
+                                  return Center(
+                                      child:
+                                          Text("No hay pedidos para mostrar"));
+                                }
+                              } else {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              return Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (context, index) {
+                                      return _crearItem(
+                                        context,
+                                        snapshot.data[index],
+                                        responsive,
+                                        preferences.idStatusPedidos,
+                                      );
+                                    }),
+                              );
+                            }),
+                      ],
                     );
                   });
-            } else {
-              return Center(
-                  child: Column(
-                children: [
-                  SizedBox(height: 10),
-                  Text('No tiene Pedidos'),
-                ],
-              ));
             }
           } else {
-            return Center(child: CupertinoActivityIndicator());
+            return Center(
+              child: NutsActivityIndicator(
+                radius: 12,
+                activeColor: Colors.white,
+                inactiveColor: Colors.redAccent,
+                tickCount: 11,
+                startRatio: 0.55,
+                animationDuration: Duration(milliseconds: 2003),
+              ),
+            );
           }
         },
       ),
@@ -315,14 +413,14 @@ class _ListarPedidosPorIdSubsidiaryState
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '${pedidosData.deliveryName}',
+                    'Pedido N° ${pedidosData.idPedido}',
                     style: TextStyle(
-                        fontSize: responsive.ip(2.2),
+                        fontSize: responsive.ip(2.1),
                         fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
+                  Text('${pedidosData.deliveryName}'),
                   Text('${pedidosData.deliveryAddress}'),
-                  Text('${pedidosData.deliveryCel}'),
                   Text('$date'),
                 ],
               ),

@@ -20,31 +20,40 @@ class PedidoBloc {
 
   final _pedidoController = BehaviorSubject<List<PedidosModel>>();
   final _pedidoIDController = BehaviorSubject<List<PedidosModel>>();
+  final _cargandoItems = BehaviorSubject<bool>();
 
   Stream<List<PedidosModel>> get pedidoStream => _pedidoController.stream;
   Stream<List<PedidosModel>> get pedidoPorIdStream =>
       _pedidoIDController.stream;
+  Stream<bool> get cargandoItemsStream => _cargandoItems.stream;
 
   void dispose() {
     _pedidoController?.close();
     _pedidoIDController?.close();
+    _cargandoItems?.close();
     //_detallePedidoController?.close();
   }
 
   void obtenerPedidosPorIdSubsidiaryAndIdStatus(
       String idSubsidiary, String idStatus) async {
     if (idStatus == '99') {
+      _cargandoItems.sink.add(true);
       _pedidoController.sink
           .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
       _pedidoController.sink
           .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
+      _cargandoItems.sink.add(false);
     } else {
+      _cargandoItems.sink.add(true);
       _pedidoController.sink.add(await pedidoDb
           .obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
+
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
+
       _pedidoController.sink.add(await pedidoDb
           .obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
+      _cargandoItems.sink.add(false);
     }
   }
 

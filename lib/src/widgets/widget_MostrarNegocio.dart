@@ -72,6 +72,10 @@ class MostrarNegocio extends StatelessWidget {
                             snapshot.data[index].idCompany;
                         preferences.nombreCompany =
                             snapshot.data[index].companyName;
+                        final empresaNameBloc =
+                            ProviderBloc.nameEmpresa(context);
+                        empresaNameBloc
+                            .changeEmpresaName(preferences.nombreCompany);
                         actualizarSeleccionCompany(
                             context, preferences.idSeleccionNegocioInicio);
                         obtenerprimerIdSubsidiary(
