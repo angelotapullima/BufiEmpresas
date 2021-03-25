@@ -72,6 +72,9 @@ class MostrarNegocio extends StatelessWidget {
                             snapshot.data[index].idCompany;
                         preferences.nombreCompany =
                             snapshot.data[index].companyName;
+                        preferences.fechaF = '';
+                        preferences.fechaI = '';
+                        actualizarBusquedaPagos(context);
                         final empresaNameBloc =
                             ProviderBloc.nameEmpresa(context);
                         empresaNameBloc
@@ -244,30 +247,6 @@ class MostrarNegocio extends StatelessWidget {
           ),
         ),
       ),
-
-      /*Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            '${companyData.companyName}',
-            style: TextStyle(
-                fontSize: responsive.ip(2.3), fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
-          ),
-          Text('${companyData.companyType}'),
-          Text('${companyData.companyRating}'),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Icon(
-              Icons.star,
-              color: Colors.yellow,
-            ),
-            SizedBox(width: 5),
-            //Text('${data[index].subsidiaryGoodRating}'),
-            Text('bien'),
-            SizedBox(width: 10),
-          ])
-        ],
-      ),*/
     );
   }
 }

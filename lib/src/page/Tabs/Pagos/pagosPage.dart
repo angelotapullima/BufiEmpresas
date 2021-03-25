@@ -10,7 +10,10 @@ import 'package:bufi_empresas/src/widgets/widget_SeleccionarSucursal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:platform_date_picker/platform_date_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PagosPage extends StatelessWidget {
   const PagosPage({Key key}) : super(key: key);
@@ -25,7 +28,7 @@ class PagosPage extends StatelessWidget {
           _backgroundSucursales(context, responsive),
           TranslateAnimation(
             duration: const Duration(milliseconds: 400),
-            child: _contenido(responsive, preferences),
+            child: _contenido(responsive, preferences, context),
           ),
         ],
       ),
@@ -44,76 +47,102 @@ class PagosPage extends StatelessWidget {
             height: responsive.hp(18),
             child: ListarSucursales(),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-            height: responsive.hp(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  color: Colors.white,
-                  height: responsive.hp(7.5),
-                  width: responsive.wp(30),
-                  child: ObtenerFecha1(),
-                ),
-                SizedBox(
-                  width: responsive.wp(5),
-                ),
-                Container(
-                  color: Colors.white,
-                  height: responsive.hp(7.5),
-                  width: responsive.wp(30),
-                  child: ObtenerFecha2(),
-                ),
-                SizedBox(
-                  width: responsive.wp(5),
-                ),
-                Container(
-                  height: responsive.hp(7.5),
-                  width: responsive.wp(20),
-                  child: _botonBuscar(context, responsive),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
-  Widget _contenido(Responsive responsive, Preferences preferences) {
+  Widget _contenido(
+      Responsive responsive, Preferences preferences, BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: responsive.hp(5),
+        top: responsive.hp(22),
       ),
-      child: DraggableScrollableSheet(
-        initialChildSize: 0.65,
-        minChildSize: 0.65,
-        builder: (context, scrollController) {
-          return Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 4,
-                      blurRadius: 19,
-                      offset: Offset(0, 5), // changes position of shadow
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 4,
+                blurRadius: 19,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+            color: Colors.white),
+        child: Container(
+          margin: EdgeInsets.only(top: responsive.hp(1)),
+          height: double.infinity,
+          child: Column(
+            children: [
+              SizedBox(height: responsive.hp(1)),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
+                height: responsive.hp(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      height: responsive.hp(8),
+                      width: responsive.wp(45),
+                      child: ObtenerFecha1(),
+                    ),
+                    SizedBox(
+                      width: responsive.wp(4),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: responsive.hp(8),
+                      width: responsive.wp(45),
+                      child: ObtenerFecha2(),
                     ),
                   ],
-                  color: Colors.white),
-              child: SingleChildScrollView(
-                controller: scrollController,
+                ),
+              ),
+              Container(
+                height: responsive.hp(5),
+                width: responsive.wp(95),
+                child: _botonBuscar(context, responsive),
+              ),
+              SizedBox(height: responsive.hp(1)),
+              Container(
+                width: double.infinity,
+                height: responsive.hp(3.5),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: responsive.wp(3),
+                    ),
+                    Text(
+                      'Mis Pagos',
+                      style: TextStyle(
+                        fontSize: responsive.ip(2),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
                 child: ListarPagosPorIdSubsidiaryAndFecha(
                   idSucursal: preferences.idSeleccionSubsidiaryPedidos,
                   fechaI: preferences.fechaI,
                   fechaF: preferences.fechaF,
                 ),
-              ));
-        },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -136,7 +165,7 @@ class PagosPage extends StatelessWidget {
         onPressed: () {
           final pagosBloc = ProviderBloc.pagos(context);
           final prefs = Preferences();
-          if (prefs.fechaI != null && prefs.fechaF != null) {
+          if (prefs.fechaI != '' && prefs.fechaF != '') {
             if (DateTime.parse(prefs.fechaI)
                     .isBefore(DateTime.parse(prefs.fechaF)) ||
                 DateTime.parse(prefs.fechaI) == DateTime.parse(prefs.fechaF)) {
@@ -168,7 +197,8 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
 
   @override
   Widget build(BuildContext context) {
-    String _fecha = '';
+    TextEditingController inputfieldDateController2 = TextEditingController();
+    final preferences = Preferences();
     return TextField(
       decoration: InputDecoration(
         fillColor: Colors.white,
@@ -181,12 +211,14 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
         ),
       ),
       enableInteractiveSelection: true,
-      controller: inputfieldDateController,
+      controller: (preferences.fechaI != '')
+          ? inputfieldDateController
+          : inputfieldDateController2,
       onTap: () {
         FocusScope.of(context).requestFocus(
           new FocusNode(),
         );
-        _selectdate(context, inputfieldDateController, _fecha);
+        _selectdate(context, inputfieldDateController, preferences.fechaI);
       },
     );
   }
@@ -224,10 +256,10 @@ class ObtenerFecha2 extends StatefulWidget {
 
 class _ObtenerFechaState2 extends State<ObtenerFecha2> {
   TextEditingController inputfieldDateController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    String _fecha = '';
+    final preferences = Preferences();
+    TextEditingController inputfieldDateController2 = TextEditingController();
     return TextField(
       decoration: InputDecoration(
         fillColor: Colors.white,
@@ -240,12 +272,14 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
         ),
       ),
       enableInteractiveSelection: false,
-      controller: inputfieldDateController,
+      controller: (preferences.fechaF != '')
+          ? inputfieldDateController
+          : inputfieldDateController2,
       onTap: () {
         FocusScope.of(context).requestFocus(
           new FocusNode(),
         );
-        _selectdate(context, inputfieldDateController, _fecha);
+        _selectdate(context, inputfieldDateController, preferences.fechaF);
       },
     );
   }
@@ -292,6 +326,7 @@ class ListarPagosPorIdSubsidiaryAndFecha extends StatefulWidget {
 
 class _ListarPagosPorIdSubsidiaryAndFecha
     extends State<ListarPagosPorIdSubsidiaryAndFecha> {
+  ValueNotifier<bool> switchFiltro = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     final pagosBloc = ProviderBloc.pagos(context);
@@ -301,73 +336,134 @@ class _ListarPagosPorIdSubsidiaryAndFecha
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-      child: Column(
-        children: [
-          SizedBox(height: 10),
-          Container(
-            alignment: Alignment.center,
-            child: Container(
-              width: 50,
-              height: 5,
-              decoration: BoxDecoration(
-                color: LightColor.iconColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-            ),
-          ),
-          StreamBuilder(
-            stream: pagosBloc.pagosStream,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.length > 0) {
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return Text(
-                            'Mis Pagos',
-                            style: TextStyle(
-                                fontSize: responsive.ip(2.5),
-                                fontWeight: FontWeight.bold),
-                          );
-                        }
-
-                        int i = index - 1;
-                        return _crearItem(
-                            context, snapshot.data[i], responsive);
-                      });
-                } else {
-                  return Center(
-                      child: Column(
-                    children: [
-                      SizedBox(height: 15),
-                      Text('No tiene Pagos'),
-                    ],
-                  ));
-                }
-              } else {
-                return Center(
-                    child: Column(
+      child: StreamBuilder(
+        stream: pagosBloc.cargandoItemsStream,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data) {
+              bool _enabled = true;
+              return Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(height: 15),
-                    Text('No tiene Pagos'),
+                    Expanded(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300],
+                        highlightColor: Colors.grey[100],
+                        enabled: _enabled,
+                        child: ListView.builder(
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 48.0,
+                                  height: 48.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width: double.infinity,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2.0),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2.0),
+                                      ),
+                                      Container(
+                                        width: 40.0,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          itemCount: 6,
+                        ),
+                      ),
+                    ),
                   ],
-                ));
-              }
-            },
-          ),
-        ],
+                ),
+              );
+            } else {
+              return ValueListenableBuilder(
+                  valueListenable: switchFiltro,
+                  builder: (BuildContext context, bool data, Widget child) {
+                    return Column(
+                      children: [
+                        StreamBuilder(
+                            stream: pagosBloc.pagosStream,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<dynamic> snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data.length > 0) {
+                                } else {
+                                  return Center(
+                                      child: Text("No hay pagos para mostrar"));
+                                }
+                              } else {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              return Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (context, index) {
+                                      return _crearItem(context,
+                                          snapshot.data[index], responsive);
+                                    }),
+                              );
+                            }),
+                      ],
+                    );
+                  });
+            }
+          } else {
+            return Center(
+              child: NutsActivityIndicator(
+                radius: 12,
+                activeColor: Colors.white,
+                inactiveColor: Colors.redAccent,
+                tickCount: 11,
+                startRatio: 0.55,
+                animationDuration: Duration(milliseconds: 2003),
+              ),
+            );
+          }
+        },
       ),
     );
   }
 
   Widget _crearItem(
       BuildContext context, PagosModel pagosData, Responsive responsive) {
+    var date = obtenerNombreMes(pagosData.transferenciaUEDate);
     return GestureDetector(
       onTap: () {
         //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
@@ -378,7 +474,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withOpacity(0.15),
               spreadRadius: 1,
               blurRadius: 2,
               offset: Offset(2, 3),
@@ -386,25 +482,37 @@ class _ListarPagosPorIdSubsidiaryAndFecha
           ],
         ),
         margin: EdgeInsets.all(responsive.ip(1)),
-        height: responsive.hp(15),
+        height: responsive.hp(13),
         child: Row(
           children: [
             Container(
-              width: responsive.wp(53),
+              margin: EdgeInsets.all(responsive.ip(1)),
+              width: responsive.wp(60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '${pagosData.transferecniaUEConcepto}',
+                    'Pago N° ${pagosData.idPago}',
                     style: TextStyle(
-                        fontSize: responsive.ip(2.3),
+                        fontSize: responsive.ip(2.2),
                         fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
-                  Text('S/. ${pagosData.transferenciaUEMonto}'),
-                  Text('${pagosData.transferenciaUENroOperacion}'),
-                  Text('${pagosData.transferenciaUEDate}'),
+                  Text(
+                      'Transferencia N° ${pagosData.transferenciaUENroOperacion}'),
+                  Text('$date'),
                 ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(responsive.ip(1)),
+              child: Text(
+                'S/. ${pagosData.transferenciaUEMonto}',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: responsive.ip(2.5),
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             )
           ],

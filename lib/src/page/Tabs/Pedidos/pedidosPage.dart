@@ -71,10 +71,10 @@ class PedidosPage extends StatelessWidget {
         height: double.infinity,
         child: Column(
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: responsive.hp(0.5)),
             Container(
               padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
-              height: responsive.hp(10),
+              height: responsive.hp(9),
               child: ListarTiposEstadosPedidos(),
             ),
             Container(
@@ -132,13 +132,16 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
                 AsyncSnapshot<List<TipoEstadoPedidoModel>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
-                  return ListView.builder(
+                  return CrearItemChoice(datos: snapshot);
+
+                  /*ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
                         return _crearItem(
-                            context, snapshot.data[index], responsive);
-                      });
+                            context, snapshot.data[index], responsive)
+                            ;
+                      });*/
                 } else {
                   return Center(child: Text("Lista Vacia"));
                 }
@@ -149,57 +152,6 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _crearItem(BuildContext context, TipoEstadoPedidoModel tipoEstadodata,
-      Responsive responsive) {
-    return GestureDetector(
-      onTap: () {
-        actualizarIdStatusPedidos(context, tipoEstadodata.idTipoEstado);
-        final preferences = new Preferences();
-        preferences.idStatusPedidos = tipoEstadodata.idTipoEstado;
-
-        final pedidosBloc = ProviderBloc.pedido(context);
-        pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-            preferences.idSeleccionSubsidiaryPedidos,
-            tipoEstadodata.idTipoEstado);
-        //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: (tipoEstadodata.tipoEstadoSelect == '1')
-              ? Colors.redAccent
-              : Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              spreadRadius: 1,
-              blurRadius: 2,
-              offset: Offset(2, 3),
-            ),
-          ],
-        ),
-        margin: EdgeInsets.all(responsive.ip(1)),
-        width: responsive.wp(30),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: responsive.wp(1)),
-          child: Text(
-            '${tipoEstadodata.tipoEstadoNombre}',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: responsive.ip(2),
-              fontWeight: (tipoEstadodata.tipoEstadoSelect == '1')
-                  ? FontWeight.bold
-                  : FontWeight.normal,
-              color: (tipoEstadodata.tipoEstadoSelect == '1')
-                  ? Colors.white
-                  : Colors.black,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -365,6 +317,7 @@ class _ListarPedidosPorIdSubsidiaryState
     /*TipoEstadoPedidoModel tipoEstadodata*/
   ) {
     var date = obtenerNombreMes(pedidosData.deliveryDatetime);
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(PageRouteBuilder(
@@ -453,5 +406,54 @@ class _ListarPedidosPorIdSubsidiaryState
         ),
       ),
     );
+  }
+}
+
+class CrearItemChoice extends StatefulWidget {
+  final AsyncSnapshot<List<TipoEstadoPedidoModel>> datos;
+  CrearItemChoice({Key key, @required this.datos}) : super(key: key);
+
+  @override
+  _CrearItemChoiceState createState() => _CrearItemChoiceState();
+}
+
+class _CrearItemChoiceState extends State<CrearItemChoice> {
+  int _selectedIndex;
+
+  Widget _buildChips() {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.datos.data.length,
+        itemBuilder: (context, index) {
+          return ChoiceChip(
+            selected: _selectedIndex == index,
+            label: Text(widget.datos.data[index].tipoEstadoNombre,
+                style: TextStyle(
+                    color: (_selectedIndex == index)
+                        ? Colors.white
+                        : Colors.black)),
+            selectedColor: Colors.redAccent,
+            onSelected: (bool selected) {
+              setState(() {
+                if (selected) {
+                  _selectedIndex = index;
+                }
+              });
+              final preferences = new Preferences();
+              preferences.idStatusPedidos =
+                  widget.datos.data[index].idTipoEstado;
+
+              final pedidosBloc = ProviderBloc.pedido(context);
+              pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+                  preferences.idSeleccionSubsidiaryPedidos,
+                  widget.datos.data[index].idTipoEstado);
+            },
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildChips();
   }
 }

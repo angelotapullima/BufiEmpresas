@@ -25,7 +25,6 @@ class ListarSucursales extends StatelessWidget {
     contadorBloc.changeContador(0);
     final empresaNameBloc = ProviderBloc.nameEmpresa(context);
     empresaNameBloc.changeEmpresaName(preferences.nombreCompany);
-    print(empresaNameBloc.empresaName);
 
     return Column(
       children: [

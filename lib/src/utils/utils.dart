@@ -101,58 +101,6 @@ void actualizarBusquedaPagos(BuildContext context) {
       prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
 }
 
-obtenerTiposEstadosPedidos() async {
-  final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
-
-  final listEstados =
-      await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedido();
-  return listEstados;
-}
-
-//Talla del producto
-Future<int> cambiarEstadoTalla(
-    BuildContext context, TallaProductoModel tallaModel) async {
-  final datosProdBloc = ProviderBloc.datosProductos(context);
-  final tallaProductoDatabase = TallaProductoDatabase();
-//cambiar todos los estado de la tabla asignada a 0.
-  await tallaProductoDatabase.updateEstadoa0();
-
-  await tallaProductoDatabase.updateEstadoa1(tallaModel);
-
-  datosProdBloc.listarDatosProducto(tallaModel.idProducto);
-  return 1;
-}
-
-//Marca del producto
-Future<int> cambiarEstadoMarca(
-    BuildContext context, MarcaProductoModel marcaModel) async {
-  final datosProdBloc = ProviderBloc.datosProductos(context);
-  final marcaProductoDatabase = MarcaProductoDatabase();
-//cambiar todos los estado de la tabla asignada a 0.
-  await marcaProductoDatabase.updateEstadoa0();
-
-  await marcaProductoDatabase.updateEstadoa1(marcaModel);
-
-  datosProdBloc.listarDatosProducto(marcaModel.idProducto);
-
-  return 1;
-}
-
-//Modelo del producto
-Future<int> cambiarEstadoModelo(
-    BuildContext context, ModeloProductoModel modeloModel) async {
-  final datosProdBloc = ProviderBloc.datosProductos(context);
-  final modeloProductoDatabase = ModeloProductoDatabase();
-
-//cambiar todos los estado de la tabla asignada a 0.
-  await modeloProductoDatabase.updateEstadoa0();
-
-  await modeloProductoDatabase.updateEstadoa1(modeloModel);
-
-  datosProdBloc.listarDatosProducto(modeloModel.idProducto);
-  return 0;
-}
-
 obtenerNombreMes(String date) {
   var meses = [
     'Ene',
