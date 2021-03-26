@@ -75,6 +75,13 @@ class MostrarNegocio extends StatelessWidget {
                         preferences.fechaF = '';
                         preferences.fechaI = '';
                         actualizarBusquedaPagos(context);
+                        final pedidoAtendidoBloc = ProviderBloc.pedido(context);
+                        pedidoAtendidoBloc.obtenerPedidosAtendidos(
+                            preferences.idSeleccionNegocioInicio);
+                        final pedidoPendienteBloc =
+                            ProviderBloc.pedido(context);
+                        pedidoPendienteBloc.obtenerPedidosPendientes(
+                            preferences.idSeleccionNegocioInicio);
                         final empresaNameBloc =
                             ProviderBloc.nameEmpresa(context);
                         empresaNameBloc

@@ -1,6 +1,7 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
+import 'package:bufi_empresas/src/page/Tabs/Pagos/detallePagoPage.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/colores.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -466,7 +467,27 @@ class _ListarPagosPorIdSubsidiaryAndFecha
     var date = obtenerNombreMes(pagosData.transferenciaUEDate);
     return GestureDetector(
       onTap: () {
-        //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
+        Navigator.of(context).push(PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return TicketPago(
+              idPago: pagosData.idPago,
+            );
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = Offset(0.0, 1.0);
+            var end = Offset.zero;
+            var curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(
+              CurveTween(curve: curve),
+            );
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        ));
       },
       child: Container(
         decoration: BoxDecoration(

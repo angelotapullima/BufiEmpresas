@@ -1,15 +1,9 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
-import 'package:bufi_empresas/src/database/marcaProducto_database.dart';
-import 'package:bufi_empresas/src/database/modeloProducto_database.dart';
+import 'package:bufi_empresas/src/database/pedidos_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
-import 'package:bufi_empresas/src/database/tallaProducto_database.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
-import 'package:bufi_empresas/src/models/marcaProductoModel.dart';
-import 'package:bufi_empresas/src/models/modeloProductoModel.dart';
-import 'package:bufi_empresas/src/models/tallaProductoModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
-import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:intl/intl.Dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -127,4 +121,16 @@ obtenerNombreMes(String date) {
       '${dia.format(fecha)}-$mes-${year.format(fecha)}, ${hora.format(fecha)}';
 
   return formatted;
+}
+
+obtenerEstadoPedido(String id) async {
+  final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
+
+  final preferences = Preferences();
+
+  final listEstado =
+      await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedidoXid(id);
+
+  for (int i = 0; i < listEstado.length; i++)
+    preferences.nombreEstadoPedido = listEstado[i].tipoEstadoNombre;
 }

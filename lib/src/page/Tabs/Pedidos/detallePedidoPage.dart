@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
+import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -40,6 +41,8 @@ class _TickectPedidoState extends State<TickectPedido> {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
                 var fecha = obtenerNombreMes(snapshot.data[0].deliveryDatetime);
+                obtenerEstadoPedido(snapshot.data[0].deliveryStatus);
+                final pref = Preferences();
                 return Stack(
                   children: [
                     Screenshot(
@@ -113,20 +116,61 @@ class _TickectPedidoState extends State<TickectPedido> {
                                         ticketDetailsWidget(
                                             'Fecha',
                                             '$fecha',
-                                            'Cliente',
-                                            '${snapshot.data[0].deliveryName} ',
+                                            'Estado del Pedido',
+                                            '${pref.nombreEstadoPedido} ',
                                             responsive),
-                                        SizedBox(
-                                          height: responsive.hp(1.5),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: responsive.hp(1.5),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: responsive.wp(5)),
+                                    child: Text('Datos del Cliente'),
+                                  ),
+                                  SizedBox(
+                                    height: responsive.hp(1),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: responsive.wp(5)),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.person),
+                                            SizedBox(
+                                              width: responsive.wp(2),
+                                            ),
+                                            Text(
+                                              '${snapshot.data[0].deliveryName}',
+                                              style: TextStyle(
+                                                  fontSize: responsive.ip(2),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
                                         ),
-                                        ticketDetailsWidget(
-                                            'Dirección',
-                                            '${snapshot.data[0].deliveryAddress}',
-                                            'Celular',
-                                            '${snapshot.data[0].deliveryCel}',
-                                            responsive),
-                                        SizedBox(
-                                          height: responsive.hp(1.15),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.pin_drop),
+                                            SizedBox(
+                                              width: responsive.wp(2),
+                                            ),
+                                            Text(
+                                                '${snapshot.data[0].deliveryAddress}'),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.phone),
+                                            SizedBox(
+                                              width: responsive.wp(2),
+                                            ),
+                                            Text(
+                                                '${snapshot.data[0].deliveryCel}'),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -179,16 +223,6 @@ class _TickectPedidoState extends State<TickectPedido> {
                                             ),
                                             Text(
                                                 '${snapshot.data[0].listCompanySubsidiary[0].subsidiaryCellphone} - ${snapshot.data[0].listCompanySubsidiary[0].subsidiaryCellphone2}'),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.email),
-                                            SizedBox(
-                                              width: responsive.wp(2),
-                                            ),
-                                            Text(
-                                                '${snapshot.data[0].listCompanySubsidiary[0].subsidiaryEmail} - ${snapshot.data[0].listCompanySubsidiary[0].subsidiaryCellphone2}'),
                                           ],
                                         ),
                                       ],

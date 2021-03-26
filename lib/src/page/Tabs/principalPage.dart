@@ -87,6 +87,13 @@ class PrincipalPage extends StatelessWidget {
   }
 
   Widget _backgroundNegocio(BuildContext context, Responsive responsive) {
+    final preferences = Preferences();
+    final pedidoAtendidoBloc = ProviderBloc.pedido(context);
+    pedidoAtendidoBloc
+        .obtenerPedidosAtendidos(preferences.idSeleccionNegocioInicio);
+    final pedidoPendienteBloc = ProviderBloc.pedido(context);
+    pedidoPendienteBloc
+        .obtenerPedidosPendientes(preferences.idSeleccionNegocioInicio);
     return Container(
       margin: EdgeInsets.only(
         top: responsive.hp(10),
@@ -112,9 +119,21 @@ class PrincipalPage extends StatelessWidget {
                             color: Colors.white,
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold)),
-                    Text('400',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: responsive.ip(3))),
+                    StreamBuilder(
+                        stream: pedidoAtendidoBloc.pedidosAtendidosStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.data.length > 0) {
+                            return Text('${snapshot.data.length}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3)));
+                          } else {
+                            return Text('0',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3)));
+                          }
+                        }),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -135,9 +154,21 @@ class PrincipalPage extends StatelessWidget {
                             color: Colors.white,
                             fontSize: responsive.ip(2),
                             fontWeight: FontWeight.bold)),
-                    Text('300',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: responsive.ip(3))),
+                    StreamBuilder(
+                        stream: pedidoPendienteBloc.pedidosPendientesStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.data.length > 0) {
+                            return Text('${snapshot.data.length}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3)));
+                          } else {
+                            return Text('0',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3)));
+                          }
+                        }),
                   ],
                 ),
                 decoration: BoxDecoration(

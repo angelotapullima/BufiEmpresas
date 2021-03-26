@@ -29,4 +29,14 @@ class PagosDataBase {
         res.isNotEmpty ? res.map((c) => PagosModel.fromJson(c)).toList() : [];
     return list;
   }
+
+  Future<List<PagosModel>> obtenerPagosXIdPago(String idPago) async {
+    final db = await dbProvider.database;
+    final res =
+        await db.rawQuery("SELECT * FROM Pagos WHERE id_pago='$idPago'");
+
+    List<PagosModel> list =
+        res.isNotEmpty ? res.map((c) => PagosModel.fromJson(c)).toList() : [];
+    return list;
+  }
 }

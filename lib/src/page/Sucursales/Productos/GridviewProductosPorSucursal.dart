@@ -31,7 +31,7 @@ class _GridviewProductoPorSucursalState
               return SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.86,
+                  childAspectRatio: 0.7,
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {

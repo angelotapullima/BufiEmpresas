@@ -172,4 +172,12 @@ class Preferences {
   set nombreCompany(String value) {
     _prefs.setString('nombreCompany', value);
   }
+
+  get nombreEstadoPedido {
+    return _prefs.getString('nombreEstadoPedido');
+  }
+
+  set nombreEstadoPedido(String value) {
+    _prefs.setString('nombreEstadoPedido', value);
+  }
 }

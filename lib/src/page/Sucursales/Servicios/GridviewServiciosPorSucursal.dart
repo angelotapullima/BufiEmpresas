@@ -33,39 +33,14 @@ class _GridviewProductoPorSucursalState
               return SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.86,
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return GestureDetector(
-                        onTap: () {
-                          /* Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            transitionDuration:
-                                const Duration(milliseconds: 100),
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                              return DetalleProductos(
-                                  producto: snapshot.data[index]);
-                              //return DetalleProductitos(productosData: productosData);
-                            },
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                          ),
-                        );*/
-                        },
+                        onTap: () {},
                         child: serviceWidget(
-                            context, snapshot.data[index], responsive)
-                        /*  child: BienesWidget(
-                        producto: snapshot.data[index],
-                      ), */
-                        );
+                            context, snapshot.data[index], responsive));
                   },
                   childCount: snapshot.data.length,
                 ),

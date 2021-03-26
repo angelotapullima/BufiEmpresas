@@ -83,4 +83,26 @@ class PedidosDatabase {
         res.isNotEmpty ? res.map((c) => PedidosModel.fromJson(c)).toList() : [];
     return list;
   }
+
+  Future<List<PedidosModel>> obtenerTotalPedidosAtendidos(
+      String idCompany) async {
+    final db = await dbProvider.database;
+    final res = await db.rawQuery(
+        "SELECT * FROM Pedidos WHERE id_company='$idCompany' AND delivery_status= '5' ");
+
+    List<PedidosModel> list =
+        res.isNotEmpty ? res.map((c) => PedidosModel.fromJson(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<PedidosModel>> obtenerTotalPedidosPendientes(
+      String idCompany) async {
+    final db = await dbProvider.database;
+    final res = await db.rawQuery(
+        "SELECT * FROM Pedidos WHERE id_company='$idCompany' AND (delivery_status= '1' OR delivery_status= '2' OR delivery_status= '3' OR delivery_status= '4')");
+
+    List<PedidosModel> list =
+        res.isNotEmpty ? res.map((c) => PedidosModel.fromJson(c)).toList() : [];
+    return list;
+  }
 }

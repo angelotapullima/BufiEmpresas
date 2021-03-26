@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/bloc/tiposEstadosPedidos_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pedidos/detallePedidoPage.dart';
@@ -314,7 +315,6 @@ class _ListarPedidosPorIdSubsidiaryState
     PedidosModel pedidosData,
     Responsive responsive,
     String idStatus,
-    /*TipoEstadoPedidoModel tipoEstadodata*/
   ) {
     var date = obtenerNombreMes(pedidosData.deliveryDatetime);
 
