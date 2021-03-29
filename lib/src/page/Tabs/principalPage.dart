@@ -109,7 +109,7 @@ class PrincipalPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                height: responsive.hp(10),
+                height: responsive.hp(11),
                 width: responsive.wp(40),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +144,7 @@ class PrincipalPage extends StatelessWidget {
                 width: responsive.wp(5),
               ),
               Container(
-                height: responsive.hp(10),
+                height: responsive.hp(11),
                 width: responsive.wp(40),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

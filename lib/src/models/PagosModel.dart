@@ -1,4 +1,5 @@
 import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
+import 'package:bufi_empresas/src/models/PedidosModel.dart';
 
 class PagosModel {
   String idTransferenciaUE;
@@ -11,7 +12,18 @@ class PagosModel {
   String transferecniaUEConcepto;
   String transferenciaUEDate;
   String transferenciaUEEstado;
+
+  String idDelivery;
+  String pagoTipo;
+  String pagoMonto;
+  String pagoComision;
+  String pagoTotal;
+  String pagoDate;
+  String pagoEstado;
+  String pagoMicrotime;
+
   List<CompanySubsidiaryModel> listCompanySubsidiary;
+  List<PedidosModel> listPedido;
   PagosModel({
     this.idTransferenciaUE,
     this.idSubsidiary,
@@ -24,6 +36,14 @@ class PagosModel {
     this.transferenciaUEDate,
     this.transferenciaUEEstado,
     this.listCompanySubsidiary,
+    this.idDelivery,
+    this.pagoTipo,
+    this.pagoMonto,
+    this.pagoComision,
+    this.pagoTotal,
+    this.pagoDate,
+    this.pagoEstado,
+    this.pagoMicrotime,
   });
   factory PagosModel.fromJson(Map<String, dynamic> json) => PagosModel(
         idTransferenciaUE: json['id_transferencia_u_e'],
@@ -36,5 +56,13 @@ class PagosModel {
         transferecniaUEConcepto: json['transferencia_u_e_concepto'],
         transferenciaUEDate: json['transferencia_u_e_date'],
         transferenciaUEEstado: json['transferencia_u_e_estado'],
+        idDelivery: json['id_delivery'],
+        pagoTipo: json['pago_tipo'],
+        pagoMonto: json['pago_monto'],
+        pagoComision: json['pago_comision'],
+        pagoTotal: json['pago_total'],
+        pagoDate: json['pago_date'],
+        pagoEstado: json['pago_estado'],
+        pagoMicrotime: json['pago_microtime'],
       );
 }

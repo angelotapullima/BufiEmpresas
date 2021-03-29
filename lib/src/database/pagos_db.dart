@@ -9,8 +9,8 @@ class PagosDataBase {
       final db = await dbProvider.database;
 
       final res = await db.rawInsert(
-          "INSERT OR REPLACE INTO Pagos (id_transferencia_u_e, id_subsidiary, transferencia_u_e_nro_operacion, id_usuario, id_empresa, id_pago, transferencia_u_e_monto, transferencia_u_e_concepto, transferencia_u_e_date, transferencia_u_e_estado) "
-          "VALUES('${pagosModel.idTransferenciaUE}','${pagosModel.idSubsidiary}','${pagosModel.transferenciaUENroOperacion}','${pagosModel.idUsuario}','${pagosModel.idEmpresa}','${pagosModel.idPago}','${pagosModel.transferenciaUEMonto}','${pagosModel.transferecniaUEConcepto}','${pagosModel.transferenciaUEDate}','${pagosModel.transferenciaUEEstado}')");
+          "INSERT OR REPLACE INTO Pagos (id_transferencia_u_e, id_subsidiary, transferencia_u_e_nro_operacion, id_usuario, id_empresa, id_pago, transferencia_u_e_monto, transferencia_u_e_concepto, transferencia_u_e_date, transferencia_u_e_estado, id_delivery, pago_tipo, pago_monto, pago_comision, pago_total, pago_date, pago_estado, pago_microtime) "
+          "VALUES('${pagosModel.idTransferenciaUE}','${pagosModel.idSubsidiary}','${pagosModel.transferenciaUENroOperacion}','${pagosModel.idUsuario}','${pagosModel.idEmpresa}','${pagosModel.idPago}','${pagosModel.transferenciaUEMonto}','${pagosModel.transferecniaUEConcepto}','${pagosModel.transferenciaUEDate}','${pagosModel.transferenciaUEEstado}','${pagosModel.idDelivery}','${pagosModel.pagoTipo}','${pagosModel.pagoMonto}','${pagosModel.pagoComision}','${pagosModel.pagoTotal}','${pagosModel.pagoDate}','${pagosModel.pagoEstado}','${pagosModel.pagoMicrotime}')");
 
       return res;
     } catch (e) {

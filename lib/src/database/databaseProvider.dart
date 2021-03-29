@@ -148,16 +148,24 @@ class DatabaseProvider {
           ')');
 
       await db.execute('CREATE TABLE Pagos ('
-          'id_transferencia_u_e TEXT PRIMARY KEY,'
+          'id_pago TEXT PRIMARY KEY,'
           'id_subsidiary TEXT,'
+          'id_transferencia_u_e TEXT,'
           'transferencia_u_e_nro_operacion TEXT,'
           'id_usuario TEXT,'
           'id_empresa TEXT,'
-          'id_pago TEXT,'
           'transferencia_u_e_monto TEXT,'
           'transferencia_u_e_concepto TEXT,'
           'transferencia_u_e_date TEXT,'
-          'transferencia_u_e_estado TEXT'
+          'transferencia_u_e_estado TEXT,'
+          'id_delivery TEXT,'
+          'pago_tipo TEXT,'
+          'pago_monto TEXT,'
+          'pago_comision TEXT,'
+          'pago_total TEXT,'
+          'pago_date TEXT,'
+          'pago_estado TEXT,'
+          'pago_microtime TEXT'
           ')');
 
       await db.execute('CREATE TABLE Subcategory ('

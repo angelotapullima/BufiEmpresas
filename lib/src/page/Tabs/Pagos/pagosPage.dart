@@ -1,17 +1,15 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
-import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pagos/detallePagoPage.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
-import 'package:bufi_empresas/src/utils/colores.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:bufi_empresas/src/widgets/widget_SeleccionarSucursal.dart';
+import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:platform_date_picker/platform_date_picker.dart';
 import 'package:shimmer/shimmer.dart';
@@ -110,6 +108,12 @@ class PagosPage extends StatelessWidget {
                 child: _botonBuscar(context, responsive),
               ),
               SizedBox(height: responsive.hp(1)),
+              /*Container(
+                height: responsive.hp(20),
+                width: responsive.wp(95),
+                child: _crearTimeLineCalendar(responsive),
+              ),
+              SizedBox(height: responsive.hp(1)),*/
               Container(
                 width: double.infinity,
                 height: responsive.hp(3.5),
@@ -145,6 +149,23 @@ class PagosPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _crearTimeLineCalendar(Responsive responsive) {
+    return CalendarTimeline(
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 2),
+      lastDate: DateTime.now(),
+      onDateSelected: (date) => print(date),
+      leftMargin: responsive.wp(10),
+      monthColor: Colors.blueGrey,
+      dayColor: Colors.teal[200],
+      activeDayColor: Colors.white,
+      activeBackgroundDayColor: Colors.redAccent,
+      dotsColor: Color(0xFF333A47),
+      selectableDayPredicate: (date) => date.day != 23,
+      locale: 'es_MX',
     );
   }
 

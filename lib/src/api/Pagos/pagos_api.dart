@@ -45,6 +45,14 @@ class PagosApi {
           pagoModel.transferenciaUEDate = fecha;
           pagoModel.transferenciaUEEstado =
               decodedData['result'][i]['transferencia_u_e_estado'];
+          pagoModel.idDelivery = decodedData['result'][i]['id_delivery'];
+          pagoModel.pagoTipo = decodedData['result'][i]['pago_tipo'];
+          pagoModel.pagoMonto = decodedData['result'][i]['pago_monto'];
+          pagoModel.pagoComision = decodedData['result'][i]['pago_comision'];
+          pagoModel.pagoTotal = decodedData['result'][i]['pago_total'];
+          pagoModel.pagoDate = decodedData['result'][i]['pago_date'];
+          pagoModel.pagoEstado = decodedData['result'][i]['pago_estado'];
+          pagoModel.pagoMicrotime = decodedData['result'][i]['pago_microtime'];
 
           await pagosDataBase.insertarPagos(pagoModel);
         }

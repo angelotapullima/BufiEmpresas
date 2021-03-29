@@ -1,6 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
-import 'package:bufi_empresas/src/database/pedidos_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
@@ -96,7 +95,7 @@ void actualizarBusquedaPagos(BuildContext context) {
 }
 
 obtenerNombreMes(String date) {
-  var meses = [
+  /*var meses = [
     'Ene',
     'Feb',
     'Mar',
@@ -109,18 +108,22 @@ obtenerNombreMes(String date) {
     'Oct',
     'Nov',
     'Dic'
-  ];
+  ];*/
 
   var fecha = DateTime.parse(date);
-  var me = fecha.month - 1;
-  final DateFormat dia = new DateFormat('dd');
-  var mes = meses[me];
-  final DateFormat year = new DateFormat('yyyy');
-  final DateFormat hora = new DateFormat('H:m');
-  String formatted =
-      '${dia.format(fecha)}-$mes-${year.format(fecha)}, ${hora.format(fecha)}';
+  //var me = fecha.month - 1;
+  //final DateFormat dia = new DateFormat('dd');
+  //var mes = meses[me];
+  //final DateFormat year = new DateFormat('yyyy');
+  //final DateFormat hora = new DateFormat('H:m');
 
-  return formatted;
+  final DateFormat fech = new DateFormat('dd MMM yyyy, H:m', 'es');
+
+  print(fech.format(fecha));
+
+  //String formatted = '${dia.format(fecha)}-$mes-${year.format(fecha)}, ${hora.format(fecha)}';
+
+  return fech.format(fecha);
 }
 
 obtenerEstadoPedido(String id) async {
