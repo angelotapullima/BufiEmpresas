@@ -1,5 +1,5 @@
 import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
-import 'package:bufi_empresas/src/models/PedidosModel.dart';
+import 'package:bufi_empresas/src/models/DetallePedidoModel.dart';
 
 class PagosModel {
   String idTransferenciaUE;
@@ -23,7 +23,7 @@ class PagosModel {
   String pagoMicrotime;
 
   List<CompanySubsidiaryModel> listCompanySubsidiary;
-  List<PedidosModel> listPedido;
+  List<DetallePedidoModel> detallePedido;
   PagosModel({
     this.idTransferenciaUE,
     this.idSubsidiary,
@@ -36,6 +36,7 @@ class PagosModel {
     this.transferenciaUEDate,
     this.transferenciaUEEstado,
     this.listCompanySubsidiary,
+    this.detallePedido,
     this.idDelivery,
     this.pagoTipo,
     this.pagoMonto,

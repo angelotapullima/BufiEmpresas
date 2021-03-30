@@ -38,8 +38,7 @@ class _TicketPagoState extends State<TicketPago> {
           builder: (context, AsyncSnapshot<List<PagosModel>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
-                var fecha =
-                    obtenerNombreMes(snapshot.data[0].transferenciaUEDate);
+                var fecha = obtenerNombreMes(snapshot.data[0].pagoDate);
                 return Stack(
                   children: [
                     Screenshot(
@@ -130,6 +129,123 @@ class _TicketPagoState extends State<TicketPago> {
                                     height: responsive.hp(1.5),
                                   ),
                                   Divider(),
+                                  Center(
+                                    child: Text(
+                                      'Productos',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: responsive.ip(2.5),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Divider(),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: responsive.hp(2),
+                                        left: responsive.wp(10),
+                                        right: responsive.wp(10)),
+                                    child: Column(
+                                      children: [
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: snapshot
+                                              .data[0].detallePedido.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                        "${snapshot.data[0].detallePedido[index].listProducto[0].productoName} x ${snapshot.data[0].detallePedido[index].cantidad}"),
+                                                    // Text(
+                                                    //     "${snapshot.data[0].detallePedido[index].listProducto[0].listMarcaProd[0].marcaProducto}  "),
+                                                    SizedBox(
+                                                      height: responsive.hp(.5),
+                                                    )
+                                                  ],
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  'S/. ' +
+                                                      (double.parse(
+                                                                  '${snapshot.data[0].detallePedido[index].cantidad}') *
+                                                              double.parse(
+                                                                  '${snapshot.data[0].detallePedido[index].listProducto[0].productoPrice}'))
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          responsive.ip(1.8),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: responsive.hp(1),
+                                        ),
+                                        Divider(),
+                                        Row(
+                                          children: [
+                                            Text("Subtotal"),
+                                            Spacer(),
+                                            Text(
+                                                'S/ ${snapshot.data[0].pagoMonto}',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        responsive.ip(1.8),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: responsive.hp(1),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Envío"),
+                                            Spacer(),
+                                            Text(
+                                                'S/ ${snapshot.data[0].pagoComision}',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        responsive.ip(1.8),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                        Divider(),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Total',
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: responsive.ip(2),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Spacer(),
+                                            Text(
+                                                'S/ ${snapshot.data[0].pagoTotal}',
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize:
+                                                        responsive.ip(2.5),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   Expanded(
                                       child: Row(
                                     children: [
@@ -168,23 +284,6 @@ class _TicketPagoState extends State<TicketPago> {
                         },
                       ),
                     ),
-                    Positioned(
-                      top: responsive.hp(8.5),
-                      right: responsive.wp(4),
-                      child: GestureDetector(
-                        child: Container(
-                            width: responsive.ip(5),
-                            height: responsive.ip(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.grey[200],
-                            ),
-                            child: Icon(Icons.share)),
-                        onTap: () async {
-                          takeScreenshotandShare();
-                        },
-                      ),
-                    ),
                   ],
                 );
               } else {
@@ -201,30 +300,6 @@ class _TicketPagoState extends State<TicketPago> {
             }
           }),
     );
-  }
-
-  takeScreenshotandShare() async {
-    _imageFile = null;
-    screenshotController
-        .capture(delay: Duration(milliseconds: 10), pixelRatio: 2.0)
-        .then((File image) async {
-      setState(() {
-        _imageFile = image;
-      });
-
-      await ImageGallerySaver.saveImage(image.readAsBytesSync());
-      // Save image to gallery,  Needs plugin  https://pub.dev/packages/image_gallery_saver
-      print("File Saved to Gallery");
-
-      final directory = (await getApplicationDocumentsDirectory()).path;
-      Uint8List pngBytes = _imageFile.readAsBytesSync();
-      File imgFile = new File('$directory/screenshot.png');
-      imgFile.writeAsBytes(pngBytes);
-      print("File Saved to Gallery");
-      await Share.file('Anupam', 'screenshot.png', pngBytes, 'image/png');
-    }).catchError((onError) {
-      print(onError);
-    });
   }
 
   Widget ticketDetailsWidget(String cabecera1, String dato1, String cabecera2,

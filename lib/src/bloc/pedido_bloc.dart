@@ -59,20 +59,20 @@ class PedidoBloc {
       _cargandoItems.sink.add(true);
       _pedidoController.sink
           .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
+
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
+      _cargandoItems.sink.add(false);
       _pedidoController.sink
           .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
-      _cargandoItems.sink.add(false);
     } else {
       _cargandoItems.sink.add(true);
       _pedidoController.sink.add(await pedidoDb
           .obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
 
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
-
+      _cargandoItems.sink.add(false);
       _pedidoController.sink.add(await pedidoDb
           .obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
-      _cargandoItems.sink.add(false);
     }
   }
 

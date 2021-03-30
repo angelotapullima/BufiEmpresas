@@ -45,8 +45,13 @@ class ProductoBloc {
         .add(await productoDatabase.obtenerProductosPorIdSubsidiary(id));
   }
 
+  Future<int> habilitarDesProducto(String id) async {
+    final resp = await productosApi.deshabilitarSubsidiaryProducto(id);
+    return resp;
+  }
+
   Future<List<BienesServiciosModel>> datosSucursal(String idSubsidiary) async {
-    final listGeneral = List<BienesServiciosModel>();
+    final List<BienesServiciosModel> listGeneral = [];
 
     final productSubsidiary =
         await productoDatabase.obtenerProductosPorIdSubsidiary(idSubsidiary);

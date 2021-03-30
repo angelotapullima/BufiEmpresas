@@ -4,13 +4,16 @@ import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/customCacheManager.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BienesWidget extends StatefulWidget {
   final ProductoModel producto;
+  var estado;
 
-  const BienesWidget({Key key, @required this.producto}) : super(key: key);
+  BienesWidget({Key key, @required this.producto, @required this.estado})
+      : super(key: key);
   @override
   _BienesWidgetState createState() => _BienesWidgetState();
 }
@@ -106,9 +109,38 @@ class _BienesWidgetState extends State<BienesWidget> {
               color: Colors.grey,
               fontSize: responsive.ip(1.9),
             ),
+          ),
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  (widget.producto.productoStatus == '1')
+                      ? 'Habilitado'
+                      : 'Deshabilitado',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: responsive.ip(2),
+                  ),
+                ),
+                _switch(context, widget.producto.productoStatus,
+                    widget.producto.idSubsidiary)
+              ],
+            ),
           )
         ],
       ),
     );
+  }
+
+  Widget _switch(BuildContext context, String estado, String id) {
+    return Switch(
+        value: widget.estado,
+        activeColor: Colors.redAccent,
+        onChanged: (valor) {
+          setState(() {
+            widget.estado = valor;
+            habilitarDesProducto(context, id);
+          });
+        });
   }
 }

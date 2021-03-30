@@ -95,33 +95,9 @@ void actualizarBusquedaPagos(BuildContext context) {
 }
 
 obtenerNombreMes(String date) {
-  /*var meses = [
-    'Ene',
-    'Feb',
-    'Mar',
-    'Abr',
-    'May',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Set',
-    'Oct',
-    'Nov',
-    'Dic'
-  ];*/
-
   var fecha = DateTime.parse(date);
-  //var me = fecha.month - 1;
-  //final DateFormat dia = new DateFormat('dd');
-  //var mes = meses[me];
-  //final DateFormat year = new DateFormat('yyyy');
-  //final DateFormat hora = new DateFormat('H:m');
 
   final DateFormat fech = new DateFormat('dd MMM yyyy, H:m', 'es');
-
-  print(fech.format(fecha));
-
-  //String formatted = '${dia.format(fecha)}-$mes-${year.format(fecha)}, ${hora.format(fecha)}';
 
   return fech.format(fecha);
 }
@@ -136,4 +112,12 @@ obtenerEstadoPedido(String id) async {
 
   for (int i = 0; i < listEstado.length; i++)
     preferences.nombreEstadoPedido = listEstado[i].tipoEstadoNombre;
+}
+
+habilitarDesProducto(BuildContext context, String id) async {
+  final productosBloc = ProviderBloc.productos(context);
+  final res = await productosBloc.habilitarDesProducto(id);
+  if (res == 1) {
+    productosBloc.listarProductosPorSucursal(id);
+  }
 }

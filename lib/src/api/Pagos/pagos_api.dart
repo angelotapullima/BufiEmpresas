@@ -29,7 +29,7 @@ class PagosApi {
           PagosModel pagoModel = PagosModel();
           pagoModel.idTransferenciaUE =
               decodedData['result'][i]['id_transferencia_u_e'];
-          pagoModel.idSubsidiary = idSubsidiary;
+          pagoModel.idSubsidiary = decodedData['result'][i]['id_subsidiary'];
           pagoModel.transferenciaUENroOperacion =
               decodedData['result'][i]['transferencia_u_e_nro_operacion'];
           pagoModel.idUsuario = decodedData['result'][i]['id_usuario'];

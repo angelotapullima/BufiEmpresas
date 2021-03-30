@@ -1,14 +1,20 @@
 import 'package:bufi_empresas/src/api/Pagos/pagos_api.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
+import 'package:bufi_empresas/src/database/detallePedido_database.dart';
 import 'package:bufi_empresas/src/database/pagos_db.dart';
+import 'package:bufi_empresas/src/database/producto_bd.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
+import 'package:bufi_empresas/src/models/DetallePedidoModel.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
+import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PagosBloc {
   final pagosDatabase = PagosDataBase();
+  final productoDb = ProductoDatabase();
   final subsidiaryDb = SubsidiaryDatabase();
+  final detallePedidoDb = DetallePedidoDatabase();
   final companyDb = CompanyDatabase();
   final pagosApi = PagosApi();
   final _pagosController = BehaviorSubject<List<PagosModel>>();
@@ -25,14 +31,13 @@ class PagosBloc {
 
   void obtenerPagosXFecha(
       String idSubsidiary, String fechaI, String fechaF) async {
+    _pagosController.sink.add(await pagosDatabase
+        .obtenerPagosXIdSubsidiaryAndFecha(idSubsidiary, fechaI, fechaF));
     _cargandoItems.sink.add(true);
-    _pagosController.sink.add(await pagosDatabase
-        .obtenerPagosXIdSubsidiaryAndFecha(idSubsidiary, fechaI, fechaF));
-
     pagosApi.obtenerPagosXIdSubsidiary(idSubsidiary, fechaI, fechaF);
+    _cargandoItems.sink.add(false);
     _pagosController.sink.add(await pagosDatabase
         .obtenerPagosXIdSubsidiaryAndFecha(idSubsidiary, fechaI, fechaF));
-    _cargandoItems.sink.add(false);
 
     //_pagosController.sink.add(await pagosApi.obtenerPagosXIdSubsidiary(idSubsidiary, fechaIni, fechaFin));
   }
@@ -61,6 +66,63 @@ class PagosBloc {
       pagosModel.transferecniaUEConcepto = listPagos[i].transferecniaUEConcepto;
       pagosModel.transferenciaUEDate = listPagos[i].transferenciaUEDate;
       pagosModel.transferenciaUEEstado = listPagos[i].transferenciaUEEstado;
+
+      pagosModel.idDelivery = listPagos[i].idDelivery;
+      pagosModel.pagoTipo = listPagos[i].pagoTipo;
+      pagosModel.pagoMonto = listPagos[i].pagoMonto;
+      pagosModel.pagoComision = listPagos[i].pagoComision;
+      pagosModel.pagoTotal = listPagos[i].pagoTotal;
+      pagosModel.pagoDate = listPagos[i].pagoDate;
+      pagosModel.pagoEstado = listPagos[i].pagoEstado;
+      pagosModel.pagoMicrotime = listPagos[i].pagoMicrotime;
+
+      //funcion que llama desde la bd a todos los detalles del pedido pasando el idPedido como argumento
+      final listdetallePedido = await detallePedidoDb
+          .obtenerDetallePedidoxIdPedido(listPagos[i].idDelivery);
+      //crear lista vacia para llenar el detalle del pedido
+      final listDetallePedidoModel = List<DetallePedidoModel>();
+
+      // recorrer la tabla de detalle de pedido
+      for (var j = 0; j < listdetallePedido.length; j++) {
+        final detallePedido = DetallePedidoModel();
+
+        detallePedido.idDetallePedido = listdetallePedido[j].idDetallePedido;
+        detallePedido.idPedido = listdetallePedido[j].idPedido;
+        detallePedido.idProducto = listdetallePedido[j].idProducto;
+        detallePedido.cantidad = listdetallePedido[j].cantidad;
+        detallePedido.detallePedidoSubtotal =
+            listdetallePedido[j].detallePedidoSubtotal;
+
+        //crear lista vacia para el modelo de Producto
+        final listProductosModel = List<ProductoModel>();
+
+        final listProductos =
+            await productoDb.obtenerProductoPorIdSubsidiaryGood(
+                listdetallePedido[j].idProducto);
+        //Recorrer la lista de la tabla productos para obtenr todos los datos
+        for (var l = 0; l < listProductos.length; l++) {
+          final productoModel = ProductoModel();
+
+          productoModel.idProducto = listProductos[0].idProducto;
+          productoModel.idSubsidiary = listProductos[0].idSubsidiary;
+          productoModel.productoName = listProductos[0].productoName;
+          productoModel.productoPrice = listProductos[0].productoPrice;
+          productoModel.productoCurrency = listProductos[l].productoCurrency;
+          productoModel.productoImage = listProductos[0].productoImage;
+          productoModel.productoCharacteristics =
+              listProductos[0].productoCharacteristics;
+          productoModel.productoBrand = listProductos[0].productoBrand;
+          productoModel.productoModel = listProductos[0].productoModel;
+          productoModel.productoMeasure = listProductos[0].productoMeasure;
+
+          listProductosModel.add(productoModel);
+        }
+        detallePedido.listProducto = listProductosModel;
+
+        listDetallePedidoModel.add(detallePedido);
+      }
+
+      pagosModel.detallePedido = listDetallePedidoModel;
 
       //------Recorrer la lista de compañías y sucursales---------
 

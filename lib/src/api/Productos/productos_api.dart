@@ -180,7 +180,7 @@ class ProductosApi {
     return 0;
   }
 
-  /* Future<dynamic> deshabilitarSubsidiaryProducto(String id) async {
+  Future<int> deshabilitarSubsidiaryProducto(String id) async {
     try {
       final response = await http
           .post('$apiBaseURL/api/Negocio/deshabilitar_producto', body: {
@@ -199,7 +199,6 @@ class ProductosApi {
     }
   }
 
-   */
   /* Future<int> guardarProducto(File _image, CompanyModel cmodel,
       BienesModel bienModel, ProductoModel producModel) async {
     final preferences = Preferences();

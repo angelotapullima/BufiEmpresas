@@ -485,7 +485,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
 
   Widget _crearItem(
       BuildContext context, PagosModel pagosData, Responsive responsive) {
-    var date = obtenerNombreMes(pagosData.transferenciaUEDate);
+    var date = obtenerNombreMes(pagosData.pagoDate);
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(PageRouteBuilder(
