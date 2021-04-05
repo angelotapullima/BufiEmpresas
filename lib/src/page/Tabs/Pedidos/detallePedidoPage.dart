@@ -1,6 +1,6 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
-import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
+import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -34,8 +34,6 @@ class _TickectPedidoState extends State<TickectPedido> {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
                 var fecha = obtenerNombreMes(snapshot.data[0].deliveryDatetime);
-                obtenerEstadoPedido(snapshot.data[0].deliveryStatus);
-                final pref = Preferences();
                 return Stack(
                   children: [
                     Screenshot(
@@ -110,7 +108,7 @@ class _TickectPedidoState extends State<TickectPedido> {
                                             'Fecha',
                                             '$fecha',
                                             'Estado del Pedido',
-                                            '${pref.nombreEstadoPedido} ',
+                                            '${snapshot.data[0].deliveryStatus}',
                                             responsive),
                                       ],
                                     ),
@@ -439,16 +437,25 @@ class _TickectPedidoState extends State<TickectPedido> {
             SizedBox(
               width: responsive.wp(2),
             ),
-            Container(
-              width: responsive.wp(42),
-              child: Text(
-                dato2,
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            ),
+            FutureBuilder(
+                future: getEstadoPedido(dato2),
+                builder:
+                    (context, AsyncSnapshot<TipoEstadoPedidoModel> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('');
+                  } else {
+                    return Container(
+                      width: responsive.wp(42),
+                      child: Text(
+                        '${snapshot.data.tipoEstadoNombre}',
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    );
+                  }
+                }),
           ],
         )
       ],

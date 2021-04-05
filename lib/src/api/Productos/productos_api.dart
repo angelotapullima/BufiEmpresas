@@ -44,7 +44,6 @@ class ProductosApi {
       for (var i = 0; i < productosPorSucursal.length; i++) {
         if (double.parse(productosPorSucursal[i].idProducto) > mayor) {
           mayor = double.parse(productosPorSucursal[i].idProducto);
-          print('mayor $mayor');
         }
       }
     }
@@ -55,7 +54,6 @@ class ProductosApi {
         if (double.parse(productosPorSucursal[x].idProducto) < mayor2) {
           menor = double.parse(productosPorSucursal[x].idProducto);
           mayor2 = menor;
-          print('menor $menor');
         } else {
           menor = mayor2;
         }
@@ -110,6 +108,8 @@ class ProductosApi {
             decodedData['results'][i]['subsidiary_good_updated'];
         productoModel.productoStatus =
             decodedData['results'][i]['subsidiary_good_status'];
+
+        print(decodedData['results'][i]['subsidiary_good_status']);
 
         var productList =
             await productoDatabase.obtenerProductoPorIdSubsidiaryGood(
@@ -180,13 +180,14 @@ class ProductosApi {
     return 0;
   }
 
-  Future<int> deshabilitarSubsidiaryProducto(String id) async {
+  Future<int> deshabilitarSubsidiaryProducto(String id, String status) async {
     try {
       final response = await http
           .post('$apiBaseURL/api/Negocio/deshabilitar_producto', body: {
         'id_subsidiarygood': '$id',
         'app': 'true',
         'tn': prefs.token,
+        'subsidiary_good_status': '$status',
       });
 
       final decodedData = json.decode(response.body);

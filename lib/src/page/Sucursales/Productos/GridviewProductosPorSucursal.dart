@@ -44,6 +44,7 @@ class _GridviewProductoPorSucursalState
                                 const Duration(milliseconds: 100),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) {
+                              print(snapshot.data[index].productoStatus);
                               return DetalleProductos(
                                   producto: snapshot.data[index]);
                             },

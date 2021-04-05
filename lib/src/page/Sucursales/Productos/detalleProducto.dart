@@ -5,6 +5,7 @@ import 'package:bufi_empresas/src/database/tallaProducto_database.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/widgets/extentions.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -40,6 +41,8 @@ class _DetalleProductosState extends State<DetalleProductos> {
     marcaProductoDb.updateEstadoa0();
     modeloProductoDb.updateEstadoa0();
   }
+
+  bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -492,6 +495,28 @@ class _DetalleProductosState extends State<DetalleProductos> {
                   (listProd[0].listModeloProd.length > 1)
                       ? _modelo(responsive, listProd)
                       : Container(),
+
+                  Center(
+                    child: SwitchListTile(
+                      value: isSwitched,
+                      title: (isSwitched)
+                          ? Text('Producto Habilitado')
+                          : Text('Producto Deshabilitado'),
+                      onChanged: (value) {
+                        setState(() {
+                          isSwitched = value;
+                          String estatus = '0';
+                          if (value) {
+                            estatus = '1';
+                          }
+                          habilitarDesProducto(
+                              context, widget.producto.idGood, estatus);
+                        });
+                      },
+                      activeTrackColor: Colors.yellow,
+                      activeColor: Colors.orangeAccent,
+                    ),
+                  )
                   //_description(),
                 ],
               ),

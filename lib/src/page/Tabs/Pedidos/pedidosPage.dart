@@ -383,10 +383,26 @@ class _ListarPedidosPorIdSubsidiaryState
               ),
             ),
             Container(
+              margin: EdgeInsets.all(responsive.ip(1)),
               child: (idStatus == '99')
                   ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(''),
+                        FutureBuilder(
+                            future: getEstadoPedido(pedidosData.deliveryStatus),
+                            builder: (context,
+                                AsyncSnapshot<TipoEstadoPedidoModel> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center();
+                              } else {
+                                return Text(
+                                    '${snapshot.data.tipoEstadoNombre}');
+                              }
+                            }),
+                        SizedBox(
+                          height: responsive.hp(1),
+                        ),
                         Text(
                           'S/. ${pedidosData.deliveryTotalOrden}',
                           style: TextStyle(

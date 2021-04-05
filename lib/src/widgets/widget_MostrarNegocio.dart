@@ -143,7 +143,7 @@ class MostrarNegocio extends StatelessWidget {
                   return Center(child: Text(''));
                 }
               } else {
-                return Center(child: CircularProgressIndicator());
+                return Center();
               }
             },
           ),

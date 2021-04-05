@@ -472,7 +472,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                                         return Container(
                                             child: Center(
                                           child: Text(
-                                              'Se muestra pagos del $finicio al $fFin'),
+                                              'Se muestra Pagos del $finicio al $fFin'),
                                         ));
                                       }
                                       index = index - 1;
