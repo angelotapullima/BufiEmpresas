@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> listPages = List<Widget>();
+  List<Widget> listPages = [];
 
   @override
   void initState() {
@@ -43,7 +43,8 @@ class _HomePageState extends State<HomePage> {
           stream: buttonBloc.selectPageStream,
           builder: (context, snapshot) {
             return BottomNavigationBar(
-              selectedItemColor: Theme.of(context).textSelectionColor,
+              selectedItemColor:
+                  Theme.of(context).textSelectionTheme.selectionColor,
               type: BottomNavigationBarType.fixed,
               items: [
                 BottomNavigationBarItem(

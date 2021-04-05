@@ -1,17 +1,11 @@
-
-
-
-
 import 'package:flutter/material.dart';
 
+enum PageDetailsSucursal { informacion, productos, servicios }
 
-enum PageDetailsSucursal { informacion, productos,servicios }
-
-class DetailSubsidiaryBloc with ChangeNotifier { 
-
-  ValueNotifier<PageDetailsSucursal> _page = ValueNotifier(PageDetailsSucursal.informacion);
+class DetailSubsidiaryBloc with ChangeNotifier {
+  ValueNotifier<PageDetailsSucursal> _page =
+      ValueNotifier(PageDetailsSucursal.informacion);
   ValueNotifier<PageDetailsSucursal> get page => this._page;
-
 
   /* 
   ScrollController _controller = ScrollController();
@@ -25,26 +19,24 @@ class DetailSubsidiaryBloc with ChangeNotifier {
 
   DetailSubsidiaryBloc() {
     print('init');
-     
-  }  
-  
+  }
+
   @override
-  void dispose() { 
+  void dispose() {
     super.dispose();
   }
 
-  void changeToInformation() { 
+  void changeToInformation() {
     _page.value = PageDetailsSucursal.informacion;
     notifyListeners();
   }
 
-  void changeToProductos() { 
+  void changeToProductos() {
     _page.value = PageDetailsSucursal.productos;
     notifyListeners();
   }
 
-
-  void changeToServicios() { 
+  void changeToServicios() {
     _page.value = PageDetailsSucursal.servicios;
     notifyListeners();
   }

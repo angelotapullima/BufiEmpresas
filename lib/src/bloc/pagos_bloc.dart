@@ -47,7 +47,7 @@ class PagosBloc {
   }
 
   Future<List<PagosModel>> obtenerPedidosPorIdPedido(String idPago) async {
-    List<PagosModel> listaGeneral = List<PagosModel>();
+    List<PagosModel> listaGeneral = [];
 
     //obtener todos los pedidos de la bd
     final listPagos = await pagosDatabase.obtenerPagosXIdPago(idPago);
@@ -80,7 +80,7 @@ class PagosBloc {
       final listdetallePedido = await detallePedidoDb
           .obtenerDetallePedidoxIdPedido(listPagos[i].idDelivery);
       //crear lista vacia para llenar el detalle del pedido
-      final listDetallePedidoModel = List<DetallePedidoModel>();
+      final List<DetallePedidoModel> listDetallePedidoModel = [];
 
       // recorrer la tabla de detalle de pedido
       for (var j = 0; j < listdetallePedido.length; j++) {
@@ -94,7 +94,7 @@ class PagosBloc {
             listdetallePedido[j].detallePedidoSubtotal;
 
         //crear lista vacia para el modelo de Producto
-        final listProductosModel = List<ProductoModel>();
+        final List<ProductoModel> listProductosModel = [];
 
         final listProductos =
             await productoDb.obtenerProductoPorIdSubsidiaryGood(
@@ -131,7 +131,7 @@ class PagosBloc {
           await companyDb.obtenerCompanyPorId(listPagos[i].idEmpresa);
       final listSucursal = await subsidiaryDb
           .obtenerSubsidiaryPorIdSubsidiary(listPagos[i].idSubsidiary);
-      final listCompsucursalModel = List<CompanySubsidiaryModel>();
+      final List<CompanySubsidiaryModel> listCompsucursalModel = [];
 
       final compSucursalModel = CompanySubsidiaryModel();
       //Sucursal

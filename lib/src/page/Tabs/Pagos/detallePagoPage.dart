@@ -1,18 +1,12 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 class TicketPago extends StatefulWidget {
@@ -24,7 +18,6 @@ class TicketPago extends StatefulWidget {
 }
 
 class _TicketPagoState extends State<TicketPago> {
-  File _imageFile;
   ScreenshotController screenshotController = ScreenshotController();
   @override
   Widget build(BuildContext context) {

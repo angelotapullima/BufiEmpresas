@@ -34,12 +34,16 @@ class ListarSucursales extends StatelessWidget {
             StreamBuilder(
                 stream: empresaNameBloc.empresaNameStream,
                 builder: (context, snapshot) {
-                  return Text(
-                    empresaNameBloc.empresaName,
-                    style: TextStyle(
-                        fontSize: responsive.ip(2.5),
-                        fontWeight: FontWeight.bold),
-                  );
+                  if (snapshot.hasData) {
+                    return Text(
+                      empresaNameBloc.empresaName,
+                      style: TextStyle(
+                          fontSize: responsive.ip(2.5),
+                          fontWeight: FontWeight.bold),
+                    );
+                  } else {
+                    return Center(child: Text(''));
+                  }
                 }),
           ],
         ),

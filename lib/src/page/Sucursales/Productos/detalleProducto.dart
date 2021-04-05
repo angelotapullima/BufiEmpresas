@@ -5,7 +5,6 @@ import 'package:bufi_empresas/src/database/tallaProducto_database.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
-import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/widgets/extentions.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';

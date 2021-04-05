@@ -6,7 +6,6 @@ import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:bufi_empresas/src/widgets/widget_SeleccionarSucursal.dart';
-import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -152,7 +151,7 @@ class PagosPage extends StatelessWidget {
     );
   }
 
-  Widget _crearTimeLineCalendar(Responsive responsive) {
+  /*Widget _crearTimeLineCalendar(Responsive responsive) {
     return CalendarTimeline(
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 2),
@@ -167,23 +166,30 @@ class PagosPage extends StatelessWidget {
       selectableDayPredicate: (date) => date.day != 23,
       locale: 'es_MX',
     );
-  }
+  }*/
 
   Widget _botonBuscar(BuildContext context, Responsive responsive) {
-    return RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+    return ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed))
+                  return Colors.redAccent.withOpacity(0.5);
+                return Colors.redAccent; // Use the component's default.
+              },
+            ),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ))),
         //padding: EdgeInsets.all(0.0),
         child: Text(
           'Buscar',
           style: TextStyle(
             fontSize: responsive.ip(1.9),
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
-        color: Colors.redAccent,
-        textColor: Colors.white,
         onPressed: () {
           final pagosBloc = ProviderBloc.pagos(context);
           final prefs = Preferences();
@@ -355,6 +361,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
     pagosBloc.obtenerPagosXFecha(
         widget.idSucursal, widget.fechaI, widget.fechaF);
     final responsive = Responsive.of(context);
+    final preferences = Preferences();
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
@@ -455,8 +462,20 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                                     shrinkWrap: true,
                                     physics: ClampingScrollPhysics(),
                                     scrollDirection: Axis.vertical,
-                                    itemCount: snapshot.data.length,
+                                    itemCount: snapshot.data.length + 1,
                                     itemBuilder: (context, index) {
+                                      if (index == 0) {
+                                        final finicio =
+                                            obtenerFecha(preferences.fechaI);
+                                        final fFin =
+                                            obtenerFecha(preferences.fechaF);
+                                        return Container(
+                                            child: Center(
+                                          child: Text(
+                                              'Se muestra pagos del $finicio al $fFin'),
+                                        ));
+                                      }
+                                      index = index - 1;
                                       return _crearItem(context,
                                           snapshot.data[index], responsive);
                                     }),

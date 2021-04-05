@@ -58,9 +58,6 @@ class _GridviewProductoPorSucursalState
                         );
                       },
                       child: BienesWidget(
-                        estado: (snapshot.data[index].productoStatus == '1')
-                            ? true
-                            : false,
                         producto: snapshot.data[index],
                       ),
                     );

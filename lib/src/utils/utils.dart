@@ -2,6 +2,7 @@ import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
+import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:intl/intl.Dart';
 import 'package:flutter/material.dart';
@@ -55,12 +56,14 @@ void obtenerprimerIdSubsidiary(BuildContext context, String idCompany) async {
   //Obtener el primer sucursal de cada Negocio
   final listSucursal =
       await subsidiaryDatabase.obtenerPrimerIdSubsidiary(idCompany);
-  preferences.idSeleccionSubsidiaryPedidos = listSucursal[0].idSubsidiary;
+  if (listSucursal.length > 0)
+    preferences.idSeleccionSubsidiaryPedidos = listSucursal[0].idSubsidiary;
 
   //Actualizar lista de Pedidos de la Pagina de Pedidos
   final pedidosBloc = ProviderBloc.pedido(context);
   pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
       preferences.idSeleccionSubsidiaryPedidos, preferences.idStatusPedidos);
+  preferences.idStatusPedidos = '99';
 }
 
 void actualizarSeleccionCompany(BuildContext context, String idCompany) async {
@@ -100,6 +103,21 @@ obtenerNombreMes(String date) {
   final DateFormat fech = new DateFormat('dd MMM yyyy, H:m', 'es');
 
   return fech.format(fecha);
+}
+
+obtenerFecha(String date) {
+  var fecha = DateTime.parse(date);
+
+  final DateFormat fech = new DateFormat('dd MMM yyyy', 'es');
+
+  return fech.format(fecha);
+}
+
+Future<TipoEstadoPedidoModel> getEstadoPedido(String id) async {
+  final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
+  final listEstado =
+      await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedidoXid(id);
+  return listEstado[0];
 }
 
 obtenerEstadoPedido(String id) async {

@@ -40,7 +40,7 @@ class DatosProductoBloc {
   Future<List<ProductoModel>> obtenerDatosProductosPorIdProducto(
       String idProducto) async {
     //await tallaProductoDb.updateEstadoa0();
-    List<ProductoModel> listaGeneral = List<ProductoModel>();
+    List<ProductoModel> listaGeneral = [];
 
     //obtener todos los productos de la bd
     final listProductos =
@@ -73,7 +73,7 @@ class DatosProductoBloc {
       final listGaleria = await galeriaProductoDb
           .obtenerGaleriaProductoPorIdProducto(listProductos[i].idProducto);
       //crear lista vacia para llenar las fotos del producto
-      final listGaleriaModel = List<GaleriaProductoModel>();
+      final List<GaleriaProductoModel> listGaleriaModel = [];
 
       // recorrer la tabla galeria
       for (var j = 0; j < listGaleria.length; j++) {
@@ -87,7 +87,7 @@ class DatosProductoBloc {
       }
 
       //crear lista vacia para el modelo de Producto
-      final listModelProdModel = List<ModeloProductoModel>();
+      final List<ModeloProductoModel> listModelProdModel = [];
       final listModeloProd = await modeloProductoDb
           .obtenerModeloProductoPorIdProducto(listProductos[i].idProducto);
 
@@ -104,7 +104,7 @@ class DatosProductoBloc {
       }
 
       //crear lista vacia para la marca del Producto
-      final listMarcaProdModel = List<MarcaProductoModel>();
+      final List<MarcaProductoModel> listMarcaProdModel = [];
       final listMarcaProd = await marcaProductoDb
           .obtenerMarcaProductoPorIdProducto(listProductos[i].idProducto);
       //Recorrer la lista de la tabla productos para obtenr todos los datos
@@ -121,7 +121,7 @@ class DatosProductoBloc {
       }
 
       //crear lista vacia para la talla del Producto
-      final listTallaProdModel = List<TallaProductoModel>();
+      final List<TallaProductoModel> listTallaProdModel = [];
       final listTallaProd = await tallaProductoDb
           .obtenerTallaProductoPorIdProducto(listProductos[i].idProducto);
       //Recorrer la lista de la tabla productos para obtenr todos los datos

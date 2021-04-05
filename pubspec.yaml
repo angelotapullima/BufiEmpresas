@@ -56,6 +56,7 @@ dependencies:
   rating_bar: ^0.2.0
   shimmer: ^1.1.2
   intl: ^0.17.0
+  animate_do:
 
 dev_dependencies:
   flutter_test:

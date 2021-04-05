@@ -212,11 +212,13 @@ class PerfilPage extends StatelessWidget {
             Center(
               child: SizedBox(
                 width: responsive.wp(80),
-                child: RaisedButton(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  color: Colors.red,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(3),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                  ),
                   onPressed: () {},
                   child: Text("Cambiar",
                       style: TextStyle(

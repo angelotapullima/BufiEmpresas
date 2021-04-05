@@ -1,5 +1,5 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/bloc/tiposEstadosPedidos_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pedidos/detallePedidoPage.dart';
@@ -280,11 +280,15 @@ class _ListarPedidosPorIdSubsidiaryState
                                     scrollDirection: Axis.vertical,
                                     itemCount: snapshot.data.length,
                                     itemBuilder: (context, index) {
-                                      return _crearItem(
-                                        context,
-                                        snapshot.data[index],
-                                        responsive,
-                                        preferences.idStatusPedidos,
+                                      return FadeIn(
+                                        delay:
+                                            Duration(milliseconds: 100 * index),
+                                        child: _crearItem(
+                                          context,
+                                          snapshot.data[index],
+                                          responsive,
+                                          preferences.idStatusPedidos,
+                                        ),
                                       );
                                     }),
                               );

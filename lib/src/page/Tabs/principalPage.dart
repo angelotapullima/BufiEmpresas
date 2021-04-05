@@ -122,16 +122,26 @@ class PrincipalPage extends StatelessWidget {
                     StreamBuilder(
                         stream: pedidoAtendidoBloc.pedidosAtendidosStream,
                         builder: (context, snapshot) {
-                          if (snapshot.data.length > 0) {
-                            return Text('${snapshot.data.length}',
+                          if (snapshot.hasData) {
+                            if (snapshot.data.length > 0) {
+                              return Text(
+                                '${snapshot.data.length}',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(3)));
+                                  color: Colors.white,
+                                  fontSize: responsive.ip(3),
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                '0',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsive.ip(3),
+                                ),
+                              );
+                            }
                           } else {
-                            return Text('0',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(3)));
+                            return Center(child: CircularProgressIndicator());
                           }
                         }),
                   ],
@@ -157,16 +167,26 @@ class PrincipalPage extends StatelessWidget {
                     StreamBuilder(
                         stream: pedidoPendienteBloc.pedidosPendientesStream,
                         builder: (context, snapshot) {
-                          if (snapshot.data.length > 0) {
-                            return Text('${snapshot.data.length}',
+                          if (snapshot.hasData) {
+                            if (snapshot.data.length > 0) {
+                              return Text(
+                                '${snapshot.data.length}',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(3)));
+                                  color: Colors.white,
+                                  fontSize: responsive.ip(3),
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                '0',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsive.ip(3),
+                                ),
+                              );
+                            }
                           } else {
-                            return Text('0',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: responsive.ip(3)));
+                            return Center(child: CircularProgressIndicator());
                           }
                         }),
                   ],
