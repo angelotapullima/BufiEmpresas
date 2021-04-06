@@ -234,4 +234,24 @@ class PedidoApi {
     //print(decodedData);
     return 0;
   }
+
+  Future<dynamic> updateStatus(String id, String estado) async {
+    try {
+      final response =
+          await http.post('$apiBaseURL/api/Pedido/update_status', body: {
+        'id': '$id',
+        'app': 'true',
+        'tn': prefs.token,
+        'estado': '$estado',
+      });
+
+      final decodedData = json.decode(response.body);
+
+      return decodedData;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+
+      return 0;
+    }
+  }
 }

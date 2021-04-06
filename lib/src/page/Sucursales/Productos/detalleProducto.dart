@@ -17,7 +17,8 @@ import 'package:shimmer/shimmer.dart';
 class DetalleProductos extends StatefulWidget {
   final ProductoModel producto;
   final bool estado;
-  DetalleProductos(this.producto, this.estado);
+  final bool stock;
+  DetalleProductos(this.producto, this.estado, this.stock);
 
   @override
   _DetalleProductosState createState() => _DetalleProductosState();
@@ -32,10 +33,12 @@ class _DetalleProductosState extends State<DetalleProductos> {
   final modeloProductoDb = ModeloProductoDatabase();
 
   bool isSwitched;
+  bool isSwitched2;
 
   @override
   void initState() {
     isSwitched = widget.estado;
+    isSwitched2 = widget.stock;
     limpiarOpciones();
     super.initState();
   }
@@ -499,6 +502,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                       : Container(),
 
                   Center(child: _swichtEstado(context, listProd)),
+                  Center(child: _swichtEstadoStock(context, listProd)),
                   //_description(),
                 ],
               ),
@@ -523,6 +527,28 @@ class _DetalleProductosState extends State<DetalleProductos> {
             estatus = '1';
           }
           habilitarDesProducto(context, widget.producto.idProducto, estatus);
+        });
+      },
+      activeTrackColor: Colors.yellow,
+      activeColor: Colors.orangeAccent,
+    );
+  }
+
+  Widget _swichtEstadoStock(
+      BuildContext context, List<ProductoModel> listProd) {
+    return SwitchListTile(
+      value: isSwitched2,
+      title: (listProd[0].productoStock == '1')
+          ? Text('Stock Habilitado')
+          : Text('Stock Deshabilitado'),
+      onChanged: (value) {
+        setState(() {
+          isSwitched2 = value;
+          String estatus = '0';
+          if (value) {
+            estatus = '1';
+          }
+          cambiarStock(context, widget.producto.idProducto, estatus);
         });
       },
       activeTrackColor: Colors.yellow,

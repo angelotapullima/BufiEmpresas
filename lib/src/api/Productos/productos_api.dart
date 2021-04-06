@@ -200,6 +200,26 @@ class ProductosApi {
     }
   }
 
+  Future<int> cambiarStock(String id, String status) async {
+    try {
+      final response =
+          await http.post('$apiBaseURL/api/Negocio/cambiar_stock', body: {
+        'id_subsidiarygood': '$id',
+        'app': 'true',
+        'tn': prefs.token,
+        'estado': '$status',
+      });
+
+      final decodedData = json.decode(response.body);
+
+      return decodedData;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+
+      return 0;
+    }
+  }
+
   /* Future<int> guardarProducto(File _image, CompanyModel cmodel,
       BienesModel bienModel, ProductoModel producModel) async {
     final preferences = Preferences();

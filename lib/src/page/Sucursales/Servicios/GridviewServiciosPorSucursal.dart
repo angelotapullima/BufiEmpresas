@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 
 class GridviewServiciosPorSucursal extends StatefulWidget {
   final String idSucursal;
-  const GridviewServiciosPorSucursal({Key key, @required this.idSucursal})
-      : super(key: key);
+  const GridviewServiciosPorSucursal({
+    Key key,
+    @required this.idSucursal,
+  }) : super(key: key);
 
   @override
   _GridviewProductoPorSucursalState createState() =>
@@ -33,14 +35,20 @@ class _GridviewProductoPorSucursalState
               return SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.86,
+                  childAspectRatio: 0.7,
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return GestureDetector(
                         onTap: () {},
                         child: serviceWidget(
-                            context, snapshot.data[index], responsive));
+                            context,
+                            snapshot.data[index],
+                            responsive,
+                            (snapshot.data[index].subsidiaryServiceStatus ==
+                                    '1')
+                                ? true
+                                : false));
                   },
                   childCount: snapshot.data.length,
                 ),

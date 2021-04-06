@@ -241,13 +241,15 @@ class ServiceApi {
     }
   }
 
-  /* Future<dynamic> deshabilitarSubsidiaryService(String id) async {
+  Future<dynamic> deshabilitarSubsidiaryService(
+      String id, String estado) async {
     try {
       final response = await http
           .post('$apiBaseURL/api/Negocio/deshabilitar_servicio', body: {
         'id_subsidiaryservice': '$id',
         'app': 'true',
         'tn': prefs.token,
+        'estado': '$estado',
       });
 
       final decodedData = json.decode(response.body);
@@ -258,7 +260,7 @@ class ServiceApi {
 
       return 0;
     }
-  } */
+  }
 
   Future<int> listarServiciosAllPorCiudad() async {
     final response = await http.post(

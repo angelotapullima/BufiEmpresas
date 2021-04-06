@@ -50,6 +50,11 @@ class ProductoBloc {
     return resp;
   }
 
+  Future<int> cambiarStock(String id, String status) async {
+    final resp = await productosApi.cambiarStock(id, status);
+    return resp;
+  }
+
   Future<List<BienesServiciosModel>> datosSucursal(String idSubsidiary) async {
     final List<BienesServiciosModel> listGeneral = [];
 

@@ -144,3 +144,26 @@ habilitarDesProducto(BuildContext context, String id, String status) async {
     datosProdBloc.listarDatosProducto(id);
   }
 }
+
+cambiarStock(BuildContext context, String id, String status) async {
+  final productosBloc = ProviderBloc.productos(context);
+  final prefs = Preferences();
+  final datosProdBloc = ProviderBloc.datosProductos(context);
+  final productoBloc = ProviderBloc.productos(context);
+  final res = await productosBloc.cambiarStock(id, status);
+  if (res == 1) {
+    productoBloc.listarProductosPorSucursal(prefs.idSeleccionSubsidiaryPedidos);
+
+    datosProdBloc.listarDatosProducto(id);
+  }
+}
+
+habilitarDesServicio(BuildContext context, String id, String status) async {
+  final serviciosBloc = ProviderBloc.servi(context);
+  final prefs = Preferences();
+  print(id);
+
+  final res = await serviciosBloc.habilitarDesService(id, status);
+  print(res);
+  if (res == 1) {}
+}

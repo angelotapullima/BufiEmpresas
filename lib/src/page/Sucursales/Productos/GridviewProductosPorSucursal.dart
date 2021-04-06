@@ -49,6 +49,9 @@ class _GridviewProductoPorSucursalState
                                   snapshot.data[index],
                                   (snapshot.data[index].productoStatus == '1')
                                       ? true
+                                      : false,
+                                  (snapshot.data[index].productoStock == '1')
+                                      ? true
                                       : false);
                             },
                             transitionsBuilder: (context, animation,

@@ -39,4 +39,9 @@ class ServiciosBloc {
     _detailServicioController.sink.add(
         await subservicesDatabase.obtenerServiciosPorIdSucursalService(id));
   }
+
+  Future<int> habilitarDesService(String id, String status) async {
+    final resp = await serviciosApi.deshabilitarSubsidiaryService(id, status);
+    return resp;
+  }
 }

@@ -1,12 +1,14 @@
+import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/subsidiaryService.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget serviceWidget(BuildContext context, SubsidiaryServiceModel serviceData,
-    Responsive responsive) {
+    Responsive responsive, bool estado) {
   return GestureDetector(
     child: Container(
       margin: EdgeInsets.symmetric(
@@ -73,9 +75,60 @@ Widget serviceWidget(BuildContext context, SubsidiaryServiceModel serviceData,
                 fontSize: responsive.ip(1.5),
                 color: Colors.red),
           ),
+          Center(
+            child: Column(
+              children: [SwichtStatus(context, serviceData, estado)],
+            ),
+          )
         ],
       ),
     ),
     onTap: () {},
   );
+}
+
+class SwichtStatus extends StatefulWidget {
+  final BuildContext context;
+  final SubsidiaryServiceModel serviceData;
+  final bool estado;
+
+  SwichtStatus(this.context, this.serviceData, this.estado);
+
+  @override
+  _SwichtStatusState createState() => _SwichtStatusState();
+}
+
+class _SwichtStatusState extends State<SwichtStatus> {
+  bool isSwitched;
+
+  @override
+  void initState() {
+    isSwitched = widget.estado;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      value: isSwitched,
+      title: (widget.serviceData.subsidiaryServiceStatus == '1')
+          ? Text('Habilitado')
+          : Text('Deshabilitado'),
+      onChanged: (value) {
+        setState(() {
+          isSwitched = value;
+          String estatus = '0';
+          if (value) {
+            estatus = '1';
+          }
+          habilitarDesServicio(context, widget.serviceData.idService, estatus);
+          final serviciosBloc = ProviderBloc.servi(context);
+          serviciosBloc
+              .listarServiciosPorSucursal(widget.serviceData.idSubsidiary);
+        });
+      },
+      activeTrackColor: Colors.yellow,
+      activeColor: Colors.orangeAccent,
+    );
+  }
 }
