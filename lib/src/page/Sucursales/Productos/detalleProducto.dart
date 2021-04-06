@@ -16,7 +16,8 @@ import 'package:shimmer/shimmer.dart';
 
 class DetalleProductos extends StatefulWidget {
   final ProductoModel producto;
-  const DetalleProductos({Key key, @required this.producto}) : super(key: key);
+  final bool estado;
+  DetalleProductos(this.producto, this.estado);
 
   @override
   _DetalleProductosState createState() => _DetalleProductosState();
@@ -30,8 +31,11 @@ class _DetalleProductosState extends State<DetalleProductos> {
   final marcaProductoDb = MarcaProductoDatabase();
   final modeloProductoDb = ModeloProductoDatabase();
 
+  bool isSwitched;
+
   @override
   void initState() {
+    isSwitched = widget.estado;
     limpiarOpciones();
     super.initState();
   }
@@ -41,8 +45,6 @@ class _DetalleProductosState extends State<DetalleProductos> {
     marcaProductoDb.updateEstadoa0();
     modeloProductoDb.updateEstadoa0();
   }
-
-  bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -496,27 +498,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                       ? _modelo(responsive, listProd)
                       : Container(),
 
-                  Center(
-                    child: SwitchListTile(
-                      value: isSwitched,
-                      title: (isSwitched)
-                          ? Text('Producto Habilitado')
-                          : Text('Producto Deshabilitado'),
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitched = value;
-                          String estatus = '0';
-                          if (value) {
-                            estatus = '1';
-                          }
-                          habilitarDesProducto(
-                              context, widget.producto.idGood, estatus);
-                        });
-                      },
-                      activeTrackColor: Colors.yellow,
-                      activeColor: Colors.orangeAccent,
-                    ),
-                  )
+                  Center(child: _swichtEstado(context, listProd)),
                   //_description(),
                 ],
               ),
@@ -524,6 +506,27 @@ class _DetalleProductosState extends State<DetalleProductos> {
           );
         },
       ),
+    );
+  }
+
+  Widget _swichtEstado(BuildContext context, List<ProductoModel> listProd) {
+    return SwitchListTile(
+      value: isSwitched,
+      title: (listProd[0].productoStatus == '1')
+          ? Text('Producto Habilitado')
+          : Text('Producto Deshabilitado'),
+      onChanged: (value) {
+        setState(() {
+          isSwitched = value;
+          String estatus = '0';
+          if (value) {
+            estatus = '1';
+          }
+          habilitarDesProducto(context, widget.producto.idProducto, estatus);
+        });
+      },
+      activeTrackColor: Colors.yellow,
+      activeColor: Colors.orangeAccent,
     );
   }
 

@@ -135,10 +135,12 @@ obtenerEstadoPedido(String id) async {
 habilitarDesProducto(BuildContext context, String id, String status) async {
   final productosBloc = ProviderBloc.productos(context);
   final prefs = Preferences();
+  final datosProdBloc = ProviderBloc.datosProductos(context);
   final productoBloc = ProviderBloc.productos(context);
   final res = await productosBloc.habilitarDesProducto(id, status);
-  print(res);
   if (res == 1) {
     productoBloc.listarProductosPorSucursal(prefs.idSeleccionSubsidiaryPedidos);
+
+    datosProdBloc.listarDatosProducto(id);
   }
 }

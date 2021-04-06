@@ -187,7 +187,7 @@ class ProductosApi {
         'id_subsidiarygood': '$id',
         'app': 'true',
         'tn': prefs.token,
-        'subsidiary_good_status': '$status',
+        'estado': '$status',
       });
 
       final decodedData = json.decode(response.body);

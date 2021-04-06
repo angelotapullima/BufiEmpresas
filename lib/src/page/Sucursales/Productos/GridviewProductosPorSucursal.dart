@@ -46,7 +46,10 @@ class _GridviewProductoPorSucursalState
                                 (context, animation, secondaryAnimation) {
                               print(snapshot.data[index].productoStatus);
                               return DetalleProductos(
-                                  producto: snapshot.data[index]);
+                                  snapshot.data[index],
+                                  (snapshot.data[index].productoStatus == '1')
+                                      ? true
+                                      : false);
                             },
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {
