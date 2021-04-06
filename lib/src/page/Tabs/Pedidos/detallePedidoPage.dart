@@ -339,9 +339,44 @@ class _TickectPedidoState extends State<TickectPedido> {
                                   Expanded(
                                       child: Row(
                                     children: [
-                                      SizedBox(
-                                        width: responsive.wp(75),
-                                      ),
+                                      (snapshot.data[0].deliveryStatus != '5')
+                                          ? Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: responsive.wp(5),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    width: responsive.wp(30),
+                                                    height: responsive.hp(5),
+                                                    margin: EdgeInsets.all(
+                                                        responsive.ip(1)),
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.blueGrey,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8)),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Cambiar Estado',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: responsive.wp(35),
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(
+                                              width: responsive.wp(75),
+                                            ),
                                       Image(
                                         width: responsive.ip(7.5),
                                         height: responsive.ip(7.5),
