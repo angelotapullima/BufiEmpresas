@@ -83,7 +83,7 @@ class PedidoApi {
       sucursalModel.subsidiaryCellphone =
           decodedData["result"][i]['subsidiary_cellphone'];
       sucursalModel.subsidiaryCellphone2 =
-          decodedData["result"][i]['subsidiary_cellphone2'];
+          decodedData["result"][i]['subsidiary_cellphone_2'];
       sucursalModel.subsidiaryEmail =
           decodedData["result"][i]['subsidiary_email'];
       sucursalModel.subsidiaryCoordX =
@@ -242,7 +242,7 @@ class PedidoApi {
         'id': '$id',
         'app': 'true',
         'tn': prefs.token,
-        'estado': '$estado',
+        'status': '$estado',
       });
 
       final decodedData = json.decode(response.body);

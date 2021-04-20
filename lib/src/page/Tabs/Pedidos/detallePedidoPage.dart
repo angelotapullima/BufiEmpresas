@@ -1,3 +1,4 @@
+import 'package:bufi_empresas/src/api/Pedidos/Pedido_api.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
@@ -7,7 +8,9 @@ import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:bufi_empresas/src/utils/utils.dart' as utils;
 import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:screenshot/screenshot.dart';
 
 class TickectPedido extends StatefulWidget {
@@ -346,7 +349,36 @@ class _TickectPedidoState extends State<TickectPedido> {
                                                   width: responsive.wp(5),
                                                 ),
                                                 GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        PageRouteBuilder(
+                                                          opaque: false,
+                                                          transitionDuration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      700),
+                                                          pageBuilder: (context,
+                                                              animation,
+                                                              secondaryAnimation) {
+                                                            return ChangeStatus(
+                                                                '${snapshot.data[0].deliveryStatus}',
+                                                                '${snapshot.data[0].idPedido}');
+                                                            //return DetalleProductitos(productosData: productosData);
+                                                          },
+                                                          transitionsBuilder:
+                                                              (context,
+                                                                  animation,
+                                                                  secondaryAnimation,
+                                                                  child) {
+                                                            return FadeTransition(
+                                                              opacity:
+                                                                  animation,
+                                                              child: child,
+                                                            );
+                                                          },
+                                                        ));
+                                                  },
                                                   child: Container(
                                                     width: responsive.wp(30),
                                                     height: responsive.hp(5),
@@ -495,5 +527,135 @@ class _TickectPedidoState extends State<TickectPedido> {
         )
       ],
     );
+  }
+}
+
+class ChangeStatus extends StatefulWidget {
+  final String idEstatus;
+  final String idPedido;
+  ChangeStatus(this.idEstatus, this.idPedido);
+
+  @override
+  _ChangeStatusState createState() => _ChangeStatusState();
+}
+
+class _ChangeStatusState extends State<ChangeStatus> {
+  final _cargando = ValueNotifier<bool>(false);
+  @override
+  Widget build(BuildContext context) {
+    final tipoEstadoPedidos = ProviderBloc.tipoEstadoPedidos(context);
+    tipoEstadoPedidos.obtenerTiposEstadosPedidos2(widget.idEstatus);
+    final responsive = Responsive.of(context);
+    return Material(
+      color: Colors.black45,
+      child: Stack(
+        children: [
+          GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Colors.transparent)),
+          Center(
+            child: Container(
+                margin: EdgeInsets.only(
+                    left: responsive.ip(1), right: responsive.ip(1)),
+                height: responsive.hp(40),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white),
+                child: StreamBuilder(
+                  stream: tipoEstadoPedidos.tiposEstadosPedidosStream2,
+                  builder: (context,
+                      AsyncSnapshot<List<TipoEstadoPedidoModel>> snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data.length > 0) {
+                        return ListView.builder(
+                            itemCount: snapshot.data.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == 0) {
+                                return Container(
+                                    child: Center(
+                                  child: Text('Cambiar Estado',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: responsive.ip(3),
+                                          fontWeight: FontWeight.bold)),
+                                ));
+                              }
+                              index = index - 1;
+                              return _item(
+                                  responsive,
+                                  widget.idPedido,
+                                  snapshot.data[index],
+                                  Icons.arrow_forward_ios);
+                            });
+                      } else {
+                        return Center(
+                          child: Text('Sin estados disponibles'),
+                        );
+                      }
+                    } else {
+                      return Center(
+                        child: NutsActivityIndicator(
+                          radius: 12,
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.redAccent,
+                          tickCount: 11,
+                          startRatio: 0.55,
+                          animationDuration: Duration(milliseconds: 2003),
+                        ),
+                      );
+                    }
+                  },
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _item(Responsive responsive, idpedido, TipoEstadoPedidoModel data,
+      IconData icon) {
+    return Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: responsive.ip(1.5), vertical: responsive.ip(0.5)),
+        width: double.infinity,
+        height: responsive.ip(8),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.white),
+        child: ListTile(
+          title: Text(data.tipoEstadoNombre,
+              style: TextStyle(
+                  //color: Colors.red,
+                  fontSize: responsive.ip(2),
+                  fontWeight: FontWeight.bold)),
+          leading: Icon(icon),
+          onTap: () {
+            _submit(context, data);
+          },
+        ));
+  }
+
+  Future _submit(BuildContext context, TipoEstadoPedidoModel data) async {
+    final pedidoApi = PedidoApi();
+    final pedidoBloc = ProviderBloc.pedido(context);
+    _cargando.value = true;
+    final int res =
+        await pedidoApi.updateStatus(widget.idPedido, data.idTipoEstado);
+    if (res == 1) {
+      print("Estado Actualizado");
+      utils.showToast(context, 'Estado Actualizado');
+      Navigator.pop(context);
+    } else {
+      utils.showToast(context, 'Error al Actualizar');
+    }
+
+    _cargando.value = false;
+    pedidoBloc.obtenerPedidoPorId(widget.idPedido);
+    //Navigator.pop(context);
   }
 }

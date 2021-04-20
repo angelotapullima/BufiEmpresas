@@ -399,8 +399,17 @@ class _ListarPedidosPorIdSubsidiaryState
                                     ConnectionState.waiting) {
                                   return Center();
                                 } else {
-                                  return Text(
-                                      '${snapshot.data.tipoEstadoNombre}');
+                                  return Flexible(
+                                    child: Container(
+                                      width: responsive.wp(20),
+                                      child: Text(
+                                        '${snapshot.data.tipoEstadoNombre}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: false,
+                                      ),
+                                    ),
+                                  );
                                 }
                               }),
                           SizedBox(
@@ -451,29 +460,32 @@ class _CrearItemChoiceState extends State<CrearItemChoice> {
         scrollDirection: Axis.horizontal,
         itemCount: widget.datos.data.length,
         itemBuilder: (context, index) {
-          return ChoiceChip(
-            selected: _selectedIndex == index,
-            label: Text(widget.datos.data[index].tipoEstadoNombre,
-                style: TextStyle(
-                    color: (_selectedIndex == index)
-                        ? Colors.white
-                        : Colors.black)),
-            selectedColor: Colors.redAccent,
-            onSelected: (bool selected) {
-              setState(() {
-                if (selected) {
-                  _selectedIndex = index;
-                }
-              });
-              final preferences = new Preferences();
-              preferences.idStatusPedidos =
-                  widget.datos.data[index].idTipoEstado;
+          return Container(
+            margin: EdgeInsets.all(2),
+            child: ChoiceChip(
+              selected: _selectedIndex == index,
+              label: Text(widget.datos.data[index].tipoEstadoNombre,
+                  style: TextStyle(
+                      color: (_selectedIndex == index)
+                          ? Colors.white
+                          : Colors.black)),
+              selectedColor: Colors.redAccent,
+              onSelected: (bool selected) {
+                setState(() {
+                  if (selected) {
+                    _selectedIndex = index;
+                  }
+                });
+                final preferences = new Preferences();
+                preferences.idStatusPedidos =
+                    widget.datos.data[index].idTipoEstado;
 
-              final pedidosBloc = ProviderBloc.pedido(context);
-              pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                  preferences.idSeleccionSubsidiaryPedidos,
-                  widget.datos.data[index].idTipoEstado);
-            },
+                final pedidosBloc = ProviderBloc.pedido(context);
+                pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+                    preferences.idSeleccionSubsidiaryPedidos,
+                    widget.datos.data[index].idTipoEstado);
+              },
+            ),
           );
         });
   }

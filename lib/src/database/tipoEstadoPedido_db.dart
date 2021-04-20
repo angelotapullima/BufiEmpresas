@@ -22,7 +22,20 @@ class TiposEstadoPedidosDatabase {
 
   Future<List<TipoEstadoPedidoModel>> obtenerTiposEstadoPedido() async {
     final db = await dbProvider.database;
-    final res = await db.rawQuery("SELECT * FROM EstadoPedido");
+    final res = await db
+        .rawQuery("SELECT * FROM EstadoPedido order by tipo_estado_select");
+
+    List<TipoEstadoPedidoModel> list = res.isNotEmpty
+        ? res.map((c) => TipoEstadoPedidoModel.fromJson(c)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<TipoEstadoPedidoModel>> obtenerTiposEstadoPedido2(
+      String id) async {
+    final db = await dbProvider.database;
+    final res = await db.rawQuery(
+        "SELECT * FROM EstadoPedido WHERE id_tipo_estado>'$id' AND id_tipo_estado<'99'");
 
     List<TipoEstadoPedidoModel> list = res.isNotEmpty
         ? res.map((c) => TipoEstadoPedidoModel.fromJson(c)).toList()

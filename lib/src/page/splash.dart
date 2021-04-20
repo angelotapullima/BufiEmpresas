@@ -22,7 +22,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin {
       await configuracionApi.obtenerConfiguracion();
       preferences.cargaCategorias = 'paso';
     } else {
-      configuracionApi.obtenerConfiguracion();
+      await configuracionApi.obtenerConfiguracion();
     }
 
     if (preferences.personName != null) {

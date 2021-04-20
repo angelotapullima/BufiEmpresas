@@ -19,22 +19,27 @@ class ConfiguracionApi {
         for (var i = 0; i < decodedData['estados'].length; i++) {
           TipoEstadoPedidoModel tipoEstadoPedido = TipoEstadoPedidoModel();
 
-          if (decodedData['estados'][i.toString()] == null) {
+          if (decodedData['estados']['${i.toString()}'] == null) {
             tipoEstadoPedido.idTipoEstado = "99";
             tipoEstadoPedido.tipoEstadoNombre = "TODOS";
+            tipoEstadoPedido.tipoEstadoSelect = "0";
           } else {
             tipoEstadoPedido.idTipoEstado = i.toString();
             tipoEstadoPedido.tipoEstadoNombre =
                 decodedData['estados'][i.toString()];
+            if (decodedData['estados'][i.toString()] ==
+                'Rechazado por el Negocio') {
+              tipoEstadoPedido.tipoEstadoSelect = '6';
+            } else
+              tipoEstadoPedido.tipoEstadoSelect = i.toString();
           }
-
-          final list = await tiposEstadoPedidoDatabase
-              .obtenerTiposEstadoPedidoXid(tipoEstadoPedido.idTipoEstado);
-          if (list.length > 0) {
-            tipoEstadoPedido.tipoEstadoSelect = list[0].tipoEstadoSelect;
-          } else {
-            tipoEstadoPedido.tipoEstadoSelect = "0";
-          }
+          // final list = await tiposEstadoPedidoDatabase
+          //     .obtenerTiposEstadoPedidoXid(tipoEstadoPedido.idTipoEstado);
+          // if (list.length > 0) {
+          //   tipoEstadoPedido.tipoEstadoSelect = list[0].tipoEstadoSelect;
+          // } else {
+          //   tipoEstadoPedido.tipoEstadoSelect = "0";
+          // }
 
           await tiposEstadoPedidoDatabase
               .insertarTiposEstadoPedidos(tipoEstadoPedido);
