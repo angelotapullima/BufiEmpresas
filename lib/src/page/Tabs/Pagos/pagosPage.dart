@@ -481,6 +481,34 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                                     }),
                               );
                             }),
+                        Container(
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              Text('Total:',
+                                  style: TextStyle(
+                                      fontSize: responsive.ip(2.2),
+                                      fontWeight: FontWeight.w600)),
+                              SizedBox(
+                                width: responsive.wp(2),
+                              ),
+                              Text(
+                                'S/. 00.00',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: responsive.ip(2.5),
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                width: responsive.wp(2),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: responsive.hp(2),
+                        )
                       ],
                     );
                   });
