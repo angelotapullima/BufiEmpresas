@@ -358,7 +358,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
   @override
   Widget build(BuildContext context) {
     final pagosBloc = ProviderBloc.pagos(context);
-    pagosBloc.obtenerPagosXFecha(
+    pagosBloc.obtenerPagosGeneral(
         widget.idSucursal, widget.fechaI, widget.fechaF);
     final responsive = Responsive.of(context);
     final preferences = Preferences();

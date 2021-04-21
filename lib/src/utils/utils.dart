@@ -160,7 +160,6 @@ cambiarStock(BuildContext context, String id, String status) async {
 
 habilitarDesServicio(BuildContext context, String id, String status) async {
   final serviciosBloc = ProviderBloc.servi(context);
-  final prefs = Preferences();
   print(id);
 
   final res = await serviciosBloc.habilitarDesService(id, status);

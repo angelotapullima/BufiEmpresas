@@ -7,6 +7,7 @@ import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
 import 'package:bufi_empresas/src/models/DetallePedidoModel.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
+import 'package:bufi_empresas/src/models/listPagosGeneralModel.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,15 +19,20 @@ class PagosBloc {
   final companyDb = CompanyDatabase();
   final pagosApi = PagosApi();
   final _pagosController = BehaviorSubject<List<PagosModel>>();
+  final _pagosGeneralController =
+      BehaviorSubject<List<ListPagosGeneralModel>>();
   final _pedidoIdController = BehaviorSubject<List<PagosModel>>();
   final _cargandoItems = BehaviorSubject<bool>();
   Stream<List<PagosModel>> get pagosStream => _pagosController.stream;
+  Stream<List<ListPagosGeneralModel>> get pagosGeneralStream =>
+      _pagosGeneralController.stream;
   Stream<List<PagosModel>> get pagoIdStream => _pedidoIdController.stream;
   Stream<bool> get cargandoItemsStream => _cargandoItems.stream;
   void dispose() {
     _pagosController?.close();
     _cargandoItems?.close();
     _pedidoIdController?.close();
+    _pagosGeneralController?.close();
   }
 
   void obtenerPagosXFecha(
@@ -42,17 +48,71 @@ class PagosBloc {
     //_pagosController.sink.add(await pagosApi.obtenerPagosXIdSubsidiary(idSubsidiary, fechaIni, fechaFin));
   }
 
+  void obtenerPagosGeneral(
+      String idSubsidiary, String fechaI, String fechaF) async {
+    _pagosGeneralController.sink
+        .add(await obtenerPagosXFechaYCantidad(idSubsidiary, fechaI, fechaF));
+    _cargandoItems.sink.add(true);
+    pagosApi.obtenerPagosXIdSubsidiary(idSubsidiary, fechaI, fechaF);
+    _cargandoItems.sink.add(false);
+    _pagosGeneralController.sink
+        .add(await obtenerPagosXFechaYCantidad(idSubsidiary, fechaI, fechaF));
+  }
+
   void obtenerPagoXid(String idPago) async {
     _pedidoIdController.sink.add(await obtenerPedidosPorIdPedido(idPago));
+  }
+
+  Future<List<ListPagosGeneralModel>> obtenerPagosXFechaYCantidad(
+      String idSubsidiary, String fechaI, String fechaF) async {
+    List<ListPagosGeneralModel> listaGeneral = [];
+    List<PagosModel> listaPago = [];
+
+    //Obtener todos los pedidos de la Db
+    final listPagos = await pagosDatabase.obtenerPagosXIdSubsidiaryAndFecha(
+        idSubsidiary, fechaI, fechaF);
+    double total = 0;
+    //Recorremos la lista de todos los pagos
+    for (var i = 0; i < listPagos.length; i++) {
+      final pagosModel = PagosModel();
+      pagosModel.idPago = listPagos[i].idPago;
+      pagosModel.idTransferenciaUE = listPagos[i].idTransferenciaUE;
+      pagosModel.transferenciaUENroOperacion =
+          listPagos[i].transferenciaUENroOperacion;
+      pagosModel.idUsuario = listPagos[i].idUsuario;
+      pagosModel.idEmpresa = listPagos[i].idEmpresa;
+      pagosModel.transferenciaUEMonto = listPagos[i].transferenciaUEMonto;
+      pagosModel.transferecniaUEConcepto = listPagos[i].transferecniaUEConcepto;
+      pagosModel.transferenciaUEDate = listPagos[i].transferenciaUEDate;
+      pagosModel.transferenciaUEEstado = listPagos[i].transferenciaUEEstado;
+
+      pagosModel.idDelivery = listPagos[i].idDelivery;
+      pagosModel.pagoTipo = listPagos[i].pagoTipo;
+      pagosModel.pagoMonto = listPagos[i].pagoMonto;
+      pagosModel.pagoComision = listPagos[i].pagoComision;
+      pagosModel.pagoTotal = listPagos[i].pagoTotal;
+      pagosModel.pagoDate = listPagos[i].pagoDate;
+      pagosModel.pagoEstado = listPagos[i].pagoEstado;
+      pagosModel.pagoMicrotime = listPagos[i].pagoMicrotime;
+
+      total = double.parse(listPagos[i].pagoTotal) + total;
+
+      listaPago.add(pagosModel);
+    }
+    ListPagosGeneralModel pagosGeneral = ListPagosGeneralModel();
+    pagosGeneral.pagos = listaPago;
+    pagosGeneral.total = total.toString();
+    listaGeneral.add(pagosGeneral);
+    return listaGeneral;
   }
 
   Future<List<PagosModel>> obtenerPedidosPorIdPedido(String idPago) async {
     List<PagosModel> listaGeneral = [];
 
-    //obtener todos los pedidos de la bd
+    //obtener todos los pagos de la bd
     final listPagos = await pagosDatabase.obtenerPagosXIdPago(idPago);
 
-    //Recorremos la lista de todos los pedidos
+    //Recorremos la lista de todos los pagos
     for (var i = 0; i < listPagos.length; i++) {
       final pagosModel = PagosModel();
 
