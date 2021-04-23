@@ -1,3 +1,5 @@
+import 'package:bufi_empresas/src/models/companyModel.dart';
+
 class SubsidiaryModel {
   SubsidiaryModel({
     this.idSubsidiary,
@@ -14,6 +16,7 @@ class SubsidiaryModel {
     this.subsidiaryStatus,
     this.subsidiaryFavourite,
     this.subsidiaryStatusPedidos,
+    this.listCompany,
   });
 
   String idSubsidiary;
@@ -30,6 +33,7 @@ class SubsidiaryModel {
   String subsidiaryStatus;
   String subsidiaryFavourite;
   String subsidiaryStatusPedidos;
+  CompanyModel listCompany;
 
   factory SubsidiaryModel.fromJson(Map<String, dynamic> json) =>
       SubsidiaryModel(

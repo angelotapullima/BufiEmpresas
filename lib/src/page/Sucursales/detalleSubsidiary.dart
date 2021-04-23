@@ -102,8 +102,14 @@ class InformacionWidget extends StatelessWidget {
                                   width: responsive.wp(30),
                                   child: RatingBar.readOnly(
                                     size: 20,
-                                    initialRating: double.parse(
-                                        '${snapshot.data[0].subsidiaryStatus}'),
+                                    initialRating:
+                                        ('${snapshot.data[0].listCompany.companyRating}' !=
+                                                    null &&
+                                                '${snapshot.data[0].listCompany.companyRating}' !=
+                                                    'null')
+                                            ? double.parse(
+                                                '${snapshot.data[0].listCompany.companyRating}')
+                                            : 0,
                                     isHalfAllowed: true,
                                     halfFilledIcon: Icons.star_half,
                                     filledIcon: Icons.star,
@@ -111,7 +117,9 @@ class InformacionWidget extends StatelessWidget {
                                     filledColor: Colors.yellow,
                                   ),
                                 ),
-                                Text('${snapshot.data[0].subsidiaryStatus}'),
+                                // Text(('${servicioData.subsidiaryStatus}' != null)
+                                //     ? '${servicioData.listCompany.companyName}'
+                                //     : ''),
                               ],
                             ),
                             SizedBox(
