@@ -93,7 +93,9 @@ void obtenerprimerIdCompany(BuildContext context) async {
 void actualizarBusquedaPagos(BuildContext context) {
   final pagosBloc = ProviderBloc.pagos(context);
   final prefs = Preferences();
-  pagosBloc.obtenerPagosXFecha(
+  // pagosBloc.obtenerPagosXFecha(
+  //     prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
+  pagosBloc.obtenerPagosGeneral(
       prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
 }
 

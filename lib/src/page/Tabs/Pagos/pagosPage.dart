@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PagosModel.dart';
+import 'package:bufi_empresas/src/models/listPagosGeneralModel.dart';
 import 'package:bufi_empresas/src/page/Tabs/Pagos/detallePagoPage.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -197,7 +198,7 @@ class PagosPage extends StatelessWidget {
             if (DateTime.parse(prefs.fechaI)
                     .isBefore(DateTime.parse(prefs.fechaF)) ||
                 DateTime.parse(prefs.fechaI) == DateTime.parse(prefs.fechaF)) {
-              pagosBloc.obtenerPagosXFecha(prefs.idSeleccionSubsidiaryPedidos,
+              pagosBloc.obtenerPagosGeneral(prefs.idSeleccionSubsidiaryPedidos,
                   prefs.fechaI, prefs.fechaF);
             } else {
               showToast1('Fecha Fin debe ser mayor que fecha Inicio', 3,
@@ -284,6 +285,7 @@ class ObtenerFecha2 extends StatefulWidget {
 
 class _ObtenerFechaState2 extends State<ObtenerFecha2> {
   TextEditingController inputfieldDateController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final preferences = Preferences();
@@ -444,11 +446,12 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                     return Column(
                       children: [
                         StreamBuilder(
-                            stream: pagosBloc.pagosStream,
+                            stream: pagosBloc.pagosGeneralStream,
                             builder: (BuildContext context,
-                                AsyncSnapshot<dynamic> snapshot) {
+                                AsyncSnapshot<List<ListPagosGeneralModel>>
+                                    snapshot) {
                               if (snapshot.hasData) {
-                                if (snapshot.data.length > 0) {
+                                if (snapshot.data[0].pagos.length > 0) {
                                 } else {
                                   return Center(
                                       child: Text("No hay pagos para mostrar"));
@@ -462,7 +465,8 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                                     shrinkWrap: true,
                                     physics: ClampingScrollPhysics(),
                                     scrollDirection: Axis.vertical,
-                                    itemCount: snapshot.data.length + 1,
+                                    itemCount:
+                                        snapshot.data[0].pagos.length + 1,
                                     itemBuilder: (context, index) {
                                       if (index == 0) {
                                         final finicio =
@@ -476,36 +480,52 @@ class _ListarPagosPorIdSubsidiaryAndFecha
                                         ));
                                       }
                                       index = index - 1;
-                                      return _crearItem(context,
-                                          snapshot.data[index], responsive);
+                                      return _crearItem(
+                                          context,
+                                          snapshot.data[0].pagos[index],
+                                          responsive);
                                     }),
                               );
                             }),
-                        Container(
-                          child: Row(
-                            children: [
-                              Spacer(),
-                              Text('Total:',
-                                  style: TextStyle(
-                                      fontSize: responsive.ip(2.2),
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(
-                                width: responsive.wp(2),
-                              ),
-                              Text(
-                                'S/. 00.00',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: responsive.ip(2.5),
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                width: responsive.wp(2),
-                              ),
-                            ],
-                          ),
-                        ),
+                        StreamBuilder(
+                            stream: pagosBloc.pagosGeneralStream,
+                            builder: (context,
+                                AsyncSnapshot<List<ListPagosGeneralModel>>
+                                    snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data[0].pagos.length > 0) {
+                                  return Container(
+                                    child: Row(
+                                      children: [
+                                        Spacer(),
+                                        Text('Total:',
+                                            style: TextStyle(
+                                                fontSize: responsive.ip(2.2),
+                                                fontWeight: FontWeight.w600)),
+                                        SizedBox(
+                                          width: responsive.wp(2),
+                                        ),
+                                        Text(
+                                          'S/. ${snapshot.data[0].total}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: responsive.ip(2.5),
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          width: responsive.wp(2),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return (Center());
+                                }
+                              } else {
+                                return Center();
+                              }
+                            }),
                         SizedBox(
                           height: responsive.hp(2),
                         )
