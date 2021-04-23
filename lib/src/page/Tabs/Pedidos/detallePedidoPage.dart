@@ -2,6 +2,7 @@ import 'package:bufi_empresas/src/api/Pedidos/Pedido_api.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/PedidosModel.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
+import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -642,11 +643,14 @@ class _ChangeStatusState extends State<ChangeStatus> {
 
   Future _submit(BuildContext context, TipoEstadoPedidoModel data) async {
     final pedidoApi = PedidoApi();
-    final pedidoBloc = ProviderBloc.pedido(context);
+    final pedidosBloc = ProviderBloc.pedido(context);
+    final preferences = Preferences();
     _cargando.value = true;
     final int res =
         await pedidoApi.updateStatus(widget.idPedido, data.idTipoEstado);
     if (res == 1) {
+      pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+          preferences.idSeleccionSubsidiaryPedidos, '99');
       print("Estado Actualizado");
       utils.showToast(context, 'Estado Actualizado');
       Navigator.pop(context);
@@ -655,7 +659,31 @@ class _ChangeStatusState extends State<ChangeStatus> {
     }
 
     _cargando.value = false;
-    pedidoBloc.obtenerPedidoPorId(widget.idPedido);
-    //Navigator.pop(context);
+    pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+        preferences.idSeleccionSubsidiaryPedidos, '99');
+
+    //pedidoBloc.obtenerPedidoPorId(widget.idPedido);
+    Navigator.pop(context);
+    // Navigator.of(context).push(PageRouteBuilder(
+    //   pageBuilder: (context, animation, secondaryAnimation) {
+    //     return TickectPedido(
+    //       idPedido: widget.idPedido,
+    //     );
+    //   },
+    //   transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    //     var begin = Offset(0.0, 1.0);
+    //     var end = Offset.zero;
+    //     var curve = Curves.ease;
+
+    //     var tween = Tween(begin: begin, end: end).chain(
+    //       CurveTween(curve: curve),
+    //     );
+
+    //     return SlideTransition(
+    //       position: animation.drive(tween),
+    //       child: child,
+    //     );
+    //   },
+    // ));
   }
 }

@@ -56,12 +56,13 @@ class PedidoBloc {
   void obtenerPedidosPorIdSubsidiaryAndIdStatus(
       String idSubsidiary, String idStatus) async {
     if (idStatus == '99') {
+      _pedidoController.sink.add([]);
       _cargandoItems.sink.add(true);
       _pedidoController.sink
           .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
-
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
       _cargandoItems.sink.add(false);
+      _pedidoController.sink.add([]);
       _pedidoController.sink
           .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
     } else {

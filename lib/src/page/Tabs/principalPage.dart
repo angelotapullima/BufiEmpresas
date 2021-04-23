@@ -108,92 +108,104 @@ class PrincipalPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: responsive.hp(11),
-                width: responsive.wp(40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Atendidos',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold)),
-                    StreamBuilder(
-                        stream: pedidoAtendidoBloc.pedidosAtendidosStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.data.length > 0) {
-                              return Text(
-                                '${snapshot.data.length}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsive.ip(3),
-                                ),
-                              );
+              GestureDetector(
+                onTap: () {
+                  final buttonBloc = ProviderBloc.tabs(context);
+                  buttonBloc.changePage(1);
+                },
+                child: Container(
+                  height: responsive.hp(11),
+                  width: responsive.wp(40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Atendidos',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: responsive.ip(2),
+                              fontWeight: FontWeight.bold)),
+                      StreamBuilder(
+                          stream: pedidoAtendidoBloc.pedidosAtendidosStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data.length > 0) {
+                                return Text(
+                                  '${snapshot.data.length}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3),
+                                  ),
+                                );
+                              } else {
+                                return Text(
+                                  '0',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3),
+                                  ),
+                                );
+                              }
                             } else {
-                              return Text(
-                                '0',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsive.ip(3),
-                                ),
-                              );
+                              return Center(child: CircularProgressIndicator());
                             }
-                          } else {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                        }),
-                  ],
+                          }),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(10)),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(10)),
               ),
               SizedBox(
                 width: responsive.wp(5),
               ),
-              Container(
-                height: responsive.hp(11),
-                width: responsive.wp(40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Pendientes',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold)),
-                    StreamBuilder(
-                        stream: pedidoPendienteBloc.pedidosPendientesStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.data.length > 0) {
-                              return Text(
-                                '${snapshot.data.length}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsive.ip(3),
-                                ),
-                              );
+              GestureDetector(
+                onTap: () {
+                  final buttonBloc = ProviderBloc.tabs(context);
+                  buttonBloc.changePage(1);
+                },
+                child: Container(
+                  height: responsive.hp(11),
+                  width: responsive.wp(40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Pendientes',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: responsive.ip(2),
+                              fontWeight: FontWeight.bold)),
+                      StreamBuilder(
+                          stream: pedidoPendienteBloc.pedidosPendientesStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data.length > 0) {
+                                return Text(
+                                  '${snapshot.data.length}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3),
+                                  ),
+                                );
+                              } else {
+                                return Text(
+                                  '0',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(3),
+                                  ),
+                                );
+                              }
                             } else {
-                              return Text(
-                                '0',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsive.ip(3),
-                                ),
-                              );
+                              return Center(child: CircularProgressIndicator());
                             }
-                          } else {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                        }),
-                  ],
+                          }),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10)),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(10)),
               )
             ],
           ),
