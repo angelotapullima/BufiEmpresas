@@ -105,4 +105,19 @@ class PedidosDatabase {
         res.isNotEmpty ? res.map((c) => PedidosModel.fromJson(c)).toList() : [];
     return list;
   }
+
+  deletePedidoPorIdPedido(String idPedido) async {
+    try {
+      final db = await dbProvider.database;
+
+      final res = await db
+          .rawDelete("DELETE FROM Pedidos WHERE id_pedido = '$idPedido'");
+
+      return res;
+    } catch (e) {
+      print(" $e Error en la base de datos");
+      print(e);
+      return [];
+    }
+  }
 }

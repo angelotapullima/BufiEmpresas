@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
+import 'package:bufi_empresas/src/database/pedidos_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
@@ -167,4 +168,10 @@ habilitarDesServicio(BuildContext context, String id, String status) async {
   final res = await serviciosBloc.habilitarDesService(id, status);
   print(res);
   if (res == 1) {}
+}
+
+eliminarPedidos(String idPedido) async {
+  final pedidosDb = PedidosDatabase();
+  final res = await pedidosDb.deletePedidoPorIdPedido(idPedido);
+  print(res);
 }

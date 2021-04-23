@@ -649,8 +649,10 @@ class _ChangeStatusState extends State<ChangeStatus> {
     final int res =
         await pedidoApi.updateStatus(widget.idPedido, data.idTipoEstado);
     if (res == 1) {
+      eliminarPedidos(widget.idPedido);
       pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-          preferences.idSeleccionSubsidiaryPedidos, '99');
+          preferences.idSeleccionSubsidiaryPedidos,
+          preferences.idStatusPedidos);
       print("Estado Actualizado");
       utils.showToast(context, 'Estado Actualizado');
       Navigator.pop(context);
@@ -659,8 +661,6 @@ class _ChangeStatusState extends State<ChangeStatus> {
     }
 
     _cargando.value = false;
-    pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-        preferences.idSeleccionSubsidiaryPedidos, '99');
 
     //pedidoBloc.obtenerPedidoPorId(widget.idPedido);
     Navigator.pop(context);
