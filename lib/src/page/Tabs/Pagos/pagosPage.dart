@@ -555,6 +555,7 @@ class _ListarPagosPorIdSubsidiaryAndFecha
     var date = obtenerNombreMes(pagosData.pagoDate);
     return GestureDetector(
       onTap: () {
+        print(pagosData.idPago);
         Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return TicketPago(

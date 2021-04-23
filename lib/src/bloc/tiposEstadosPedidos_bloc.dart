@@ -32,8 +32,13 @@ class TiposEstadosPedidosBloc {
   }
 
   void obtenerTiposEstadosPedidos2(String id) async {
-    _tiposEstadosPedidosController2.sink
-        .add(await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedido2(id));
+    if (id == '1') {
+      _tiposEstadosPedidosController2.sink
+          .add(await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedido1(id));
+    } else {
+      _tiposEstadosPedidosController2.sink
+          .add(await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedido2(id));
+    }
   }
 
   void obtenerTiposEstadosPedidosXid(String idEstado) async {

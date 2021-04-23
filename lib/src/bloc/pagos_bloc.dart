@@ -187,7 +187,7 @@ class PagosBloc {
       //------Recorrer la lista de compañías y sucursales---------
 
       //funcion que llama desde la bd a todas las sucursales y compañías
-      final listCompany =
+      final listaCompany =
           await companyDb.obtenerCompanyPorId(listPagos[i].idEmpresa);
       final listSucursal = await subsidiaryDb
           .obtenerSubsidiaryPorIdSubsidiary(listPagos[i].idSubsidiary);
@@ -211,22 +211,22 @@ class PagosBloc {
       compSucursalModel.subsidiaryStatus = listSucursal[0].subsidiaryStatus;
 
       //Company
-      compSucursalModel.companyName = listCompany[0].companyName;
-      compSucursalModel.companyRuc = listCompany[0].companyRuc;
-      compSucursalModel.companyImage = listCompany[0].companyImage;
-      compSucursalModel.companyType = listCompany[0].companyType;
-      compSucursalModel.companyShortcode = listCompany[0].companyShortcode;
+      compSucursalModel.companyName = listaCompany[0].companyName;
+      compSucursalModel.companyRuc = listaCompany[0].companyRuc;
+      compSucursalModel.companyImage = listaCompany[0].companyImage;
+      compSucursalModel.companyType = listaCompany[0].companyType;
+      compSucursalModel.companyShortcode = listaCompany[0].companyShortcode;
       compSucursalModel.companyDeliveryPropio =
-          listCompany[0].companyDeliveryPropio;
-      compSucursalModel.companyDelivery = listCompany[0].companyDelivery;
-      compSucursalModel.companyEntrega = listCompany[0].companyEntrega;
-      compSucursalModel.companyTarjeta = listCompany[0].companyTarjeta;
-      compSucursalModel.companyVerified = listCompany[0].companyVerified;
-      compSucursalModel.companyRating = listCompany[0].companyRating;
-      compSucursalModel.companyCreatedAt = listCompany[0].companyCreatedAt;
-      compSucursalModel.companyJoin = listCompany[0].companyJoin;
-      compSucursalModel.companyStatus = listCompany[0].companyStatus;
-      compSucursalModel.companyMt = listCompany[0].companyMt;
+          listaCompany[0].companyDeliveryPropio;
+      compSucursalModel.companyDelivery = listaCompany[0].companyDelivery;
+      compSucursalModel.companyEntrega = listaCompany[0].companyEntrega;
+      compSucursalModel.companyTarjeta = listaCompany[0].companyTarjeta;
+      compSucursalModel.companyVerified = listaCompany[0].companyVerified;
+      compSucursalModel.companyRating = listaCompany[0].companyRating;
+      compSucursalModel.companyCreatedAt = listaCompany[0].companyCreatedAt;
+      compSucursalModel.companyJoin = listaCompany[0].companyJoin;
+      compSucursalModel.companyStatus = listaCompany[0].companyStatus;
+      compSucursalModel.companyMt = listaCompany[0].companyMt;
 
       listCompsucursalModel.add(compSucursalModel);
 
