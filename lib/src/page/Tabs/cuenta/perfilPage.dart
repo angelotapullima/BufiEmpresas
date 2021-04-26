@@ -1,3 +1,4 @@
+import 'package:bufi_empresas/src/page/Tabs/cuenta/restablecerContrasenhaPage.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/customCacheManager.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -180,32 +181,52 @@ class PerfilPage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: responsive.ip(1.5), vertical: responsive.ip(0.5)),
-              padding: EdgeInsets.symmetric(
-                vertical: responsive.hp(2),
-                horizontal: responsive.wp(3),
-              ),
-              width: double.infinity,
-              height: responsive.ip(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Contraseña",
-                      style: TextStyle(
-                          //color: Colors.red,
-                          fontSize: responsive.ip(2),
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(height: responsive.hp(1)),
-                  Text(
-                    '********',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: responsive.ip(1.8)),
-                  ),
-                ],
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return RestablecerContrasenhaPage();
+                  },
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var begin = Offset(0.0, 1.0);
+                    var end = Offset.zero;
+                    var curve = Curves.ease;
+
+                    var tween = Tween(begin: begin, end: end).chain(
+                      CurveTween(curve: curve),
+                    );
+
+                    return SlideTransition(
+                      position: animation.drive(tween),
+                      child: child,
+                    );
+                  },
+                ));
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: responsive.ip(1.5),
+                    vertical: responsive.ip(0.5)),
+                padding: EdgeInsets.symmetric(
+                  vertical: responsive.hp(2),
+                  horizontal: responsive.wp(3),
+                ),
+                width: double.infinity,
+                height: responsive.ip(6),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Cambiar Contraseña",
+                        style: TextStyle(
+                            color: Colors.lightBlue,
+                            fontSize: responsive.ip(2),
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: responsive.hp(6)),

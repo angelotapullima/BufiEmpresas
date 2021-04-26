@@ -8,6 +8,7 @@ import 'package:bufi_empresas/src/bloc/pantalla_inicio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/pedido_bloc.dart';
 import 'package:bufi_empresas/src/bloc/producto/datosProductoBloc.dart';
 import 'package:bufi_empresas/src/bloc/producto/producto_bloc.dart';
+import 'package:bufi_empresas/src/bloc/restablecerPassword_bloc.dart';
 import 'package:bufi_empresas/src/bloc/sucursal_bloc.dart';
 import 'package:bufi_empresas/src/bloc/tiposEstadosPedidos_bloc.dart';
 import 'package:bufi_empresas/src/bloc/servicios/servicios_bloc.dart';
@@ -17,6 +18,7 @@ class ProviderBloc extends InheritedWidget {
   static ProviderBloc _instancia;
 
   final loginBloc = LoginBloc();
+  final restaPasswdBloc = RestablecerPasswordBloc();
   final negociosBloc = PantallaInicioBloc();
   final tabsNavigationbloc = TabNavigationBloc();
   final pedidosBloc = PedidoBloc();
@@ -47,6 +49,12 @@ class ProviderBloc extends InheritedWidget {
   static LoginBloc login(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .loginBloc;
+  }
+
+  //Restablecer Contraseña Bloc
+  static RestablecerPasswordBloc restabContra(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .restaPasswdBloc;
   }
 
   //tab
