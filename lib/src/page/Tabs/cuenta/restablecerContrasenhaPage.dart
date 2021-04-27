@@ -1,7 +1,9 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/bloc/restablecerPassword_bloc.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
+import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RestablecerContrasenhaPage extends StatefulWidget {
   const RestablecerContrasenhaPage({Key key}) : super(key: key);
@@ -212,20 +214,19 @@ class _RestablecerContrasenhaPageState
 
   _submit(BuildContext context, RestablecerPasswordBloc bloc) async {
     _cargando.value = true;
-    // final int code = await bloc.login('${bloc.email}', '${bloc.password}');
+    final int code = await bloc.restablecerPassword('${bloc.password}');
 
-    // if (code == 1) {
-    //   obtenerprimerIdCompany(context);
-    //   final pref = Preferences();
-    //   obtenerprimerIdSubsidiary(context, pref.idSeleccionNegocioInicio);
-    //   Navigator.pushReplacementNamed(context, 'home');
-    // } else if (code == 2) {
-    //   print(code);
-    //   showToast1('Ocurrio un error', 2, ToastGravity.CENTER);
-    // } else if (code == 3) {
-    //   print(code);
-    //   showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
-    //}
+    if (code == 1) {
+      print(code);
+      showToast1('Contraseña restablecida', 2, ToastGravity.CENTER);
+      Navigator.of(context).pop();
+    } else if (code == 2) {
+      print(code);
+      showToast1('Ocurrio un error', 2, ToastGravity.CENTER);
+    } else if (code == 3) {
+      print(code);
+      showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
+    }
 
     _cargando.value = false;
   }

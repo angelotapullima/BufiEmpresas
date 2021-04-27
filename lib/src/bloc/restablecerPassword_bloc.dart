@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:bufi_empresas/src/api/restablecerPassword_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RestablecerPasswordBloc with Validators {
+  final restablecerPasswdApi = RestablecerPasswordApi();
   final _passwordController = BehaviorSubject<String>();
   final _passwordConfirmController = BehaviorSubject<String>();
   final _cargandoController = new BehaviorSubject<bool>();
@@ -40,13 +42,12 @@ class RestablecerPasswordBloc with Validators {
     _cargandoController?.close();
   }
 
-  // Future<int> login(String user, String pass) async {
-  //   _cargandoLoginController.sink.add(true);
-  //   final resp = await loginProviders.login(email, pass);
-  //   _cargandoLoginController.sink.add(false);
-
-  //   return resp;
-  // }
+  Future<int> restablecerPassword(String pass) async {
+    _cargandoController.sink.add(true);
+    final resp = await restablecerPasswdApi.send(pass);
+    _cargandoController.sink.add(false);
+    return resp;
+  }
 }
 
 class Validators {
