@@ -61,13 +61,4 @@ class Validators {
       sink.addError('Este campo no debe estar vacío');
     }
   });
-
-  final validarPasswordConfirm = StreamTransformer<String, String>.fromHandlers(
-      handleData: (password, sink) {
-    if (password == password) {
-      sink.add(password);
-    } else {
-      sink.addError('Contraseña no coincide');
-    }
-  });
 }

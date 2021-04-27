@@ -94,6 +94,7 @@ class PedidoApi {
           decodedData["result"][i]['subsidiary_opening_hours'];
       sucursalModel.subsidiaryPrincipal =
           decodedData["result"][i]['subsidiary_principal'];
+      sucursalModel.subsidiaryImg = decodedData["result"][i]['subsidiary_img'];
       sucursalModel.subsidiaryStatus =
           decodedData["result"][i]['subsidiary_status'];
 

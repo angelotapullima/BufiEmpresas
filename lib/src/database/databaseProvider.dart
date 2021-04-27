@@ -78,6 +78,7 @@ class DatabaseProvider {
           'subsidiary_principal VARCHAR,'
           'subsidiary_status VARCHAR,'
           'subsidiary_favourite VARCHAR,'
+          'subsidiary_img VARCHAR,'
           'subsidiary_status_pedidos VARCHAR'
           ')');
 

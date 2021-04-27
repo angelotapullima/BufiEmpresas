@@ -142,6 +142,7 @@ class ProductosApi {
             decodedData['results'][i]['subsidiary_opening_hours'];
         submodel.subsidiaryPrincipal =
             decodedData['results'][i]['subsidiary_principal'];
+        submodel.subsidiaryImg = decodedData["result"][i]['subsidiary_img'];
         submodel.subsidiaryStatus =
             decodedData['results'][i]['subsidiary_status'];
 
@@ -338,6 +339,7 @@ class ProductosApi {
       submodel.subsidiaryCoordY = decodedData['subsidiary_coord_y'];
       submodel.subsidiaryOpeningHours = decodedData['subsidiary_opening_hours'];
       submodel.subsidiaryPrincipal = decodedData['subsidiary_principal'];
+      submodel.subsidiaryImg = decodedData['subsidiary_img'];
       submodel.subsidiaryStatus = decodedData['subsidiary_status'];
 
       final list = await subsidiaryDatabase

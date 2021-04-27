@@ -1,7 +1,10 @@
+import 'package:bufi_empresas/src/bloc/Sucursal/detalleSubisidiaryBloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
+import 'package:bufi_empresas/src/page/Sucursales/detalleSubsidiary.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/colores.dart';
+import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/widgets/translate_animation.dart';
 import 'package:bufi_empresas/src/widgets/widget_MostrarNegocio.dart';
@@ -9,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:rating_bar/rating_bar.dart';
 
 class PrincipalPage extends StatelessWidget {
@@ -111,6 +115,12 @@ class PrincipalPage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
+                  final prefs = Preferences();
+                  prefs.idStatusPedidos = '5';
+                  final pedidosBloc = ProviderBloc.pedido(context);
+                  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+                      prefs.idSeleccionSubsidiaryPedidos,
+                      prefs.idStatusPedidos);
                   final buttonBloc = ProviderBloc.tabs(context);
                   buttonBloc.changePage(1);
                 },
@@ -162,6 +172,12 @@ class PrincipalPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
+                  final prefs = Preferences();
+                  prefs.idStatusPedidos = '99';
+                  final pedidosBloc = ProviderBloc.pedido(context);
+                  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
+                      prefs.idSeleccionSubsidiaryPedidos,
+                      prefs.idStatusPedidos);
                   final buttonBloc = ProviderBloc.tabs(context);
                   buttonBloc.changePage(1);
                 },
@@ -317,8 +333,34 @@ class Sucursales extends StatelessWidget {
       Responsive responsive) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "detalleSucursal",
-            arguments: servicioData);
+        final provider =
+            Provider.of<DetailSubsidiaryBloc>(context, listen: false);
+
+        provider.changeToInformation();
+
+        Navigator.of(context).push(PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return DetalleSubsidiary(
+              idSucursal: servicioData.idSubsidiary,
+              nombreSucursal: servicioData.subsidiaryName,
+              imgSucursal: servicioData.subsidiaryImg,
+            );
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = Offset(0.0, 1.0);
+            var end = Offset.zero;
+            var curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(
+              CurveTween(curve: curve),
+            );
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        ));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -363,8 +405,7 @@ class Sucursales extends StatelessWidget {
                       errorWidget: (context, url, error) => Image(
                           image: AssetImage('assets/carga_fallida.jpg'),
                           fit: BoxFit.cover),
-                      imageUrl:
-                          'https://i.pinimg.com/564x/23/8f/6b/238f6b5ea5ab93832c281b42d3a1a853.jpg',
+                      imageUrl: '$apiBaseURL/${servicioData.subsidiaryImg}',
                       imageBuilder: (context, imageProvider) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(

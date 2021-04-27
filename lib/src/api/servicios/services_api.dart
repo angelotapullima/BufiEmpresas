@@ -145,6 +145,7 @@ class ServiceApi {
           decodedData[i]['subsidiary_opening_hours'];
       subsidiaryModel.subsidiaryPrincipal =
           decodedData[i]['subsidiary_principal'];
+      subsidiaryModel.subsidiaryImg = decodedData[i]['subsidiary_img'];
       subsidiaryModel.subsidiaryStatus = decodedData[i]['subsidiary_status'];
       subsidiaryModel.subsidiaryFavourite = '0';
 
@@ -381,6 +382,8 @@ class ServiceApi {
             decodedData['servicios'][i]['subsidiary_opening_hours'];
         subsidiaryModel.subsidiaryPrincipal =
             decodedData['servicios'][i]['subsidiary_principal'];
+        subsidiaryModel.subsidiaryImg =
+            decodedData["servicios"][i]['subsidiary_img'];
         subsidiaryModel.subsidiaryStatus =
             decodedData['servicios'][i]['subsidiary_status'];
         subsidiaryModel.subsidiaryFavourite =
@@ -410,6 +413,8 @@ class ServiceApi {
             decodedData['servicios'][i]['subsidiary_opening_hours'];
         subsidiaryModel.subsidiaryPrincipal =
             decodedData['servicios'][i]['subsidiary_principal'];
+        subsidiaryModel.subsidiaryImg =
+            decodedData["servicios"][i]['subsidiary_img'];
         subsidiaryModel.subsidiaryStatus =
             decodedData['servicios'][i]['subsidiary_status'];
         subsidiaryModel.subsidiaryFavourite = '0';
@@ -551,6 +556,8 @@ class ServiceApi {
             decodedData['servicios'][i]['subsidiary_principal'];
         subsidiaryModel.subsidiaryStatus =
             decodedData['servicios'][i]['subsidiary_status'];
+        subsidiaryModel.subsidiaryImg =
+            decodedData["servicios"][i]['subsidiary_img'];
         subsidiaryModel.subsidiaryFavourite =
             listservices[0].subsidiaryFavourite;
 
@@ -578,6 +585,8 @@ class ServiceApi {
             decodedData['servicios'][i]['subsidiary_opening_hours'];
         subsidiaryModel.subsidiaryPrincipal =
             decodedData['servicios'][i]['subsidiary_principal'];
+        subsidiaryModel.subsidiaryImg =
+            decodedData["servicios"][i]['subsidiary_img'];
         subsidiaryModel.subsidiaryStatus =
             decodedData['servicios'][i]['subsidiary_status'];
         subsidiaryModel.subsidiaryFavourite = '0';

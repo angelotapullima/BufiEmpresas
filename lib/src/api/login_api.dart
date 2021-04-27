@@ -106,6 +106,7 @@ class LoginApi {
                 decodedData['empresas'][i]['subsidiary_principal'];
             smodel.subsidiaryStatus =
                 decodedData['empresas'][i]['subsidiary_status'];
+            smodel.subsidiaryImg = decodedData["empresas"][i]['subsidiary_img'];
             smodel.subsidiaryAddress =
                 decodedData['empresas'][i]['subsidiary_address'];
 
@@ -182,6 +183,7 @@ class LoginApi {
                 decodedData['sedes'][i]['subsidiary_principal'];
             smodel.subsidiaryStatus =
                 decodedData['sedes'][i]['subsidiary_status'];
+            smodel.subsidiaryImg = decodedData["sedes"][i]['subsidiary_img'];
             smodel.subsidiaryAddress =
                 decodedData['sedes'][i]['subsidiary_address'];
 

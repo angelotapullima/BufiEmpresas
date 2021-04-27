@@ -32,125 +32,33 @@ class _GridviewProductoPorSucursalState
             AsyncSnapshot<List<SubsidiaryServiceModel>> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
-              return SliverGrid(
+              return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.7,
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return GestureDetector(
-                        onTap: () {},
-                        child: serviceWidget(
-                            context,
-                            snapshot.data[index],
-                            responsive,
-                            (snapshot.data[index].subsidiaryServiceStatus ==
-                                    '1')
-                                ? true
-                                : false));
-                  },
-                  childCount: snapshot.data.length,
-                ),
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                      onTap: () {},
+                      child: serviceWidget(
+                          context,
+                          snapshot.data[index],
+                          responsive,
+                          (snapshot.data[index].subsidiaryServiceStatus == '1')
+                              ? true
+                              : false));
+                },
               );
             } else {
-              return SliverList(
-                  delegate: SliverChildListDelegate([
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Center(child: Text('Sin servicios'))
-                    // Row(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     Container(
-                    //       width: 48.0,
-                    //       height: 48.0,
-                    //       color: Colors.white,
-                    //     ),
-                    //     const Padding(
-                    //       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    //     ),
-                    //     Expanded(
-                    //       child: Column(
-                    //         crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: <Widget>[
-                    //           Container(
-                    //             width: double.infinity,
-                    //             height: 8.0,
-                    //             color: Colors.white,
-                    //           ),
-                    //           const Padding(
-                    //             padding: EdgeInsets.symmetric(vertical: 2.0),
-                    //           ),
-                    //           Container(
-                    //             width: double.infinity,
-                    //             height: 8.0,
-                    //             color: Colors.white,
-                    //           ),
-                    //           const Padding(
-                    //             padding: EdgeInsets.symmetric(vertical: 2.0),
-                    //           ),
-                    //           Container(
-                    //             width: 40.0,
-                    //             height: 8.0,
-                    //             color: Colors.white,
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
-                    ),
-              ]));
+              return Center(
+                child: Text("No cuenta con ningún servicio por el momento"),
+              );
             }
           } else {
-            return SliverList(
-                delegate: SliverChildListDelegate([
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 48.0,
-                      height: 48.0,
-                      color: Colors.white,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: double.infinity,
-                            height: 8.0,
-                            color: Colors.white,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 2.0),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 8.0,
-                            color: Colors.white,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 2.0),
-                          ),
-                          Container(
-                            width: 40.0,
-                            height: 8.0,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ]));
+            return Center(
+              child: Text(""),
+            );
           }
         });
   }

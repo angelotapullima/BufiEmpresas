@@ -63,6 +63,7 @@ class SucursalBloc {
       sucursalModel.subsidiaryPrincipal = listSucursales[i].subsidiaryPrincipal;
       sucursalModel.subsidiaryStatus = listSucursales[i].subsidiaryStatus;
       sucursalModel.subsidiaryFavourite = listSucursales[i].subsidiaryFavourite;
+      sucursalModel.subsidiaryImg = listSucursales[i].subsidiaryImg;
       sucursalModel.subsidiaryStatusPedidos =
           listSucursales[i].subsidiaryStatusPedidos;
 

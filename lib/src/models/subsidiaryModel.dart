@@ -16,6 +16,7 @@ class SubsidiaryModel {
     this.subsidiaryStatus,
     this.subsidiaryFavourite,
     this.subsidiaryStatusPedidos,
+    this.subsidiaryImg,
     this.listCompany,
   });
 
@@ -33,6 +34,7 @@ class SubsidiaryModel {
   String subsidiaryStatus;
   String subsidiaryFavourite;
   String subsidiaryStatusPedidos;
+  String subsidiaryImg;
   CompanyModel listCompany;
 
   factory SubsidiaryModel.fromJson(Map<String, dynamic> json) =>
@@ -51,6 +53,7 @@ class SubsidiaryModel {
         subsidiaryStatus: json["subsidiary_status"],
         subsidiaryFavourite: json["subsidiary_favourite"],
         subsidiaryStatusPedidos: json["subsidiary_status_pedidos"],
+        subsidiaryImg: json["subsidiary_img"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,5 +71,6 @@ class SubsidiaryModel {
         "subsidiary_status": subsidiaryStatus,
         "subsidiary_favourite": subsidiaryFavourite,
         "subsidiary_status_pedidos": subsidiaryStatusPedidos,
+        "subsidiary_img": subsidiaryImg,
       };
 }

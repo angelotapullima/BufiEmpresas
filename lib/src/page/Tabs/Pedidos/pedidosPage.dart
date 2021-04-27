@@ -454,6 +454,7 @@ class CrearItemChoice extends StatefulWidget {
 
 class _CrearItemChoiceState extends State<CrearItemChoice> {
   int _selectedIndex;
+  final prefs = Preferences();
 
   Widget _buildChips() {
     return ListView.builder(

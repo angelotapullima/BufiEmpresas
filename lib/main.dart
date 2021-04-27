@@ -1,6 +1,5 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Sucursal/detalleSubisidiaryBloc.dart';
-import 'package:bufi_empresas/src/page/Sucursales/detalleSubsidiary.dart';
 import 'package:bufi_empresas/src/page/Tabs/cuenta/perfilPage.dart';
 import 'package:bufi_empresas/src/page/home.dart';
 import 'package:bufi_empresas/src/page/login_page.dart';
@@ -57,7 +56,6 @@ class MyApp extends StatelessWidget {
               'perfil': (BuildContext context) => PerfilPage(),
 
               // Detalle Sucursal
-              'detalleSucursal': (BuildContext context) => DetalleSubsidiary(),
             }),
       ),
     );

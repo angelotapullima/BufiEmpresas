@@ -11,12 +11,12 @@ class SubsidiaryDatabase {
       final res = await db.rawInsert(
           "INSERT OR REPLACE INTO Subsidiary (id_subsidiary,id_company,subsidiary_name,subsidiary_address,"
           "subsidiary_cellphone,subsidiary_cellphone_2,subsidiary_email,subsidiary_coord_x,subsidiary_coord_y,"
-          "subsidiary_opening_hours,subsidiary_principal,subsidiary_status,subsidiary_favourite, subsidiary_status_pedidos) "
+          "subsidiary_opening_hours,subsidiary_principal,subsidiary_status,subsidiary_favourite, subsidiary_img, subsidiary_status_pedidos) "
           "VALUES('${subsidiaryModel.idSubsidiary}','${subsidiaryModel.idCompany}','${subsidiaryModel.subsidiaryName}',"
           "'${subsidiaryModel.subsidiaryAddress}','${subsidiaryModel.subsidiaryCellphone}','${subsidiaryModel.subsidiaryCellphone2}',"
           "'${subsidiaryModel.subsidiaryEmail}','${subsidiaryModel.subsidiaryCoordX}','${subsidiaryModel.subsidiaryCoordY}',"
           "'${subsidiaryModel.subsidiaryOpeningHours}','${subsidiaryModel.subsidiaryPrincipal}','${subsidiaryModel.subsidiaryStatus}',"
-          "'${subsidiaryModel.subsidiaryFavourite}', '${subsidiaryModel.subsidiaryStatusPedidos}')");
+          "'${subsidiaryModel.subsidiaryFavourite}', '${subsidiaryModel.subsidiaryImg}', '${subsidiaryModel.subsidiaryStatusPedidos}')");
 
       return res;
     } catch (exception) {
@@ -74,6 +74,7 @@ class SubsidiaryDatabase {
           "subsidiary_principal='${subsidiaryModel.subsidiaryPrincipal}',"
           "subsidiary_status= '${subsidiaryModel.subsidiaryStatus}',"
           "subsidiary_favourite= '${subsidiaryModel.subsidiaryFavourite}',"
+          "subsidiary_img= '${subsidiaryModel.subsidiaryImg}',"
           "subsidiary_status_pedidos='${subsidiaryModel.subsidiaryStatusPedidos}'"
           "WHERE id_subsidiary='${subsidiaryModel.idSubsidiary}' ");
 
