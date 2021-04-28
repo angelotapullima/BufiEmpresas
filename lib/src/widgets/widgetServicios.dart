@@ -1,4 +1,3 @@
-import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/subsidiaryService.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -121,10 +120,9 @@ class _SwichtStatusState extends State<SwichtStatus> {
           if (value) {
             estatus = '1';
           }
-          habilitarDesServicio(context, widget.serviceData.idService, estatus);
-          final serviciosBloc = ProviderBloc.servi(context);
-          serviciosBloc
-              .listarServiciosPorSucursal(widget.serviceData.idSubsidiary);
+          print('value $estatus');
+          habilitarDesServicio(context, widget.serviceData.idService, estatus,
+              widget.serviceData.idSubsidiary);
         });
       },
       activeTrackColor: Colors.yellow,

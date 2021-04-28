@@ -69,6 +69,15 @@ class ProductoDatabase {
     return res;
   }
 
+  deleteProductoXidProducto(String id) async {
+    final db = await dbProvider.database;
+
+    final res =
+        await db.rawDelete("DELETE FROM Producto WHERE id_producto= '$id'");
+
+    return res;
+  }
+
   Future<List<ProductoModel>> obtenerSubsidiaryGood() async {
     final db = await dbProvider.database;
     final res = await db.rawQuery("SELECT * FROM Producto");
@@ -120,6 +129,26 @@ class ProductoDatabase {
     final res = await db.rawUpdate("UPDATE Producto SET "
         "producto_status='0' "
         "WHERE id_producto = '${goodModel.idProducto}' ");
+
+    return res;
+  }
+
+  deshabilitarProductoDb(String id, String status) async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawUpdate("UPDATE Producto SET "
+        "producto_status='$status' "
+        "WHERE id_producto = '$id' ");
+
+    return res;
+  }
+
+  cambiarStockProductoDb(String id, String status) async {
+    final db = await dbProvider.database;
+
+    final res = await db.rawUpdate("UPDATE Producto SET "
+        "producto_stock='$status' "
+        "WHERE id_producto = '$id' ");
 
     return res;
   }

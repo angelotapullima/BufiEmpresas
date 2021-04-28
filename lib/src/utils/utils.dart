@@ -1,6 +1,8 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
 import 'package:bufi_empresas/src/database/pedidos_db.dart';
+import 'package:bufi_empresas/src/database/producto_bd.dart';
+import 'package:bufi_empresas/src/database/subsidiaryService_db.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/database/tipoEstadoPedido_db.dart';
 import 'package:bufi_empresas/src/models/tipoEstadoPedidoModel.dart';
@@ -140,8 +142,10 @@ habilitarDesProducto(BuildContext context, String id, String status) async {
   final prefs = Preferences();
   final datosProdBloc = ProviderBloc.datosProductos(context);
   final productoBloc = ProviderBloc.productos(context);
+  final productoDB = ProductoDatabase();
   final res = await productosBloc.habilitarDesProducto(id, status);
   if (res == 1) {
+    productoDB.deshabilitarProductoDb(id, status);
     productoBloc.listarProductosPorSucursal(prefs.idSeleccionSubsidiaryPedidos);
 
     datosProdBloc.listarDatosProducto(id);
@@ -154,20 +158,27 @@ cambiarStock(BuildContext context, String id, String status) async {
   final datosProdBloc = ProviderBloc.datosProductos(context);
   final productoBloc = ProviderBloc.productos(context);
   final res = await productosBloc.cambiarStock(id, status);
+  final productoDB = ProductoDatabase();
   if (res == 1) {
+    productoDB.cambiarStockProductoDb(id, status);
     productoBloc.listarProductosPorSucursal(prefs.idSeleccionSubsidiaryPedidos);
 
     datosProdBloc.listarDatosProducto(id);
   }
 }
 
-habilitarDesServicio(BuildContext context, String id, String status) async {
+habilitarDesServicio(
+    BuildContext context, String id, String status, String idSubsidiary) async {
   final serviciosBloc = ProviderBloc.servi(context);
+  final servicesDB = SubsidiaryServiceDatabase();
   print(id);
 
   final res = await serviciosBloc.habilitarDesService(id, status);
   print(res);
-  if (res == 1) {}
+  if (res == 1) {
+    servicesDB.cambiarStatusServiceDb(id, status);
+    serviciosBloc.listarServiciosPorSucursal(idSubsidiary);
+  }
 }
 
 eliminarPedidos(String idPedido) async {

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/widgets/widgetBienes.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
@@ -64,7 +63,6 @@ class _GridviewProductoPorSucursalState
   Widget build(BuildContext context) {
     final productoBloc = ProviderBloc.productos(context);
     productoBloc.listarProductosPorSucursal(widget.idSucursal);
-    final responsive = Responsive.of(context);
     return StreamBuilder(
         stream: productoBloc.productoStream,
         builder: (BuildContext context,
@@ -77,7 +75,7 @@ class _GridviewProductoPorSucursalState
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: responsive.ip(.075),
+                      childAspectRatio: 0.7,
                     ),
                     itemCount: snapshot.data.length,
                     padding: EdgeInsets.all(0),

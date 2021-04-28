@@ -187,10 +187,11 @@ class PagosBloc {
       //------Recorrer la lista de compañías y sucursales---------
 
       //funcion que llama desde la bd a todas las sucursales y compañías
-      final listaCompany =
-          await companyDb.obtenerCompanyPorId(listPagos[i].idEmpresa);
+
       final listSucursal = await subsidiaryDb
           .obtenerSubsidiaryPorIdSubsidiary(listPagos[i].idSubsidiary);
+      final listaCompany =
+          await companyDb.obtenerCompanyPorId(listSucursal[0].idCompany);
       final List<CompanySubsidiaryModel> listCompsucursalModel = [];
 
       final compSucursalModel = CompanySubsidiaryModel();
@@ -209,7 +210,6 @@ class PagosBloc {
       compSucursalModel.subsidiaryPrincipal =
           listSucursal[0].subsidiaryPrincipal;
       compSucursalModel.subsidiaryStatus = listSucursal[0].subsidiaryStatus;
-
       //Company
       compSucursalModel.companyName = listaCompany[0].companyName;
       compSucursalModel.companyRuc = listaCompany[0].companyRuc;

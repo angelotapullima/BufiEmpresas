@@ -117,6 +117,22 @@ class SubsidiaryServiceDatabase {
     }
   }
 
+  cambiarStatusServiceDb(String id, String status) async {
+    try {
+      final db = await dbProvider.database;
+
+      final res = await db.rawUpdate("UPDATE Subsidiaryservice SET "
+          "subsidiary_service_status='$status' "
+          "WHERE id_subsidiaryservice = '$id' ");
+
+      return res;
+    } catch (e) {
+      print(" $e Error en la base de datossss");
+      print(e);
+      return [];
+    }
+  }
+
   habilitarSubsidiaryServiceDb(SubsidiaryServiceModel serviceModel) async {
     try {
       final db = await dbProvider.database;
