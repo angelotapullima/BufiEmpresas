@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListNegocio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListarSucursales.dart';
+import 'package:bufi_empresas/src/bloc/Sucursal/editarSubsidiaryBloc.dart';
 import 'package:bufi_empresas/src/bloc/config_bloc.dart';
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
@@ -30,6 +31,7 @@ class ProviderBloc extends InheritedWidget {
   final datosProductosBloc = DatosProductoBloc();
   final serviciosBloc = ServiciosBloc();
   final sucursalbloc = SucursalBloc();
+  final editarSubsidiaryBloc = EditarSubsidiaryBloc();
   final configBloc = ConfigBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
@@ -123,6 +125,11 @@ class ProviderBloc extends InheritedWidget {
   static SucursalBloc sucursal(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .sucursalbloc;
+  }
+
+  static EditarSubsidiaryBloc editSubsidiary(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .editarSubsidiaryBloc;
   }
 
   //Config Obtner Nombre de la empresa

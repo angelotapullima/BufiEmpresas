@@ -2,6 +2,7 @@ import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/bloc/Sucursal/detalleSubisidiaryBloc.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Productos/GridviewProductosPorSucursal.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Servicios/GridviewServiciosPorSucursal.dart';
+import 'package:bufi_empresas/src/page/Sucursales/editarSubsidiaryPage.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/customCacheManager.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -239,7 +240,7 @@ class CebeceraItem extends StatelessWidget {
 
                 Padding(
                   padding: EdgeInsets.only(
-                    left: responsive.ip(2),
+                    left: responsive.ip(5),
                     top: responsive.ip(1),
                   ),
                   child: Row(
@@ -491,6 +492,51 @@ class InformacionWidget extends StatelessWidget {
                       //   ],
                       // ): Container(),
                       SizedBox(height: responsive.hp(2.5)),
+                      Center(
+                        child: SizedBox(
+                          width: responsive.wp(80),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(3),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0))),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.red),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                                  return EditarSubsidiaryPage(
+                                      subsidiaryModel: snapshot.data[0]);
+                                },
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  var begin = Offset(0.0, 1.0);
+                                  var end = Offset.zero;
+                                  var curve = Curves.ease;
+
+                                  var tween =
+                                      Tween(begin: begin, end: end).chain(
+                                    CurveTween(curve: curve),
+                                  );
+
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: child,
+                                  );
+                                },
+                              ));
+                            },
+                            child: Text("Editar Información",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: responsive.ip(2.2))),
+                          ),
+                        ),
+                      ),
                       // Column(
                       //   children: [
                       //     Text("Descripción:",

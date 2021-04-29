@@ -27,6 +27,13 @@ void showToast1(String msg, int duration, ToastGravity gravity) {
       fontSize: 16.0);
 }
 
+TextStyle subtitulotexto = TextStyle(fontFamily: 'Syne', fontSize: 20);
+TextStyle gridTitulo =
+    TextStyle(fontFamily: 'Syne', fontSize: 16, fontWeight: FontWeight.bold);
+TextStyle formtexto =
+    TextStyle(fontFamily: 'Syne', fontSize: 18, fontWeight: FontWeight.bold);
+TextStyle form2 = TextStyle(fontFamily: 'Syne', fontSize: 16);
+
 String format(double n) {
   return n.toStringAsFixed(n.truncateToDouble() == n ? 2 : 2);
 }

@@ -46,8 +46,8 @@ class TiposEstadoPedidosDatabase {
   Future<List<TipoEstadoPedidoModel>> obtenerTiposEstadoPedido1(
       String id) async {
     final db = await dbProvider.database;
-    final res = await db
-        .rawQuery("SELECT * FROM EstadoPedido WHERE id_tipo_estado<'99'");
+    final res = await db.rawQuery(
+        "SELECT * FROM EstadoPedido WHERE id_tipo_estado<'99' AND  id_tipo_estado!='$id'");
 
     List<TipoEstadoPedidoModel> list = res.isNotEmpty
         ? res.map((c) => TipoEstadoPedidoModel.fromJson(c)).toList()

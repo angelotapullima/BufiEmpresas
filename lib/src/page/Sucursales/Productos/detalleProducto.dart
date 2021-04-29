@@ -12,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rating_bar/rating_bar.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DetalleProductos extends StatefulWidget {
@@ -471,16 +472,29 @@ class _DetalleProductosState extends State<DetalleProductos> {
                               ],
                             ),
                             Row(
-                              children: <Widget>[
-                                Icon(Icons.star,
-                                    color: LightColor.yellowColor, size: 17),
-                                Icon(Icons.star,
-                                    color: LightColor.yellowColor, size: 17),
-                                Icon(Icons.star,
-                                    color: LightColor.yellowColor, size: 17),
-                                Icon(Icons.star,
-                                    color: LightColor.yellowColor, size: 17),
-                                Icon(Icons.star_border, size: 17),
+                              children: [
+                                Container(
+                                  width: responsive.wp(30),
+                                  child: RatingBar.readOnly(
+                                    size: 20,
+                                    initialRating:
+                                        ('${widget.producto.productoRating}' !=
+                                                    null &&
+                                                '${widget.producto.productoRating}' !=
+                                                    'null')
+                                            ? double.parse(
+                                                '${widget.producto.productoRating}')
+                                            : 0,
+                                    isHalfAllowed: true,
+                                    halfFilledIcon: Icons.star_half,
+                                    filledIcon: Icons.star,
+                                    emptyIcon: Icons.star_border,
+                                    filledColor: Colors.yellow,
+                                  ),
+                                ),
+                                // Text(('${servicioData.subsidiaryStatus}' != null)
+                                //     ? '${servicioData.listCompany.companyName}'
+                                //     : ''),
                               ],
                             ),
                           ],
