@@ -409,6 +409,14 @@ class InformacionWidget extends StatelessWidget {
                               fontSize: responsive.ip(2),
                             ),
                           ),
+                          (snapshot.data[0].subsidiaryCellphone2 != '')
+                              ? Text(
+                                  ' - ${snapshot.data[0].subsidiaryCellphone2}',
+                                  style: TextStyle(
+                                    fontSize: responsive.ip(2),
+                                  ),
+                                )
+                              : Text('')
                         ],
                       ),
                       SizedBox(
@@ -421,9 +429,13 @@ class InformacionWidget extends StatelessWidget {
                           SizedBox(
                             width: responsive.wp(2),
                           ),
-                          Text(('${snapshot.data[0].subsidiaryEmail}') == 'null'
-                              ? 'correo'
-                              : '${snapshot.data[0].subsidiaryEmail}')
+                          Text(
+                              ('${snapshot.data[0].subsidiaryEmail}') == 'null'
+                                  ? ''
+                                  : '${snapshot.data[0].subsidiaryEmail}',
+                              style: TextStyle(
+                                fontSize: responsive.ip(2),
+                              ))
                           // Text(
                           //   '${snapshot.data[0].subsidiaryEmail}',
                           //   style: TextStyle(

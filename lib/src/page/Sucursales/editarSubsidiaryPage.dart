@@ -4,6 +4,7 @@ import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/utils//utils.dart' as utils;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EditarSubsidiaryPage extends StatefulWidget {
   final SubsidiaryModel subsidiaryModel;
@@ -27,17 +28,25 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
       TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    _nombreEmpresaController.text = widget.subsidiaryModel.subsidiaryName;
-    _cellEmpresaController.text = widget.subsidiaryModel.subsidiaryCellphone;
-    _cell2EmpresaController.text = widget.subsidiaryModel.subsidiaryCellphone2;
-    _direccionEmpresaController.text = widget.subsidiaryModel.subsidiaryAddress;
-    _emailEmpresaController.text = widget.subsidiaryModel.subsidiaryEmail;
-    _coordXEmpresaController.text = widget.subsidiaryModel.subsidiaryCoordX;
-    _coordYEmpresaController.text = widget.subsidiaryModel.subsidiaryCoordY;
-    _openingHoursEmpresaController.text =
-        widget.subsidiaryModel.subsidiaryOpeningHours;
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _nombreEmpresaController.text = widget.subsidiaryModel.subsidiaryName;
+      _cellEmpresaController.text = widget.subsidiaryModel.subsidiaryCellphone;
+      _cell2EmpresaController.text =
+          widget.subsidiaryModel.subsidiaryCellphone2;
+      _direccionEmpresaController.text =
+          widget.subsidiaryModel.subsidiaryAddress;
+      _emailEmpresaController.text = widget.subsidiaryModel.subsidiaryEmail;
+      _coordXEmpresaController.text = widget.subsidiaryModel.subsidiaryCoordX;
+      _coordYEmpresaController.text = widget.subsidiaryModel.subsidiaryCoordY;
+      _openingHoursEmpresaController.text =
+          widget.subsidiaryModel.subsidiaryOpeningHours;
+    });
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
     final editarSubsidiaryBloc = ProviderBloc.editSubsidiary(context);
     editarSubsidiaryBloc.changeCargando(false);
@@ -93,7 +102,7 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                     BackButton(),
                     Expanded(
                         child: Text(
-                      "EDITAR INFORMACIÓN DE SUCURSAL",
+                      "EDITAR SUCURSAL: ${widget.subsidiaryModel.subsidiaryName}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: responsive.ip(2.5),
@@ -129,24 +138,37 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _celularEmpresa(
-                      responsive, 'Celular', _cellEmpresaController),
-                ),
-                SizedBox(height: responsive.hp(2)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Celular 2',
-                    style: formtexto,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: responsive.wp(45),
+                        child: _celularEmpresa(
+                            responsive, 'Celular', _cellEmpresaController),
+                      ),
+                      Spacer(),
+                      Container(
+                        width: responsive.wp(45),
+                        child: _celularEmpresaNull(
+                            responsive, 'Celular 2', _cell2EmpresaController),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _celularEmpresa(
-                      responsive, 'Celular 2', _cell2EmpresaController),
-                ),
+                // SizedBox(height: responsive.hp(2)),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                //   child: Text(
+                //     'Celular 2',
+                //     style: formtexto,
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                //   child: _celularEmpresa(
+                //       responsive, 'Celular 2', _cell2EmpresaController),
+                // ),
                 SizedBox(
-                  height: responsive.hp(2),
+                  height: responsive.hp(1),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
@@ -181,30 +203,48 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Coordenada X',
+                    'Coordenadas X,Y',
                     style: formtexto,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputFieldNull(
-                      responsive, 'Coordenada X', _coordXEmpresaController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Coordenada Y',
-                    style: formtexto,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: responsive.wp(45),
+                        child: _imputFieldNull(responsive, 'Coordenada X',
+                            _coordXEmpresaController),
+                      ),
+                      Spacer(),
+                      Container(
+                        width: responsive.wp(45),
+                        child: _imputFieldNull(responsive, 'Coordenada Y',
+                            _coordYEmpresaController),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputFieldNull(
-                      responsive, 'Coordenada Y', _coordYEmpresaController),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                //   child: _imputFieldNull(
+                //       responsive, 'Coordenada X', _coordXEmpresaController),
+                // ),
+                // SizedBox(
+                //   height: responsive.hp(2),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                //   child: Text(
+                //     'Coordenada Y',
+                //     style: formtexto,
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                //   child: _imputFieldNull(
+                //       responsive, 'Coordenada Y', _coordYEmpresaController),
+                // ),
                 SizedBox(
                   height: responsive.hp(2),
                 ),
@@ -270,6 +310,7 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
         controller: controller,
         cursorColor: Colors.black,
         keyboardType: TextInputType.text,
+        maxLength: 9,
         decoration: InputDecoration(
           hintStyle: form2,
           hintText: text,
@@ -284,11 +325,31 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
           Pattern pattern = '^(\[[0-9]{9}\)';
           RegExp regExp = new RegExp(pattern);
           if (regExp.hasMatch(value)) {
-            return 'Sólo números';
-          } else {
             return null;
+          } else {
+            return 'Sólo 9 números';
           }
         });
+  }
+
+  Widget _celularEmpresaNull(
+      Responsive responsive, String text, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      cursorColor: Colors.black,
+      keyboardType: TextInputType.text,
+      maxLength: 9,
+      decoration: InputDecoration(
+        hintStyle: form2,
+        hintText: text,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue[300]),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _imputFieldNull(
@@ -311,27 +372,52 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
   }
 
   Widget _button(Responsive responsive) {
-    //final editarSubsidiaryBloc = ProviderBloc.editSubsidiary(context);
+    final editarSubsidiaryBloc = ProviderBloc.editSubsidiary(context);
+    final subsidiaryModel = SubsidiaryModel();
 
     return SizedBox(
       width: double.infinity,
       child: MaterialButton(
         onPressed: () async {
           if (keyForm.currentState.validate()) {
+            Pattern pattern = '^(\[[0-9]{9}\)';
+            RegExp regExp = new RegExp(pattern);
             if (_cellEmpresaController.text.isEmpty) {
               utils.showToast(
                   context, 'Por favor debe ingresar un número de celular');
+            } else if (!regExp.hasMatch(_cell2EmpresaController.text) &&
+                _cell2EmpresaController.text != '') {
+              utils.showToast(
+                  context, 'Por favor ingresar solo 9 números en celular 2');
             } else {
-              // final int code = await mantenimientoBloc
-              //     .registrarMantenimiento(manteModel);
-              // if (code == 1) {
-              //   print(code);
-              //   print("Mantenimiento registrado");
-              //   utils.showToast(context, 'Mantenimiento Registrado');
-              //   Navigator.pushNamed(context, "home");
-              // } else {
-              //   utils.showToast(context, 'Faltan registrar datos');
-              // }
+              subsidiaryModel.idSubsidiary =
+                  widget.subsidiaryModel.idSubsidiary;
+              subsidiaryModel.subsidiaryName = _nombreEmpresaController.text;
+              subsidiaryModel.subsidiaryCellphone = _cellEmpresaController.text;
+              subsidiaryModel.subsidiaryCellphone2 =
+                  _cell2EmpresaController.text;
+              subsidiaryModel.subsidiaryAddress =
+                  _direccionEmpresaController.text;
+              subsidiaryModel.subsidiaryEmail = _emailEmpresaController.text;
+              subsidiaryModel.subsidiaryCoordX = _coordXEmpresaController.text;
+              subsidiaryModel.subsidiaryCoordY = _coordYEmpresaController.text;
+              subsidiaryModel.subsidiaryOpeningHours =
+                  _openingHoursEmpresaController.text;
+              print(subsidiaryModel.subsidiaryCellphone);
+
+              final int code =
+                  await editarSubsidiaryBloc.editarSubsidiary(subsidiaryModel);
+              if (code == 1) {
+                final sucursalBloc = ProviderBloc.sucursal(context);
+                sucursalBloc
+                    .obtenerSucursalporId(widget.subsidiaryModel.idSubsidiary);
+                print(code);
+                print("Información Actualizada");
+                utils.showToast(context, 'Información Actualizada');
+                Navigator.pop(context);
+              } else {
+                utils.showToast(context, 'Faltan registrar datos');
+              }
             }
           }
         },

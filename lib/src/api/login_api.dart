@@ -92,8 +92,8 @@ class LoginApi {
                 decodedData['empresas'][i]['subsidiary_name'];
             smodel.subsidiaryCellphone =
                 decodedData['empresas'][i]['subsidiary_cellphone'];
-            smodel.subsidiaryCellphone =
-                decodedData['empresas'][i]['id_subsidiary_cellphone_2'];
+            smodel.subsidiaryCellphone2 =
+                decodedData['empresas'][i]['subsidiary_cellphone_2'];
             smodel.subsidiaryEmail =
                 decodedData['empresas'][i]['subsidiary_email'];
             smodel.subsidiaryCoordX =
@@ -169,8 +169,8 @@ class LoginApi {
             smodel.subsidiaryName = decodedData['sedes'][i]['subsidiary_name'];
             smodel.subsidiaryCellphone =
                 decodedData['sedes'][i]['subsidiary_cellphone'];
-            smodel.subsidiaryCellphone =
-                decodedData['sedes'][i]['id_subsidiary_cellphone_2'];
+            smodel.subsidiaryCellphone2 =
+                decodedData['sedes'][i]['subsidiary_cellphone_2'];
             smodel.subsidiaryEmail =
                 decodedData['sedes'][i]['subsidiary_email'];
             smodel.subsidiaryCoordX =
