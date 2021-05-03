@@ -213,19 +213,16 @@ class PerfilPage extends StatelessWidget {
                   horizontal: responsive.wp(3),
                 ),
                 width: double.infinity,
-                height: responsive.ip(6),
+                height: responsive.ip(7),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Cambiar Contraseña",
-                        style: TextStyle(
-                            color: Colors.lightBlue,
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold)),
-                  ],
+                child: Center(
+                  child: Text("Cambiar Contraseña",
+                      style: TextStyle(
+                          color: Colors.lightBlue,
+                          fontSize: responsive.ip(2),
+                          fontWeight: FontWeight.bold)),
                 ),
               ),
             ),
