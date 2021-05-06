@@ -74,7 +74,7 @@ class _RestablecerContrasenhaPageState
           children: [
             Spacer(),
             Text(
-              "Restablecer Contraseña",
+              "Cambiar Contraseña",
               style: TextStyle(
                   fontSize: responsive.ip(3), fontWeight: FontWeight.bold),
             ),
@@ -218,7 +218,7 @@ class _RestablecerContrasenhaPageState
 
     if (code == 1) {
       print(code);
-      showToast1('Contraseña restablecida', 2, ToastGravity.CENTER);
+      showToast1('Contraseña Actualizada', 2, ToastGravity.CENTER);
       Navigator.of(context).pop();
     } else if (code == 2) {
       print(code);
@@ -227,7 +227,6 @@ class _RestablecerContrasenhaPageState
       print(code);
       showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
     }
-
     _cargando.value = false;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/page/recuperarPassword_page.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -91,7 +92,14 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.all(
                   responsive.ip(4.5),
                 ),
-                child: Text("Olvidé mi Contraseña"),
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RecuperarPasswordPage()));
+                    },
+                    child: Text("Olvidé mi Contraseña")),
               ),
             ],
           ),
