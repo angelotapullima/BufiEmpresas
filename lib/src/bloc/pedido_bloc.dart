@@ -152,6 +152,8 @@ class PedidoBloc {
               listProductos[0].productoCharacteristics;
           productoModel.productoBrand = listProductos[0].productoBrand;
           productoModel.productoModel = listProductos[0].productoModel;
+          productoModel.productoSize = listProductos[0].productoSize;
+          productoModel.productoType = listProductos[0].productoType;
           productoModel.productoMeasure = listProductos[0].productoMeasure;
 
           listProductosModel.add(productoModel);
