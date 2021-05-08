@@ -9,12 +9,19 @@ class PantallaInicioBloc {
   final subsidiaryDatabase = SubsidiaryDatabase();
 
   final negociosController = BehaviorSubject<List<CompanyModel>>();
+  final _negocioController = BehaviorSubject<List<CompanyModel>>();
   final sucursalController = BehaviorSubject<List<SubsidiaryModel>>();
   Stream<List<CompanyModel>> get negociosStream => negociosController.stream;
+  Stream<List<CompanyModel>> get negocioStream => _negocioController.stream;
   Stream<List<SubsidiaryModel>> get suscursaStream => sucursalController.stream;
 
   void obtenernegocios() async {
     negociosController.sink.add(await negociosDatabase.obtenerCompany());
+  }
+
+  void obtenernegociosxID(String idCompany) async {
+    _negocioController.sink
+        .add(await negociosDatabase.obtenerCompanyPorId(idCompany));
   }
 
   void obtenersucursales(String idcompany) async {
@@ -23,7 +30,7 @@ class PantallaInicioBloc {
 
   dispose() {
     negociosController?.close();
-
+    _negocioController?.close();
     sucursalController?.close();
   }
 

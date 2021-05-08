@@ -158,97 +158,102 @@ class MostrarNegocio extends StatelessWidget {
       Responsive responsive,
       ContadorPaginaNegocioBloc contadorBloc,
       int index) {
-    return Container(
-      height: responsive.hp(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: (contadorBloc.pageContador >= index - 0.5 &&
-                    contadorBloc.pageContador < index + 0.5)
-                ? Colors.redAccent
-                : Colors.grey.withOpacity(0.5),
-            spreadRadius: (contadorBloc.pageContador >= index - 0.5 &&
-                    contadorBloc.pageContador < index + 0.5)
-                ? 4
-                : 1,
-            blurRadius: (contadorBloc.pageContador >= index - 0.5 &&
-                    contadorBloc.pageContador < index + 0.5)
-                ? 4
-                : 2,
-            offset: (contadorBloc.pageContador >= index - 0.5 &&
-                    contadorBloc.pageContador < index + 0.5)
-                ? Offset(0, 0)
-                : Offset(2, 3),
-          ),
-        ],
-      ),
-      margin: EdgeInsets.all(responsive.ip(1)),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          width: responsive.wp(50),
-          child: Stack(
-            children: <Widget>[
-              CachedNetworkImage(
-                placeholder: (context, url) => Image(
-                  image: AssetImage('assets/jar-loading.gif'),
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, 'detalleNegocio', arguments: companyData);
+      },
+      child: Container(
+        height: responsive.hp(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: (contadorBloc.pageContador >= index - 0.5 &&
+                      contadorBloc.pageContador < index + 0.5)
+                  ? Colors.redAccent
+                  : Colors.grey.withOpacity(0.5),
+              spreadRadius: (contadorBloc.pageContador >= index - 0.5 &&
+                      contadorBloc.pageContador < index + 0.5)
+                  ? 4
+                  : 1,
+              blurRadius: (contadorBloc.pageContador >= index - 0.5 &&
+                      contadorBloc.pageContador < index + 0.5)
+                  ? 4
+                  : 2,
+              offset: (contadorBloc.pageContador >= index - 0.5 &&
+                      contadorBloc.pageContador < index + 0.5)
+                  ? Offset(0, 0)
+                  : Offset(2, 3),
+            ),
+          ],
+        ),
+        margin: EdgeInsets.all(responsive.ip(1)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 2),
                 ),
-                errorWidget: (context, url, error) => Image(
-                    image: AssetImage('assets/carga_fallida.jpg'),
-                    fit: BoxFit.cover),
-                imageUrl: '$apiBaseURL/${companyData.companyImage}',
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
+              ],
+            ),
+            width: responsive.wp(50),
+            child: Stack(
+              children: <Widget>[
+                CachedNetworkImage(
+                  placeholder: (context, url) => Image(
+                    image: AssetImage('assets/jar-loading.gif'),
+                    fit: BoxFit.cover,
+                  ),
+                  errorWidget: (context, url, error) => Image(
+                      image: AssetImage('assets/carga_fallida.jpg'),
+                      fit: BoxFit.cover),
+                  imageUrl: '$apiBaseURL/${companyData.companyImage}',
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                right: 0,
-                left: 0,
-                bottom: 0,
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                    vertical: responsive.hp(.5),
-                    //horizontal: responsive.wp(2)
+                Positioned(
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      vertical: responsive.hp(.5),
+                      //horizontal: responsive.wp(2)
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(.5),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          '${companyData.companyName}',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: responsive.ip(2),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        '${companyData.companyName}',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

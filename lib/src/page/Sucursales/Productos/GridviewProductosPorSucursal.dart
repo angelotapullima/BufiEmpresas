@@ -71,50 +71,48 @@ class _GridviewProductoPorSucursalState
             if (snapshot.data.length > 0) {
               return SafeArea(
                 top: false,
-                child: Expanded(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.7,
-                    ),
-                    itemCount: snapshot.data.length,
-                    padding: EdgeInsets.all(0),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration:
-                                  const Duration(milliseconds: 100),
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                print(snapshot.data[index].productoStatus);
-                                return DetalleProductos(
-                                    snapshot.data[index],
-                                    (snapshot.data[index].productoStatus == '1')
-                                        ? true
-                                        : false,
-                                    (snapshot.data[index].productoStock == '1')
-                                        ? true
-                                        : false);
-                              },
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        child: BienesWidget(
-                          producto: snapshot.data[index],
-                        ),
-                      );
-                    },
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
                   ),
+                  itemCount: snapshot.data.length,
+                  padding: EdgeInsets.all(0),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 100),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              print(snapshot.data[index].productoStatus);
+                              return DetalleProductos(
+                                  snapshot.data[index],
+                                  (snapshot.data[index].productoStatus == '1')
+                                      ? true
+                                      : false,
+                                  (snapshot.data[index].productoStock == '1')
+                                      ? true
+                                      : false);
+                            },
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: BienesWidget(
+                        producto: snapshot.data[index],
+                      ),
+                    );
+                  },
                 ),
               );
             } else {

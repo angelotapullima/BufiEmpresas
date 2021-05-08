@@ -149,10 +149,26 @@ class _DetalleSubsidiaryState extends State<DetalleSubsidiary>
                 body: GridviewProductoPorSucursal(
                   idSucursal: widget.idSucursal,
                 ),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    //   Navigator.pushNamed(context, 'registroSubsidiary',
+                    //       arguments: company.idCompany);
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: Colors.redAccent,
+                ),
               ),
               Scaffold(
                 body: GridviewServiciosPorSucursal(
                   idSucursal: widget.idSucursal,
+                ),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    //   Navigator.pushNamed(context, 'registroSubsidiary',
+                    //       arguments: company.idCompany);
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: Colors.redAccent,
                 ),
               ),
             ],
@@ -357,6 +373,26 @@ class InformacionWidget extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       Divider(color: Colors.grey),
+                      Column(
+                        children: [
+                          Text("Descripción:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: responsive.ip(2.1))),
+                          Text(
+                            ('${snapshot.data[0].subsidiaryDescription}') ==
+                                    "null"
+                                ? ''
+                                : '${snapshot.data[0].subsidiaryDescription}',
+                            style: TextStyle(
+                              fontSize: responsive.ip(2),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: responsive.hp(1),
+                      ),
                       Row(
                         children: [
                           Icon(Icons.location_on,

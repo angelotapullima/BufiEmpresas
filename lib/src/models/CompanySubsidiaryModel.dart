@@ -13,6 +13,7 @@ class CompanySubsidiaryModel {
     this.subsidiaryPrincipal,
     this.subsidiaryStatus,
     this.subsidiaryFavourite,
+    this.subsidiaryDescription,
     this.idUser,
     this.idCity,
     this.idCategory,
@@ -51,6 +52,7 @@ class CompanySubsidiaryModel {
   String subsidiaryPrincipal;
   String subsidiaryStatus;
   String subsidiaryFavourite;
+  String subsidiaryDescription;
 
   String idUser;
   String idCity;
@@ -92,6 +94,7 @@ class CompanySubsidiaryModel {
         subsidiaryPrincipal: json["subsidiary_principal"],
         subsidiaryStatus: json["subsidiary_status"],
         subsidiaryFavourite: json["subsidiary_favourite"],
+        subsidiaryDescription: json["subsidiary_description"],
         idUser: json["id_user"],
         idCity: json["id_city"],
         idCategory: json["id_category"],
@@ -127,6 +130,7 @@ class CompanySubsidiaryModel {
         "subsidiary_principal": subsidiaryPrincipal,
         "subsidiary_status": subsidiaryStatus,
         "subsidiary_favourite": subsidiaryFavourite,
+        "subsidiary_description": subsidiaryDescription,
         "id_user": idUser,
         "id_city": idCity,
         "id_category": idCategory,

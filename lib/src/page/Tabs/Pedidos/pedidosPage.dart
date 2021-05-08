@@ -280,15 +280,11 @@ class _ListarPedidosPorIdSubsidiaryState
                                     scrollDirection: Axis.vertical,
                                     itemCount: snapshot.data.length,
                                     itemBuilder: (context, index) {
-                                      return FadeIn(
-                                        delay:
-                                            Duration(milliseconds: 100 * index),
-                                        child: _crearItem(
-                                          context,
-                                          snapshot.data[index],
-                                          responsive,
-                                          preferences.idStatusPedidos,
-                                        ),
+                                      return _crearItem(
+                                        context,
+                                        snapshot.data[index],
+                                        responsive,
+                                        preferences.idStatusPedidos,
                                       );
                                     }),
                               );
@@ -365,7 +361,7 @@ class _ListarPedidosPorIdSubsidiaryState
           children: [
             Container(
               margin: EdgeInsets.all(responsive.ip(1)),
-              width: responsive.wp(60),
+              //width: responsive.wp(60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -382,6 +378,7 @@ class _ListarPedidosPorIdSubsidiaryState
                 ],
               ),
             ),
+            Spacer(),
             Container(
               margin: EdgeInsets.all(responsive.ip(1)),
               child: (idStatus == '99')
