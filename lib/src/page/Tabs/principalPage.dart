@@ -34,43 +34,53 @@ class PrincipalPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hola,  ',
-                          ),
-                          Text(
-                            '${preferences.personName}',
-                            style: GoogleFonts.pacifico(
-                              textStyle: TextStyle(
-                                fontSize: responsive.ip(2),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, 'perfil');
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Hola,  ',
+                            ),
+                            Text(
+                              '${preferences.personName}',
+                              style: GoogleFonts.pacifico(
+                                textStyle: TextStyle(
+                                  fontSize: responsive.ip(2),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Spacer(),
-                      Container(
-                        width: responsive.ip(5),
-                        height: responsive.ip(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: CachedNetworkImage(
-                            imageUrl: '${preferences.userImage}',
-                            //cacheManager: CustomCacheManager(),
-                            placeholder: (context, url) => Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              child: Image(
-                                  image: AssetImage('assets/loading.gif'),
-                                  fit: BoxFit.cover),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              child: Center(
-                                child: Icon(Icons.error),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, 'perfil');
+                        },
+                        child: Container(
+                          width: responsive.ip(5),
+                          height: responsive.ip(5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: CachedNetworkImage(
+                              imageUrl: '${preferences.userImage}',
+                              //cacheManager: CustomCacheManager(),
+                              placeholder: (context, url) => Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Image(
+                                    image: AssetImage('assets/loading.gif'),
+                                    fit: BoxFit.cover),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Center(
+                                  child: Icon(Icons.error),
+                                ),
                               ),
                             ),
                           ),
