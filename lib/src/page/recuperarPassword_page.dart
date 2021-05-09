@@ -152,19 +152,33 @@ class _RecuperarPasswordPageState extends State<RecuperarPasswordPage> {
               right: responsive.wp(6),
             ),
             child: SizedBox(
-                width: double.infinity,
-                child: RaisedButton(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (snapshot.hasData)
+                    ? () => _submit(context, correoBloc)
+                    : null,
+                child: Text('Enviar'),
+                style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+                      borderRadius: BorderRadius.circular(30.0)),
                   padding: EdgeInsets.all(0.0),
-                  child: Text('Enviar'),
-                  color: Color(0xFFF93963),
-                  textColor: Colors.white,
-                  onPressed: (snapshot.hasData)
-                      ? () => _submit(context, correoBloc)
-                      : null,
-                )),
+                  primary: Color(0xFFF93963),
+                  onPrimary: Colors.white,
+                ),
+              ),
+              // RaisedButton(
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(30.0),
+              //   ),
+              //   padding: EdgeInsets.all(0.0),
+              //   child: Text('Enviar'),
+              //   color: Color(0xFFF93963),
+              //   textColor: Colors.white,
+              //   onPressed: (snapshot.hasData)
+              //       ? () => _submit(context, correoBloc)
+              //       : null,
+              // ),
+            ),
           );
         });
   }
@@ -342,19 +356,33 @@ class _ConfirmCodePageState extends State<ConfirmCodePage> {
               right: responsive.wp(6),
             ),
             child: SizedBox(
-                width: double.infinity,
-                child: RaisedButton(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (snapshot.hasData)
+                    ? () => _submit(context, codigoBloc)
+                    : null,
+                child: Text('Iniciar Sesión'),
+                style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+                      borderRadius: BorderRadius.circular(30.0)),
                   padding: EdgeInsets.all(0.0),
-                  child: Text('Confirmar'),
-                  color: Color(0xFFF93963),
-                  textColor: Colors.white,
-                  onPressed: (snapshot.hasData)
-                      ? () => _submit(context, codigoBloc)
-                      : null,
-                )),
+                  primary: Color(0xFFF93963),
+                  onPrimary: Colors.white,
+                ),
+              ),
+              // child: RaisedButton(
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(30.0),
+              //   ),
+              //   padding: EdgeInsets.all(0.0),
+              //   child: Text('Confirmar'),
+              //   color: Color(0xFFF93963),
+              //   textColor: Colors.white,
+              //   onPressed: (snapshot.hasData)
+              //       ? () => _submit(context, codigoBloc)
+              //       : null,
+              // ),
+            ),
           );
         });
   }
@@ -570,19 +598,33 @@ class _RestablecerPasswordPageState extends State<RestablecerPasswordPage> {
               right: responsive.wp(6),
             ),
             child: SizedBox(
-                width: double.infinity,
-                child: RaisedButton(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (snapshot.hasData)
+                    ? () => _submit(context, passwordBloc)
+                    : null,
+                child: Text('Iniciar Sesión'),
+                style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+                      borderRadius: BorderRadius.circular(30.0)),
                   padding: EdgeInsets.all(0.0),
-                  child: Text('Actualizar contraseña'),
-                  color: Color(0xFFF93963),
-                  textColor: Colors.white,
-                  onPressed: (snapshot.hasData)
-                      ? () => _submit(context, passwordBloc)
-                      : null,
-                )),
+                  primary: Color(0xFFF93963),
+                  onPrimary: Colors.white,
+                ),
+              ),
+              // child: RaisedButton(
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(30.0),
+              //   ),
+              //   padding: EdgeInsets.all(0.0),
+              //   child: Text('Actualizar contraseña'),
+              //   color: Color(0xFFF93963),
+              //   textColor: Colors.white,
+              //   onPressed: (snapshot.hasData)
+              //       ? () => _submit(context, passwordBloc)
+              //       : null,
+              // ),
+            ),
           );
         });
   }

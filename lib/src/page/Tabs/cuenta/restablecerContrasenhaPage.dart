@@ -195,19 +195,33 @@ class _RestablecerContrasenhaPageState
               right: responsive.wp(6),
             ),
             child: SizedBox(
-                width: double.infinity,
-                child: RaisedButton(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (snapshot.hasData)
+                    ? () => _submit(context, passwordBloc)
+                    : null,
+                style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
+                      borderRadius: BorderRadius.circular(30.0)),
                   padding: EdgeInsets.all(0.0),
-                  child: Text('Confirmar'),
-                  color: Color(0xFFF93963),
-                  textColor: Colors.white,
-                  onPressed: (snapshot.hasData)
-                      ? () => _submit(context, passwordBloc)
-                      : null,
-                )),
+                  primary: Color(0xFFF93963),
+                  onPrimary: Colors.white,
+                ),
+                child: Text('Confirmar'),
+              ),
+              // RaisedButton(
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(30.0),
+              //   ),
+              //   padding: EdgeInsets.all(0.0),
+              //   child: Text('Confirmar'),
+              //   color: Color(0xFFF93963),
+              //   textColor: Colors.white,
+              //   onPressed: (snapshot.hasData)
+              //       ? () => _submit(context, passwordBloc)
+              //       : null,
+              // ),
+            ),
           );
         });
   }

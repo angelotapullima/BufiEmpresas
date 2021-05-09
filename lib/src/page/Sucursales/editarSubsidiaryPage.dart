@@ -52,38 +52,54 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
     editarSubsidiaryBloc.changeCargando(false);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.red,
       body: SafeArea(
-          child: Column(
-        children: [
-          SizedBox(
-            height: responsive.hp(2),
-          ),
-          Expanded(
-              child: Form(
-                  key: keyForm,
-                  child: StreamBuilder(
-                    stream: editarSubsidiaryBloc.cargandoStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Stack(
-                          children: [
-                            _form(responsive, context),
-                            (snapshot.data)
-                                ? Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : Container()
-                          ],
-                        );
-                      } else {
-                        return Stack(
-                          children: [_form(responsive, context)],
-                        );
-                      }
-                    },
-                  ))),
-        ],
+          child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 4,
+                blurRadius: 19,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+            color: Colors.white),
+        child: Column(
+          children: [
+            SizedBox(
+              height: responsive.hp(2),
+            ),
+            Expanded(
+                child: Form(
+                    key: keyForm,
+                    child: StreamBuilder(
+                      stream: editarSubsidiaryBloc.cargandoStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Stack(
+                            children: [
+                              _form(responsive, context),
+                              (snapshot.data)
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Container()
+                            ],
+                          );
+                        } else {
+                          return Stack(
+                            children: [_form(responsive, context)],
+                          );
+                        }
+                      },
+                    ))),
+          ],
+        ),
       )),
     );
   }
