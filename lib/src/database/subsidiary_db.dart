@@ -162,7 +162,7 @@ class SubsidiaryDatabase {
       String idCompany) async {
     final db = await dbProvider.database;
     final res = await db.rawQuery(
-        "SELECT * FROM Subsidiary WHERE id_subsidiary= '$idCompany' and subsidiary_principal='1'");
+        "SELECT * FROM Subsidiary WHERE id_company= '$idCompany' and subsidiary_principal='1'");
 
     List<SubsidiaryModel> list = res.isNotEmpty
         ? res.map((c) => SubsidiaryModel.fromJson(c)).toList()

@@ -1,6 +1,8 @@
 import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListNegocio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/ContadorPages/contadorPaginaListarSucursales.dart';
+import 'package:bufi_empresas/src/bloc/Negocios/editarNegocio_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Sucursal/editarSubsidiaryBloc.dart';
+import 'package:bufi_empresas/src/bloc/categoria_bloc.dart';
 import 'package:bufi_empresas/src/bloc/config_bloc.dart';
 import 'package:bufi_empresas/src/bloc/login_bloc.dart';
 import 'package:bufi_empresas/src/bloc/Tab_home_bloc.dart';
@@ -17,10 +19,11 @@ import 'package:flutter/material.dart';
 
 class ProviderBloc extends InheritedWidget {
   static ProviderBloc _instancia;
-
+  final categoriaBloc = CategoriaBloc();
   final loginBloc = LoginBloc();
   final restaPasswdBloc = RestablecerPasswordBloc();
   final negociosBloc = PantallaInicioBloc();
+  final editNegocio = EditarNegocioBloc();
   final tabsNavigationbloc = TabNavigationBloc();
   final pedidosBloc = PedidoBloc();
   final tipoEstadoPedidosBloc = TiposEstadosPedidosBloc();
@@ -53,6 +56,12 @@ class ProviderBloc extends InheritedWidget {
         .loginBloc;
   }
 
+  // Categoria
+  static CategoriaBloc categoria(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .categoriaBloc;
+  }
+
   //Restablecer Contraseña Bloc
   static RestablecerPasswordBloc restabContra(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
@@ -69,6 +78,11 @@ class ProviderBloc extends InheritedWidget {
   static PantallaInicioBloc negocios(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
         .negociosBloc;
+  }
+
+  static EditarNegocioBloc editarNegocio(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>())
+        .editNegocio;
   }
 
   //Pedidos

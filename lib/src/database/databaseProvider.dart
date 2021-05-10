@@ -170,6 +170,13 @@ class DatabaseProvider {
           'pago_microtime TEXT'
           ')');
 
+      await db.execute('CREATE TABLE Category ('
+          'id_category VARCHAR  PRIMARY KEY,'
+          'category_name VARCHAR,'
+          'category_estado VARCHAR,'
+          'category_img VARCHAR'
+          ')');
+
       await db.execute('CREATE TABLE Subcategory ('
           'id_subcategory VARCHAR  PRIMARY KEY,'
           'id_category VARCHAR,'

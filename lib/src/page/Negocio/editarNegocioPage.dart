@@ -1,23 +1,34 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
+import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/utils//utils.dart' as utils;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class EditarSubsidiaryPage extends StatefulWidget {
-  final SubsidiaryModel subsidiaryModel;
-  const EditarSubsidiaryPage({Key key, this.subsidiaryModel}) : super(key: key);
+class EditarNegocioPage extends StatefulWidget {
+  final CompanySubsidiaryModel companyModel;
+  const EditarNegocioPage({Key key, this.companyModel}) : super(key: key);
 
   @override
-  _EditarSubsidiaryPage createState() => _EditarSubsidiaryPage();
+  _EditarNegocioPage createState() => _EditarNegocioPage();
 }
 
-class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
+class _EditarNegocioPage extends State<EditarNegocioPage> {
   final keyForm = GlobalKey<FormState>();
 
+  String dropdownTipo = 'Seleccionar';
+  String dropdownid = '4';
+  List<String> spinnerItemsTipo = [
+    'Seleccionar',
+    'Pequeña',
+    'Mediana',
+    'Grande',
+  ];
+
   TextEditingController _nombreEmpresaController = TextEditingController();
+  TextEditingController _rucEmpresaController = TextEditingController();
+
   TextEditingController _cellEmpresaController = TextEditingController();
   TextEditingController _cell2EmpresaController = TextEditingController();
   TextEditingController _direccionEmpresaController = TextEditingController();
@@ -30,17 +41,18 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _nombreEmpresaController.text = widget.subsidiaryModel.subsidiaryName;
-      _cellEmpresaController.text = widget.subsidiaryModel.subsidiaryCellphone;
-      _cell2EmpresaController.text =
-          widget.subsidiaryModel.subsidiaryCellphone2;
-      _direccionEmpresaController.text =
-          widget.subsidiaryModel.subsidiaryAddress;
-      _emailEmpresaController.text = widget.subsidiaryModel.subsidiaryEmail;
-      _coordXEmpresaController.text = widget.subsidiaryModel.subsidiaryCoordX;
-      _coordYEmpresaController.text = widget.subsidiaryModel.subsidiaryCoordY;
+      _nombreEmpresaController.text = widget.companyModel.companyName;
+      _rucEmpresaController.text = widget.companyModel.companyRuc;
+      dropdownTipo = widget.companyModel.companyType;
+
+      _cellEmpresaController.text = widget.companyModel.subsidiaryCellphone;
+      _cell2EmpresaController.text = widget.companyModel.subsidiaryCellphone2;
+      _direccionEmpresaController.text = widget.companyModel.subsidiaryAddress;
+      _emailEmpresaController.text = widget.companyModel.subsidiaryEmail;
+      _coordXEmpresaController.text = widget.companyModel.subsidiaryCoordX;
+      _coordYEmpresaController.text = widget.companyModel.subsidiaryCoordY;
       _openingHoursEmpresaController.text =
-          widget.subsidiaryModel.subsidiaryOpeningHours;
+          widget.companyModel.subsidiaryOpeningHours;
     });
     super.initState();
   }
@@ -48,8 +60,8 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-    final editarSubsidiaryBloc = ProviderBloc.editSubsidiary(context);
-    editarSubsidiaryBloc.changeCargando(false);
+    final editarNegocioBloc = ProviderBloc.editarNegocio(context);
+    editarNegocioBloc.changeCargandoEditNegocio(false);
 
     return Scaffold(
       backgroundColor: Colors.red,
@@ -79,7 +91,7 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                 BackButton(),
                 Expanded(
                     child: Text(
-                  "EDITAR SUCURSAL: ${widget.subsidiaryModel.subsidiaryName}",
+                  "EDITAR: ${widget.companyModel.companyName}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: responsive.ip(2.5),
@@ -94,7 +106,7 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                 child: Form(
                     key: keyForm,
                     child: StreamBuilder(
-                      stream: editarSubsidiaryBloc.cargandoStream,
+                      stream: editarNegocioBloc.cargandoEditNegocioStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Stack(
@@ -135,16 +147,59 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Nombre Sucursal',
+                    'Nombre Negocio',
                     style: formtexto,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: _imputField(
-                      responsive, 'Nombre Sucursal', _nombreEmpresaController),
+                      responsive, 'Nombre Negocio', _nombreEmpresaController),
+                ),
+                SizedBox(
+                  height: responsive.hp(2),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'RUC',
+                    style: formtexto,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _imputField(responsive, 'RUC', _rucEmpresaController),
                 ),
                 SizedBox(height: responsive.hp(2)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'Dirección',
+                    style: formtexto,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _imputField(
+                      responsive, 'Dirección', _direccionEmpresaController),
+                ),
+                SizedBox(
+                  height: responsive.hp(2),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'Tipo Empresa',
+                    style: formtexto,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _tipoEmpresa(responsive, spinnerItemsTipo),
+                ),
+                SizedBox(
+                  height: responsive.hp(2),
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
@@ -170,51 +225,8 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                     ],
                   ),
                 ),
-                // SizedBox(height: responsive.hp(2)),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                //   child: Text(
-                //     'Celular 2',
-                //     style: formtexto,
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                //   child: _celularEmpresa(
-                //       responsive, 'Celular 2', _cell2EmpresaController),
-                // ),
                 SizedBox(
                   height: responsive.hp(1),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Dirección',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputField(
-                      responsive, 'Dirección', _direccionEmpresaController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Email',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputFieldNull(
-                      responsive, 'Email', _emailEmpresaController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
@@ -241,26 +253,6 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                     ],
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                //   child: _imputFieldNull(
-                //       responsive, 'Coordenada X', _coordXEmpresaController),
-                // ),
-                // SizedBox(
-                //   height: responsive.hp(2),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                //   child: Text(
-                //     'Coordenada Y',
-                //     style: formtexto,
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                //   child: _imputFieldNull(
-                //       responsive, 'Coordenada Y', _coordYEmpresaController),
-                // ),
                 SizedBox(
                   height: responsive.hp(2),
                 ),
@@ -387,9 +379,72 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
     );
   }
 
+  Widget _tipoEmpresa(Responsive responsive, List<String> list) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: responsive.wp(4),
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: DropdownButton<String>(
+        dropdownColor: Colors.white,
+        value: dropdownTipo,
+        isExpanded: true,
+        icon: Icon(Icons.arrow_drop_down),
+        iconSize: 24,
+        elevation: 16,
+        underline: Container(),
+        style: TextStyle(color: Colors.black, fontSize: 18),
+        onChanged: (String data) {
+          setState(() {
+            dropdownTipo = data;
+            if (data == 'Pequeña') {
+              dropdownid = '1';
+            } else if (data == 'Mediana') {
+              dropdownid = '2';
+            } else if (data == 'Grande') {
+              dropdownid = '3';
+            } else {
+              dropdownid = '4';
+            }
+          });
+        },
+        items: list.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+    /*  return TextFormField(
+        controller: _tipoController,
+        cursorColor: Colors.black,
+        keyboardType: TextInputType.text,
+
+        //style: GoogleFonts.baloo(fontSize: 8, color: Colors.black),
+        decoration: InputDecoration(
+          hintText: "Tipo(1:Correctivo, 2:Preventivo)",
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey[300]),
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
+            ),
+          ),
+          //icon: Icon(Icons.person)
+        ),
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'El campo no debe estar vacio';
+          }
+        }); */
+  }
+
   Widget _button(Responsive responsive) {
-    final editarSubsidiaryBloc = ProviderBloc.editSubsidiary(context);
-    final subsidiaryModel = SubsidiaryModel();
+    // final editarSubsidiaryBloc = ProviderBloc.editSubsidiary(context);
+    // final subsidiaryModel = SubsidiaryModel();
 
     return SizedBox(
       width: double.infinity,
@@ -406,34 +461,34 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
               utils.showToast(
                   context, 'Por favor ingresar solo 9 números en celular 2');
             } else {
-              subsidiaryModel.idSubsidiary =
-                  widget.subsidiaryModel.idSubsidiary;
-              subsidiaryModel.subsidiaryName = _nombreEmpresaController.text;
-              subsidiaryModel.subsidiaryCellphone = _cellEmpresaController.text;
-              subsidiaryModel.subsidiaryCellphone2 =
-                  _cell2EmpresaController.text;
-              subsidiaryModel.subsidiaryAddress =
-                  _direccionEmpresaController.text;
-              subsidiaryModel.subsidiaryEmail = _emailEmpresaController.text;
-              subsidiaryModel.subsidiaryCoordX = _coordXEmpresaController.text;
-              subsidiaryModel.subsidiaryCoordY = _coordYEmpresaController.text;
-              subsidiaryModel.subsidiaryOpeningHours =
-                  _openingHoursEmpresaController.text;
-              print(subsidiaryModel.subsidiaryCellphone);
+              // subsidiaryModel.idSubsidiary =
+              //     widget.subsidiaryModel.idSubsidiary;
+              // subsidiaryModel.subsidiaryName = _nombreEmpresaController.text;
+              // subsidiaryModel.subsidiaryCellphone = _cellEmpresaController.text;
+              // subsidiaryModel.subsidiaryCellphone2 =
+              //     _cell2EmpresaController.text;
+              // subsidiaryModel.subsidiaryAddress =
+              //     _direccionEmpresaController.text;
+              // subsidiaryModel.subsidiaryEmail = _emailEmpresaController.text;
+              // subsidiaryModel.subsidiaryCoordX = _coordXEmpresaController.text;
+              // subsidiaryModel.subsidiaryCoordY = _coordYEmpresaController.text;
+              // subsidiaryModel.subsidiaryOpeningHours =
+              //     _openingHoursEmpresaController.text;
+              // print(subsidiaryModel.subsidiaryCellphone);
 
-              final int code =
-                  await editarSubsidiaryBloc.editarSubsidiary(subsidiaryModel);
-              if (code == 1) {
-                final sucursalBloc = ProviderBloc.sucursal(context);
-                sucursalBloc
-                    .obtenerSucursalporId(widget.subsidiaryModel.idSubsidiary);
-                print(code);
-                print("Información Actualizada");
-                utils.showToast(context, 'Información Actualizada');
-                Navigator.pop(context);
-              } else {
-                utils.showToast(context, 'Faltan registrar datos');
-              }
+              // final int code =
+              //     await editarSubsidiaryBloc.editarSubsidiary(subsidiaryModel);
+              // if (code == 1) {
+              //   final sucursalBloc = ProviderBloc.sucursal(context);
+              //   sucursalBloc
+              //       .obtenerSucursalporId(widget.subsidiaryModel.idSubsidiary);
+              //   print(code);
+              //   print("Información Actualizada");
+              //   utils.showToast(context, 'Información Actualizada');
+              //   Navigator.pop(context);
+              // } else {
+              //   utils.showToast(context, 'Faltan registrar datos');
+              // }
             }
           }
         },

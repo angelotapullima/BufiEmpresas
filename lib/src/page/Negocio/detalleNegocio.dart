@@ -1,5 +1,7 @@
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
+import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
 import 'package:bufi_empresas/src/models/companyModel.dart';
+import 'package:bufi_empresas/src/page/Negocio/editarNegocioPage.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -29,14 +31,12 @@ class _DetalleNegocioState extends State<DetalleNegocio>
     return Scaffold(
       body: Container(
         child: StreamBuilder(
-          stream: detallenegocio.negocioStream,
+          stream: detallenegocio.detalleNegStream,
           builder: (BuildContext context,
-              AsyncSnapshot<List<CompanyModel>> snapshot) {
-            List<CompanyModel> negocio = snapshot.data;
+              AsyncSnapshot<List<CompanySubsidiaryModel>> snapshot) {
+            List<CompanySubsidiaryModel> negocio = snapshot.data;
             if (snapshot.hasData) {
-              return
-                  //Center(child: Text(negocio[0].companyName));
-                  _custonScroll(responsive, negocio[0]);
+              return _custonScroll(responsive, negocio[0]);
               //_crearAppbar(responsive, negocio[0]);
             } else if (snapshot.hasError) {
               return snapshot.error;
@@ -48,7 +48,7 @@ class _DetalleNegocioState extends State<DetalleNegocio>
     );
   }
 
-  Widget _custonScroll(Responsive responsive, CompanyModel company) {
+  Widget _custonScroll(Responsive responsive, CompanySubsidiaryModel company) {
     var dateCreacion = obtenerNombreMes(company.companyCreatedAt);
     return CustomScrollView(
       controller: controller,
@@ -241,29 +241,26 @@ class _DetalleNegocioState extends State<DetalleNegocio>
                     backgroundColor: MaterialStateProperty.all(Colors.red),
                   ),
                   onPressed: () {
-                    // Navigator.of(context).push(PageRouteBuilder(
-                    //   pageBuilder:
-                    //       (context, animation, secondaryAnimation) {
-                    //     return EditarSubsidiaryPage(
-                    //         subsidiaryModel: snapshot.data[0]);
-                    //   },
-                    //   transitionsBuilder: (context, animation,
-                    //       secondaryAnimation, child) {
-                    //     var begin = Offset(0.0, 1.0);
-                    //     var end = Offset.zero;
-                    //     var curve = Curves.ease;
+                    Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return EditarNegocioPage(companyModel: company);
+                      },
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = Offset(0.0, 1.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
 
-                    //     var tween =
-                    //         Tween(begin: begin, end: end).chain(
-                    //       CurveTween(curve: curve),
-                    //     );
+                        var tween = Tween(begin: begin, end: end).chain(
+                          CurveTween(curve: curve),
+                        );
 
-                    //     return SlideTransition(
-                    //       position: animation.drive(tween),
-                    //       child: child,
-                    //     );
-                    //   },
-                    // ));
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ));
                   },
                   child: Text("Editar Información",
                       style: TextStyle(
@@ -277,7 +274,8 @@ class _DetalleNegocioState extends State<DetalleNegocio>
     );
   }
 
-  Widget _crearAppbar(Responsive responsive, CompanyModel companyModel) {
+  Widget _crearAppbar(
+      Responsive responsive, CompanySubsidiaryModel companyModel) {
     return SliverAppBar(
       elevation: 2.0,
       backgroundColor: Colors.white,
