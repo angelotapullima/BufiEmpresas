@@ -13,7 +13,6 @@ import 'package:bufi_empresas/src/models/categoriaModel.dart';
 import 'package:bufi_empresas/src/models/itemSubcategoryModel.dart';
 import 'package:bufi_empresas/src/models/subcategoryModel.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CategoriasApi {
