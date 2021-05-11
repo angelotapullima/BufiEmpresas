@@ -27,7 +27,7 @@ class CategoriasApi {
   final goodDatabase = GoodDatabase();
   final serviceDatabase = ServiceDatabase();
 
-  Future<int> obtenerCategorias(BuildContext context) async {
+  Future<int> obtenerCategorias() async {
     //List<CategoriaModel> categoriaList = [];
     try {
       var response =

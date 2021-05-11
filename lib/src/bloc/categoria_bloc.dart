@@ -35,11 +35,10 @@ class CategoriaBloc {
 
 //Muestra todas las categorias
   void obtenerCategorias() async {
-    _cargandoProductosController.sink.add(true);
+    //_cargandoProductosController.sink.add(true);
     categoriaController.sink.add(await categoryDatabase.obtenerCategorias());
-    /* await categoriaApi.obtenerCategorias();
+    await categoriaApi.obtenerCategorias();
     categoriaController.sink.add(await categoryDatabase.obtenerCategorias());
-   */
   }
 
   void obtenerSubcategoriaPorIdCategoria(String id) async {
