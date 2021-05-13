@@ -31,10 +31,7 @@ class DatosProductoBloc {
 
   void listarDatosProducto(String idProducto) async {
     _datosProductoController.sink
-        .add(await obtenerDatosProductosPorIdProducto(idProducto));
-    await productoApi.listarDetalleProductoPorIdProducto(idProducto);
-    _datosProductoController.sink
-        .add(await obtenerDatosProductosPorIdProducto(idProducto));
+        .add(await productoDb.obtenerProductoPorIdSubsidiaryGood(idProducto));
   }
 
   Future<List<ProductoModel>> obtenerDatosProductosPorIdProducto(

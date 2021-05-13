@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rating_bar/rating_bar.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DetalleProductos extends StatefulWidget {
   final ProductoModel producto;
@@ -51,11 +52,8 @@ class _DetalleProductosState extends State<DetalleProductos> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-    // final datosProdBloc = ProviderBloc.datosProductos(context);
-    // datosProdBloc.listarDatosProducto(widget.producto.idGood);
-    // //contador para el PageView
-    // final contadorBloc = ProviderBloc.contadorPagina(context);
-    // contadorBloc.changeContador(0);
+    final datosProdBloc = ProviderBloc.datosProductos(context);
+    datosProdBloc.listarDatosProducto(widget.producto.idGood);
 
     Widget _icon(
       IconData icon, {
@@ -93,59 +91,218 @@ class _DetalleProductosState extends State<DetalleProductos> {
     }
 
     return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        _backgroundImage(context, responsive),
+      body: StreamBuilder(
+          stream: datosProdBloc.datosProdStream,
+          builder: (context, AsyncSnapshot<List<ProductoModel>> listaGeneral) {
+            List<ProductoModel> listProd = listaGeneral.data;
 
-        // Iconos arriba de la imagen del producto
-        SafeArea(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            child: Row(
-              children: <Widget>[
-                //BackButton(),
+            bool _enabled = true;
+            if (listaGeneral.hasData) {
+              if (listProd.length > 0) {
+                return Stack(
+                  children: <Widget>[
+                    _backgroundImage(context, responsive, listProd[0]),
 
-                SizedBox(
-                  width: responsive.wp(5),
-                ),
-                _icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black54,
-                  size: responsive.ip(1.7),
-                  padding: responsive.ip(1.25),
-                  isOutLine: true,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                Spacer(),
-                GestureDetector(
-                  child: Icon(Icons.arrow_right_outlined),
-                  onTap: () {
-                    final buttonBloc = ProviderBloc.tabs(context);
-                    buttonBloc.changePage(2);
-                  },
-                ),
+                    // Iconos arriba de la imagen del producto
+                    SafeArea(
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                        child: Row(
+                          children: <Widget>[
+                            //BackButton(),
 
-                SizedBox(
-                  width: responsive.wp(5),
+                            SizedBox(
+                              width: responsive.wp(5),
+                            ),
+                            _icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.black54,
+                              size: responsive.ip(1.7),
+                              padding: responsive.ip(1.25),
+                              isOutLine: true,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              child: Icon(Icons.arrow_right_outlined),
+                              onTap: () {
+                                final buttonBloc = ProviderBloc.tabs(context);
+                                buttonBloc.changePage(2);
+                              },
+                            ),
+
+                            SizedBox(
+                              width: responsive.wp(5),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    TranslateAnimation(
+                      duration: const Duration(milliseconds: 400),
+                      child: _contenido(responsive, context, listProd[0]),
+                    ),
+                  ],
+                );
+              } else {
+                return SafeArea(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: responsive.wp(5),
+                          ),
+                          BackButton(),
+                          Spacer()
+                        ],
+                      ),
+                      Expanded(
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300],
+                          highlightColor: Colors.grey[100],
+                          enabled: _enabled,
+                          child: ListView.builder(
+                            itemBuilder: (_, __) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 48.0,
+                                    height: 48.0,
+                                    color: Colors.white,
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.0),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          width: double.infinity,
+                                          height: 8.0,
+                                          color: Colors.white,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2.0),
+                                        ),
+                                        Container(
+                                          width: double.infinity,
+                                          height: 8.0,
+                                          color: Colors.white,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2.0),
+                                        ),
+                                        Container(
+                                          width: 40.0,
+                                          height: 8.0,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            itemCount: 6,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            } else {
+              return SafeArea(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: responsive.wp(5),
+                        ),
+                        BackButton(),
+                        Spacer()
+                      ],
+                    ),
+                    Expanded(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300],
+                        highlightColor: Colors.grey[100],
+                        enabled: _enabled,
+                        child: ListView.builder(
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 48.0,
+                                  height: 48.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width: double.infinity,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2.0),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 2.0),
+                                      ),
+                                      Container(
+                                        width: 40.0,
+                                        height: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          itemCount: 6,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ),
-        TranslateAnimation(
-          duration: const Duration(milliseconds: 400),
-          child: _contenido(responsive, context),
-        ),
-      ],
-    ));
+              );
+            }
+          }),
+    );
   }
 
   Widget _backgroundImage(
-    BuildContext context,
-    Responsive responsive,
-  ) {
+      BuildContext context, Responsive responsive, ProductoModel producto) {
     final size = MediaQuery.of(context).size;
 
     return Container(
@@ -163,7 +320,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                           arguments: listProd[0]);*/
               },
               child: Hero(
-                tag: '$apiBaseURL/${widget.producto.productoImage}',
+                tag: '$apiBaseURL/${producto.productoImage}',
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
@@ -197,7 +354,8 @@ class _DetalleProductosState extends State<DetalleProductos> {
     );
   }
 
-  Widget _contenido(Responsive responsive, BuildContext context) {
+  Widget _contenido(
+      Responsive responsive, BuildContext context, ProductoModel producto) {
     return Container(
       margin: EdgeInsets.only(
         top: responsive.hp(21),
@@ -249,8 +407,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         TitleText(
-                            text: "${widget.producto.productoName}",
-                            fontSize: 25),
+                            text: "${producto.productoName}", fontSize: 25),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
@@ -263,7 +420,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                                   color: LightColor.red,
                                 ),
                                 TitleText(
-                                  text: "${widget.producto.productoPrice}",
+                                  text: "${producto.productoPrice}",
                                   fontSize: 25,
                                 ),
                               ],
@@ -275,12 +432,11 @@ class _DetalleProductosState extends State<DetalleProductos> {
                                   child: RatingBar.readOnly(
                                     size: 20,
                                     initialRating:
-                                        ('${widget.producto.productoRating}' !=
-                                                    null &&
-                                                '${widget.producto.productoRating}' !=
+                                        ('${producto.productoRating}' != null &&
+                                                '${producto.productoRating}' !=
                                                     'null')
                                             ? double.parse(
-                                                '${widget.producto.productoRating}')
+                                                '${producto.productoRating}')
                                             : 0,
                                     isHalfAllowed: true,
                                     halfFilledIcon: Icons.star_half,
@@ -303,8 +459,8 @@ class _DetalleProductosState extends State<DetalleProductos> {
                     height: 20,
                   ),
 
-                  Center(child: _swichtEstado(context)),
-                  Center(child: _swichtEstadoStock(context)),
+                  Center(child: _swichtEstado(context, producto)),
+                  Center(child: _swichtEstadoStock(context, producto)),
                   SizedBox(
                     height: responsive.hp(2),
                   ),
@@ -325,7 +481,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                             pageBuilder:
                                 (context, animation, secondaryAnimation) {
                               return EditarProductoPage(
-                                  productoModel: widget.producto);
+                                  productoModel: producto);
                             },
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {
@@ -361,10 +517,10 @@ class _DetalleProductosState extends State<DetalleProductos> {
     );
   }
 
-  Widget _swichtEstado(BuildContext context) {
+  Widget _swichtEstado(BuildContext context, ProductoModel producto) {
     return SwitchListTile(
       value: isSwitched,
-      title: (widget.producto.productoStatus == '1')
+      title: (producto.productoStatus == '1')
           ? Text('Producto Habilitado')
           : Text('Producto Deshabilitado'),
       onChanged: (value) {
@@ -374,7 +530,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
           if (value) {
             estatus = '1';
           }
-          habilitarDesProducto(context, widget.producto.idProducto, estatus);
+          habilitarDesProducto(context, producto.idProducto, estatus);
         });
       },
       activeTrackColor: Colors.yellow,
@@ -382,10 +538,10 @@ class _DetalleProductosState extends State<DetalleProductos> {
     );
   }
 
-  Widget _swichtEstadoStock(BuildContext context) {
+  Widget _swichtEstadoStock(BuildContext context, ProductoModel producto) {
     return SwitchListTile(
       value: isSwitched2,
-      title: (widget.producto.productoStockStatus == '1')
+      title: (producto.productoStockStatus == '1')
           ? Text('Stock Habilitado')
           : Text('Stock Deshabilitado'),
       onChanged: (value) {

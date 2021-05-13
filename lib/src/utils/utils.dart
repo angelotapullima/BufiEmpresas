@@ -147,7 +147,7 @@ obtenerEstadoPedido(String id) async {
 habilitarDesProducto(BuildContext context, String id, String status) async {
   final productosBloc = ProviderBloc.productos(context);
   final prefs = Preferences();
-  //final datosProdBloc = ProviderBloc.datosProductos(context);
+  final datosProdBloc = ProviderBloc.datosProductos(context);
   final productoBloc = ProviderBloc.productos(context);
   final productoDB = ProductoDatabase();
   final res = await productosBloc.habilitarDesProducto(id, status);
@@ -155,14 +155,14 @@ habilitarDesProducto(BuildContext context, String id, String status) async {
     productoDB.deshabilitarProductoDb(id, status);
     productoBloc.listarProductosPorSucursal(prefs.idSeleccionSubsidiaryPedidos);
 
-    //datosProdBloc.listarDatosProducto(id);
+    datosProdBloc.listarDatosProducto(id);
   }
 }
 
 cambiarStock(BuildContext context, String id, String status) async {
   final productosBloc = ProviderBloc.productos(context);
   final prefs = Preferences();
-  //final datosProdBloc = ProviderBloc.datosProductos(context);
+  final datosProdBloc = ProviderBloc.datosProductos(context);
   final productoBloc = ProviderBloc.productos(context);
   final res = await productosBloc.cambiarStock(id, status);
   final productoDB = ProductoDatabase();
@@ -170,7 +170,7 @@ cambiarStock(BuildContext context, String id, String status) async {
     productoDB.cambiarStockProductoDb(id, status);
     productoBloc.listarProductosPorSucursal(prefs.idSeleccionSubsidiaryPedidos);
 
-    //datosProdBloc.listarDatosProducto(id);
+    datosProdBloc.listarDatosProducto(id);
   }
 }
 
