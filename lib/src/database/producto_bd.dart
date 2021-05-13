@@ -12,13 +12,13 @@ class ProductoDatabase {
           "INSERT OR REPLACE INTO Producto (id_producto, id_subsidiary, id_good, id_itemsubcategory,"
           " producto_name, producto_price, producto_currency, producto_image, producto_characteristics,"
           "producto_brand, producto_model,producto_type,producto_size,producto_stock,"
-          "producto_measure,producto_rating,producto_updated,producto_status, producto_favourite) "
+          "producto_measure,producto_rating,producto_updated,producto_status, producto_stock_status, producto_favourite) "
           "VALUES('${producto.idProducto}', '${producto.idSubsidiary}','${producto.idGood}',"
           "'${producto.idItemsubcategory}','${producto.productoName}','${producto.productoPrice}',"
           "'${producto.productoCurrency}', '${producto.productoImage}','${producto.productoCharacteristics}',"
           "'${producto.productoBrand}', '${producto.productoModel}','${producto.productoType}',"
           "'${producto.productoSize}', '${producto.productoStock}','${producto.productoMeasure}',"
-          " '${producto.productoRating}','${producto.productoUpdated}', '${producto.productoStatus}', '${producto.productoFavourite}')");
+          " '${producto.productoRating}','${producto.productoUpdated}', '${producto.productoStatus}', '${producto.productoStockStatus}', '${producto.productoFavourite}')");
 
       return res;
     } catch (error, stacktrace) {
@@ -51,6 +51,7 @@ class ProductoDatabase {
           "producto_rating='${productoModel.productoRating}',"
           "producto_updated= '${productoModel.productoUpdated}',"
           "producto_status='${productoModel.productoStatus}',"
+          "producto_stock_status='${productoModel.productoStockStatus}',"
           "producto_favourite= '${productoModel.productoFavourite}' "
           "WHERE id_producto='${productoModel.idProducto}' ");
 
@@ -72,8 +73,7 @@ class ProductoDatabase {
   deleteProductoXidProducto(String id) async {
     final db = await dbProvider.database;
 
-    final res =
-        await db.rawDelete("DELETE FROM Producto WHERE id_producto= '$id'");
+    final res = await db.rawDelete("DELETE FROM Producto WHERE id_good= '$id'");
 
     return res;
   }
@@ -92,7 +92,7 @@ class ProductoDatabase {
       String id) async {
     final db = await dbProvider.database;
     final res =
-        await db.rawQuery("SELECT * FROM Producto WHERE id_producto= '$id'");
+        await db.rawQuery("SELECT * FROM Producto WHERE id_good= '$id'");
 
     List<ProductoModel> list = res.isNotEmpty
         ? res.map((c) => ProductoModel.fromJson(c)).toList()

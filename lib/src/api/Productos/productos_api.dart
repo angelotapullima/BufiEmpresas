@@ -33,42 +33,14 @@ class ProductosApi {
   Future<dynamic> listarProductosPorSucursal(String id) async {
     print('listar_productos_por_sucursal');
 
-    //funcion para obtener el producto con el id mas alto de la lista
-    final productosPorSucursal =
-        await productoDatabase.obtenerProductosPorIdSubsidiary(id);
-
-    double mayor = 0;
-    double mayor2 = 0;
-    double menor = 0;
-    if (productosPorSucursal.length > 0) {
-      for (var i = 0; i < productosPorSucursal.length; i++) {
-        if (double.parse(productosPorSucursal[i].idProducto) > mayor) {
-          mayor = double.parse(productosPorSucursal[i].idProducto);
-        }
-      }
-    }
-    mayor2 = mayor;
-
-    if (productosPorSucursal.length > 0) {
-      for (var x = 0; x < productosPorSucursal.length; x++) {
-        if (double.parse(productosPorSucursal[x].idProducto) < mayor2) {
-          menor = double.parse(productosPorSucursal[x].idProducto);
-          mayor2 = menor;
-        } else {
-          menor = mayor2;
-        }
-      }
-    }
-
     final response = await http
         .post('$apiBaseURL/api/Negocio/listar_productos_por_sucursal', body: {
       'id_sucursal': '$id',
-      'limite_sup': mayor.toString(),
-      'limite_inf': menor.toString(),
       'id_ciudad': '1',
     });
 
     final decodedData = json.decode(response.body);
+    print(decodedData['results']);
 
     if (decodedData['results'].length > 0) {
       for (var i = 0; i < decodedData['results'].length; i++) {
@@ -102,6 +74,8 @@ class ProductosApi {
             decodedData['results'][i]['subsidiary_good_stock'];
         productoModel.productoMeasure =
             decodedData['results'][i]['subsidiary_good_stock_measure'];
+        productoModel.productoStockStatus =
+            decodedData['results'][i]['subsidiary_good_stock_status'];
         productoModel.productoRating =
             decodedData['results'][i]['subsidiary_good_rating'];
         productoModel.productoUpdated =
@@ -142,7 +116,7 @@ class ProductosApi {
             decodedData['results'][i]['subsidiary_opening_hours'];
         submodel.subsidiaryPrincipal =
             decodedData['results'][i]['subsidiary_principal'];
-        submodel.subsidiaryImg = decodedData["result"][i]['subsidiary_img'];
+        submodel.subsidiaryImg = decodedData["results"][i]['subsidiary_img'];
         submodel.subsidiaryStatus =
             decodedData['results'][i]['subsidiary_status'];
 

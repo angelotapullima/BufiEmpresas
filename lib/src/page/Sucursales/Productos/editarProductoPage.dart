@@ -2,31 +2,31 @@ import 'package:bufi_empresas/src/bloc/categoria_bloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
 import 'package:bufi_empresas/src/models/categoriaModel.dart';
+import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/utils//utils.dart' as utils;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class EditarNegocioPage extends StatefulWidget {
-  final CompanySubsidiaryModel companyModel;
-  const EditarNegocioPage({Key key, this.companyModel}) : super(key: key);
+class EditarProductoPage extends StatefulWidget {
+  final ProductoModel productoModel;
+  const EditarProductoPage({Key key, this.productoModel}) : super(key: key);
 
   @override
-  _EditarNegocioPage createState() => _EditarNegocioPage();
+  _EditarProductoPage createState() => _EditarProductoPage();
 }
 
-class _EditarNegocioPage extends State<EditarNegocioPage> {
+class _EditarProductoPage extends State<EditarProductoPage> {
   final keyForm = GlobalKey<FormState>();
 
-  //DropdownTipoEmpresa
+  //DropdownMoneda
   String dropdownTipo = 'Seleccionar';
-  String dropdownid = '4';
+  String dropdownid = '2';
   List<String> spinnerItemsTipo = [
     'Seleccionar',
-    'Pequeña',
-    'Mediana',
-    'Grande',
+    'Soles',
+    'Dólares',
   ];
 
   //DropdownCategorias
@@ -35,55 +35,27 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
   var list;
   String idCategoria = 'false';
 
-  //SwitchListTile
-  bool _d = false;
-  bool _e = false;
-  bool _t = false;
-  int cant_item = 0;
-
-  //TextEditingNegocio
-  TextEditingController _nombreEmpresaController = TextEditingController();
-  TextEditingController _rucEmpresaController = TextEditingController();
-
-  //TextEditingSucursalPrincipal
-  TextEditingController _cellEmpresaController = TextEditingController();
-  TextEditingController _cell2EmpresaController = TextEditingController();
-  TextEditingController _direccionEmpresaController = TextEditingController();
-  TextEditingController _emailEmpresaController = TextEditingController();
-  TextEditingController _coordXEmpresaController = TextEditingController();
-  TextEditingController _coordYEmpresaController = TextEditingController();
-  TextEditingController _openingHoursEmpresaController =
-      TextEditingController();
+  //TextEditingProducto
+  TextEditingController _nombreProductoController = TextEditingController();
+  TextEditingController _precioProductoController = TextEditingController();
+  TextEditingController _measureProductoController = TextEditingController();
+  TextEditingController _marcaProductoController = TextEditingController();
+  TextEditingController _modeloProductoController = TextEditingController();
+  TextEditingController _sizeProductoController = TextEditingController();
+  TextEditingController _stockProductoController = TextEditingController();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _nombreEmpresaController.text = widget.companyModel.companyName;
-      _rucEmpresaController.text = widget.companyModel.companyRuc;
-      dropdownTipo = widget.companyModel.companyType;
-
-      _cellEmpresaController.text = widget.companyModel.subsidiaryCellphone;
-      _cell2EmpresaController.text = widget.companyModel.subsidiaryCellphone2;
-      _direccionEmpresaController.text = widget.companyModel.subsidiaryAddress;
-      _emailEmpresaController.text = widget.companyModel.subsidiaryEmail;
-      _coordXEmpresaController.text = widget.companyModel.subsidiaryCoordX;
-      _coordYEmpresaController.text = widget.companyModel.subsidiaryCoordY;
-      _openingHoursEmpresaController.text =
-          widget.companyModel.subsidiaryOpeningHours;
-
-      if (widget.companyModel.idCategory != '') {
-        dropdownid = widget.companyModel.idCategory;
-      }
-
-      if (widget.companyModel.companyEntrega == '1') {
-        _e = true;
-      }
-      if (widget.companyModel.companyDelivery == '1') {
-        _d = true;
-      }
-      if (widget.companyModel.companyTarjeta == '1') {
-        _t = true;
-      }
+      print('Id Producto: ${widget.productoModel.idGood}');
+      print('Id Producto: ${widget.productoModel.idProducto}');
+      _nombreProductoController.text = widget.productoModel.productoName;
+      _precioProductoController.text = widget.productoModel.productoPrice;
+      _measureProductoController.text = widget.productoModel.productoMeasure;
+      _marcaProductoController.text = widget.productoModel.productoBrand;
+      _modeloProductoController.text = widget.productoModel.productoModel;
+      _sizeProductoController.text = widget.productoModel.productoSize;
+      _stockProductoController.text = widget.productoModel.productoStock;
     });
     super.initState();
   }
@@ -125,7 +97,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                 BackButton(),
                 Expanded(
                     child: Text(
-                  "EDITAR: ${widget.companyModel.companyName}",
+                  "EDITAR: ${widget.productoModel.productoName}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: responsive.ip(2.5),
@@ -184,68 +156,14 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Nombre Negocio',
+                    'Nombre Producto',
                     style: formtexto,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: _imputField(
-                      responsive, 'Nombre Negocio', _nombreEmpresaController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'RUC',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputField(responsive, 'RUC', _rucEmpresaController),
-                ),
-                SizedBox(height: responsive.hp(2)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Dirección',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputField(
-                      responsive, 'Dirección', _direccionEmpresaController),
-                ),
-                SizedBox(height: responsive.hp(2)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Correo electrónico',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputFieldNull(responsive, 'Correo electrónico',
-                      _emailEmpresaController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Tipo Empresa',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _tipoEmpresa(responsive, spinnerItemsTipo),
+                      responsive, 'Nombre Producto', _nombreProductoController),
                 ),
                 SizedBox(
                   height: responsive.hp(2),
@@ -262,40 +180,12 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                   child: _categoria(categoriaBloc, responsive),
                 ),
                 SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Celular',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: responsive.wp(45),
-                        child: _celularEmpresa(
-                            responsive, 'Celular', _cellEmpresaController),
-                      ),
-                      Spacer(),
-                      Container(
-                        width: responsive.wp(45),
-                        child: _celularEmpresaNull(
-                            responsive, 'Celular 2', _cell2EmpresaController),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
                   height: responsive.hp(1),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Coordenadas X,Y',
+                    'Precio',
                     style: formtexto,
                   ),
                 ),
@@ -305,14 +195,13 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                     children: [
                       Container(
                         width: responsive.wp(45),
-                        child: _imputFieldNull(responsive, 'Coordenada X',
-                            _coordXEmpresaController),
+                        child: _imputFieldNull(
+                            responsive, 'Precio', _precioProductoController),
                       ),
                       Spacer(),
                       Container(
                         width: responsive.wp(45),
-                        child: _imputFieldNull(responsive, 'Coordenada Y',
-                            _coordYEmpresaController),
+                        child: _currency(responsive, spinnerItemsTipo),
                       ),
                     ],
                   ),
@@ -323,38 +212,72 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Horario Atención',
+                    'Marca',
                     style: formtexto,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputFieldNull(responsive, 'Horario Atención',
-                      _openingHoursEmpresaController),
+                  child: _imputField(
+                      responsive, 'Marca', _marcaProductoController),
                 ),
                 SizedBox(height: responsive.hp(2)),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: responsive.wp(3),
-                    //vertical: responsive.hp(7),
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'Modelo',
+                    style: formtexto,
                   ),
-                  child: _delivery(),
                 ),
-                SizedBox(height: responsive.hp(2)),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: responsive.wp(3),
-                    //vertical: responsive.hp(7),
-                  ),
-                  child: _entrega(),
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _imputField(
+                      responsive, 'Modelo', _modeloProductoController),
                 ),
-                SizedBox(height: responsive.hp(2)),
+                SizedBox(
+                  height: responsive.hp(2),
+                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: responsive.wp(3),
-                    //vertical: responsive.hp(7),
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'Tamaño',
+                    style: formtexto,
                   ),
-                  child: _tarjeta(),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _imputField(
+                      responsive, 'Tamaño', _sizeProductoController),
+                ),
+                SizedBox(
+                  height: responsive.hp(2),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'Talla',
+                    style: formtexto,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _imputField(
+                      responsive, 'Talla', _measureProductoController),
+                ),
+                SizedBox(
+                  height: responsive.hp(2),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: Text(
+                    'Stock',
+                    style: formtexto,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
+                  child: _imputField(
+                      responsive, 'Stock', _stockProductoController),
                 ),
                 SizedBox(height: responsive.hp(2)),
                 Padding(
@@ -467,7 +390,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
     );
   }
 
-  Widget _tipoEmpresa(Responsive responsive, List<String> list) {
+  Widget _currency(Responsive responsive, List<String> list) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: responsive.wp(4),
@@ -488,14 +411,12 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
         onChanged: (String data) {
           setState(() {
             dropdownTipo = data;
-            if (data == 'Pequeña') {
-              dropdownid = 'Pequeña';
-            } else if (data == 'Mediana') {
-              dropdownid = 'Mediana';
-            } else if (data == 'Grande') {
-              dropdownid = 'Grande';
+            if (data == 'Soles') {
+              dropdownid = 'S/';
+            } else if (data == 'Dólares') {
+              dropdownid = '${r"$"}';
             } else {
-              dropdownid = '4';
+              dropdownid = 'S/';
             }
           });
         },
@@ -529,7 +450,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                   for (int i = 0; i < snapshot.data.length; i++) {
                     String nombreCategoria = snapshot.data[i].categoryName;
                     list.add(nombreCategoria);
-                    if (widget.companyModel.idCategory ==
+                    if (widget.productoModel.idItemsubcategory ==
                         snapshot.data[i].idCategory) {
                       dropdownCategorias = snapshot.data[i].categoryName;
                       idCategoria = snapshot.data[i].idCategory;
@@ -589,42 +510,6 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
     print('id $idCategoria');
   }
 
-  Widget _delivery() {
-    return SwitchListTile(
-        value: _d,
-        title: Text('¿Realiza Delivery?'),
-        activeColor: Colors.redAccent,
-        onChanged: (value) {
-          setState(() {
-            cant_item++;
-            _d = value;
-            //_d = value;s
-          });
-        });
-  }
-
-  Widget _entrega() {
-    return SwitchListTile(
-        value: _e,
-        title: Text('¿Realiza Entregas?'),
-        activeColor: Colors.redAccent,
-        onChanged: (value) => setState(() {
-              cant_item++;
-              _e = value;
-            }));
-  }
-
-  Widget _tarjeta() {
-    return SwitchListTile(
-        value: _t,
-        title: Text('¿Acepta Tarjeta?'),
-        activeColor: Colors.redAccent,
-        onChanged: (value) => setState(() {
-              cant_item++;
-              _t = value;
-            }));
-  }
-
   Widget _button(Responsive responsive) {
     final editarNegocioBloc = ProviderBloc.editarNegocio(context);
     final companySubsidiaryModel = CompanySubsidiaryModel();
@@ -642,59 +527,57 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
             } else if (idCategoria == 'false') {
               utils.showToast(
                   context, 'Por favor debe selecionar una categoria');
-            } else if (_cellEmpresaController.text.isEmpty) {
-              utils.showToast(
-                  context, 'Por favor debe ingresar un número de celular');
-            } else if (!regExp.hasMatch(_cell2EmpresaController.text) &&
-                _cell2EmpresaController.text != '') {
-              utils.showToast(
-                  context, 'Por favor ingresar solo 9 números en celular 2');
-            } else {
-              companySubsidiaryModel.idCompany = widget.companyModel.idCompany;
-              companySubsidiaryModel.companyName =
-                  _nombreEmpresaController.text;
-              companySubsidiaryModel.companyType = dropdownTipo;
-              companySubsidiaryModel.subsidiaryEmail =
-                  _emailEmpresaController.text;
-              companySubsidiaryModel.idCategory = idCategoria;
-              companySubsidiaryModel.subsidiaryCellphone =
-                  _cellEmpresaController.text;
-              companySubsidiaryModel.subsidiaryCellphone2 =
-                  _cell2EmpresaController.text;
-              companySubsidiaryModel.companyRuc = _rucEmpresaController.text;
-              companySubsidiaryModel.subsidiaryAddress =
-                  _direccionEmpresaController.text;
-              companySubsidiaryModel.subsidiaryCoordX =
-                  _coordXEmpresaController.text;
-              companySubsidiaryModel.subsidiaryCoordY =
-                  _coordYEmpresaController.text;
-              companySubsidiaryModel.subsidiaryOpeningHours =
-                  _openingHoursEmpresaController.text;
-              companySubsidiaryModel.companyShortcode =
-                  widget.companyModel.companyShortcode;
-              if (_d) {
-                companySubsidiaryModel.companyDelivery = 'on';
-              }
-              if (_e) {
-                companySubsidiaryModel.companyEntrega = 'on';
-              }
-              if (_t) {
-                companySubsidiaryModel.companyTarjeta = 'on';
-              }
+              // } else if (_cellEmpresaController.text.isEmpty) {
+              //   utils.showToast(
+              //       context, 'Por favor debe ingresar un número de celular');
+              // } else if (!regExp.hasMatch(_cell2EmpresaController.text) &&
+              //     _cell2EmpresaController.text != '') {
+              //   utils.showToast(
+              //       context, 'Por favor ingresar solo 9 números en celular 2');
+              // } else {
+              // companySubsidiaryModel.idCompany = widget.companyModel.idCompany;
+              // companySubsidiaryModel.companyName =
+              //     _nombreEmpresaController.text;
+              // companySubsidiaryModel.companyType = dropdownTipo;
+              // companySubsidiaryModel.idCategory = idCategoria;
+              // companySubsidiaryModel.subsidiaryCellphone =
+              //     _cellEmpresaController.text;
+              // companySubsidiaryModel.subsidiaryCellphone2 =
+              //     _cell2EmpresaController.text;
+              // companySubsidiaryModel.companyRuc = _rucEmpresaController.text;
+              // companySubsidiaryModel.subsidiaryAddress =
+              //     _direccionEmpresaController.text;
+              // companySubsidiaryModel.subsidiaryCoordX =
+              //     _coordXEmpresaController.text;
+              // companySubsidiaryModel.subsidiaryCoordY =
+              //     _coordYEmpresaController.text;
+              // companySubsidiaryModel.subsidiaryOpeningHours =
+              //     _openingHoursEmpresaController.text;
+              // companySubsidiaryModel.companyShortcode =
+              //     widget.companyModel.companyShortcode;
+              // if (_d) {
+              //   companySubsidiaryModel.companyDelivery = 'on';
+              // }
+              // if (_e) {
+              //   companySubsidiaryModel.companyEntrega = 'on';
+              // }
+              // if (_t) {
+              //   companySubsidiaryModel.companyTarjeta = 'on';
+              // }
 
-              final int code =
-                  await editarNegocioBloc.updateNegocio(companySubsidiaryModel);
-              if (code == 1) {
-                final detallenegocio = ProviderBloc.negocios(context);
-                detallenegocio
-                    .obtenernegociosxID(widget.companyModel.idCompany);
-                print(code);
-                print("Información Actualizada");
-                utils.showToast(context, 'Información Actualizada');
-                Navigator.pop(context);
-              } else {
-                utils.showToast(context, 'Faltan registrar datos');
-              }
+              // final int code =
+              //     await editarNegocioBloc.updateNegocio(companySubsidiaryModel);
+              // if (code == 1) {
+              //   final detallenegocio = ProviderBloc.negocios(context);
+              //   detallenegocio
+              //       .obtenernegociosxID(widget.companyModel.idCompany);
+              //   print(code);
+              //   print("Información Actualizada");
+              //   utils.showToast(context, 'Información Actualizada');
+              //   Navigator.pop(context);
+              // } else {
+              //   utils.showToast(context, 'Faltan registrar datos');
+              // }
             }
           }
         },

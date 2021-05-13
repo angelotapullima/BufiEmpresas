@@ -70,23 +70,6 @@ class _BienesWidgetState extends State<BienesWidget> {
                     ),
                   ),
                 ),
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(responsive.ip(.5)),
-                    color: Colors.red,
-                    //double.infinity,
-                    height: responsive.hp(3),
-                    child: Text(
-                      'Producto',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: responsive.ip(1.5),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

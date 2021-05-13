@@ -126,6 +126,7 @@ class DatabaseProvider {
           'producto_rating VARCHAR,'
           'producto_updated VARCHAR,'
           'producto_status VARCHAR,'
+          'producto_stock_status VARCHAR,'
           'producto_favourite VARCHAR'
           ')');
 

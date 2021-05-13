@@ -358,6 +358,7 @@ class _ListarPedidosPorIdSubsidiaryState
         height: responsive.hp(15),
         child: Row(
           children: [
+            Spacer(),
             Container(
               margin: EdgeInsets.all(responsive.ip(1)),
               //width: responsive.wp(60),
@@ -432,7 +433,8 @@ class _ListarPedidosPorIdSubsidiaryState
                         textAlign: TextAlign.center,
                       ),
                     ),
-            )
+            ),
+            Spacer()
           ],
         ),
       ),

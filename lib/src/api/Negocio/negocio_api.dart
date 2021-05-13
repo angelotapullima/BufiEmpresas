@@ -33,6 +33,7 @@ class NegocioApi {
         'delivery': '${csmodel.companyDelivery}',
         "entrega": '${csmodel.companyEntrega}',
         "tarjeta": '${csmodel.companyTarjeta}',
+        "email": '${csmodel.subsidiaryEmail}',
         "app": 'true',
         "tn": prefs.token,
       });

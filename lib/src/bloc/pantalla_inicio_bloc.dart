@@ -148,6 +148,7 @@ class PantallaInicioBloc {
           companySubsidiaryModel.subsidiaryDescription =
               subsi[0].subsidiaryDescription;
           companySubsidiaryModel.subsidiaryAddress = subsi[0].subsidiaryAddress;
+          companySubsidiaryModel.subsidiaryEmail = subsi[0].subsidiaryEmail;
           companySubsidiaryModel.subsidiaryCellphone =
               subsi[0].subsidiaryCellphone;
           companySubsidiaryModel.subsidiaryCellphone2 =

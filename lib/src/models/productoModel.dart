@@ -24,6 +24,7 @@ class ProductoModel {
       this.productoUpdated,
       this.productoStatus,
       this.productoFavourite,
+      this.productoStockStatus,
       this.listFotos,
       this.listMarcaProd,
       this.listModeloProd,
@@ -48,6 +49,7 @@ class ProductoModel {
   String productoUpdated;
   String productoStatus;
   String productoFavourite;
+  String productoStockStatus;
   List<GaleriaProductoModel> listFotos;
   List<MarcaProductoModel> listMarcaProd;
   List<ModeloProductoModel> listModeloProd;
@@ -73,6 +75,7 @@ class ProductoModel {
         productoUpdated: json["producto_updated"],
         productoStatus: json["producto_status"],
         productoFavourite: json["producto_favourite"],
+        productoStockStatus: json["producto_stock_status"],
       );
 
   /* Map<String, dynamic> toJson() => {

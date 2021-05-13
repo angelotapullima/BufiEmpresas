@@ -63,7 +63,7 @@ class ListarSucursales extends StatelessWidget {
                     options: CarouselOptions(
                       height: size.height,
                       aspectRatio: 2,
-                      viewportFraction: 0.6,
+                      viewportFraction: 0.7,
                       enlargeCenterPage: true,
                       enableInfiniteScroll: false,
                       autoPlayCurve: Curves.fastOutSlowIn,
@@ -174,6 +174,7 @@ class ListarSucursales extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
                 radius: responsive.wp(5),
@@ -186,6 +187,9 @@ class ListarSucursales extends StatelessWidget {
               ),
               Text(
                 '${servicioData.subsidiaryName}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
                 style: TextStyle(
                   fontSize: responsive.ip(2.2),
                   color: Colors.black,

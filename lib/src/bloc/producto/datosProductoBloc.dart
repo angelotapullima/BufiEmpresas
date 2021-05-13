@@ -46,7 +46,7 @@ class DatosProductoBloc {
     final listProductos =
         await productoDb.obtenerProductoPorIdSubsidiaryGood(idProducto);
 
-    //Recorremos la lista de todos los pedidos
+    //Recorremos la lista de todos los producto
     for (var i = 0; i < listProductos.length; i++) {
       final productoModel = ProductoModel();
       productoModel.idProducto = listProductos[i].idProducto;
