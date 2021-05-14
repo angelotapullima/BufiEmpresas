@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
-import 'package:bufi_empresas/src/utils/customCacheManager.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +52,6 @@ class _BienesWidgetState extends State<BienesWidget> {
                         topLeft: Radius.circular(8),
                         topRight: Radius.circular(8)),
                     child: CachedNetworkImage(
-                      cacheManager: CustomCacheManager(),
                       placeholder: (context, url) => Image(
                           image: AssetImage('assets/jar-loading.gif'),
                           fit: BoxFit.cover),

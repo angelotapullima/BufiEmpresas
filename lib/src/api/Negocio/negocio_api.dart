@@ -16,8 +16,8 @@ class NegocioApi {
 
   Future updateNegocio(CompanySubsidiaryModel csmodel) async {
     try {
-      final res =
-          await http.post("$apiBaseURL/api/Negocio/update_negocio", body: {
+      final res = await http
+          .post(Uri.parse("$apiBaseURL/api/Negocio/update_negocio"), body: {
         'id_company': '${csmodel.idCompany}',
         'empresa_nombre': '${csmodel.companyName}',
         'empresa_type': '${csmodel.companyType}',

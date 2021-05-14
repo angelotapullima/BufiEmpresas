@@ -1,19 +1,23 @@
 import 'package:bufi_empresas/src/api/productos/productos_api.dart';
 import 'package:bufi_empresas/src/database/carrito_db.dart';
+import 'package:bufi_empresas/src/database/good_db.dart';
 import 'package:bufi_empresas/src/database/producto_bd.dart';
 import 'package:bufi_empresas/src/database/subsidiaryService_db.dart';
 import 'package:bufi_empresas/src/models/bienesServiciosModel.dart';
+import 'package:bufi_empresas/src/models/goodModel.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
 import 'package:rxdart/subjects.dart';
 
 class ProductoBloc {
   final productoDatabase = ProductoDatabase();
+  final goodDatabase = GoodDatabase();
   final serviceDatabase = SubsidiaryServiceDatabase();
   final productosApi = ProductosApi();
   final carritoDatabase = CarritoDb();
 
   final _productosSubsidiaryCarritoController =
       BehaviorSubject<List<BienesServiciosModel>>();
+  final _goodController = BehaviorSubject<List<BienesModel>>();
   final _productoController = BehaviorSubject<List<ProductoModel>>();
   final _detailsproductoController = BehaviorSubject<List<ProductoModel>>();
 
@@ -23,10 +27,13 @@ class ProductoBloc {
       _detailsproductoController.stream;
   Stream<List<ProductoModel>> get productoStream => _productoController.stream;
 
+  Stream<List<BienesModel>> get goodStream => _goodController.stream;
+
   void dispose() {
     _productosSubsidiaryCarritoController?.close();
     _detailsproductoController?.close();
     _productoController?.close();
+    _goodController?.close();
   }
 
 //función que se llama al mostrar la vista de los paneles negro y blanco luego de agregar un producto al carrito
@@ -34,6 +41,12 @@ class ProductoBloc {
     _productosSubsidiaryCarritoController.sink.add(await datosSucursal(id));
     await productosApi.listarProductosPorSucursal(id);
     _productosSubsidiaryCarritoController.sink.add(await datosSucursal(id));
+  }
+
+  void obtenerAllGood() async {
+    _goodController.sink.add(await goodDatabase.obtenerGood());
+    await productosApi.obtenerGoodAll2();
+    _goodController.sink.add(await goodDatabase.obtenerGood());
   }
 
   //funcion que se llama cuando muestras los productos por sucursal

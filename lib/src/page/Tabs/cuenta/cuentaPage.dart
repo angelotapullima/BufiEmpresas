@@ -5,7 +5,6 @@ import 'package:bufi_empresas/src/database/pedidos_db.dart';
 import 'package:bufi_empresas/src/database/producto_bd.dart';
 import 'package:bufi_empresas/src/database/subsidiary_db.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
-import 'package:bufi_empresas/src/utils/customCacheManager.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,6 @@ class _CuentaPageState extends State<CuentaPage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: CachedNetworkImage(
-                        cacheManager: CustomCacheManager(),
                         placeholder: (context, url) => Container(
                           width: double.infinity,
                           height: double.infinity,

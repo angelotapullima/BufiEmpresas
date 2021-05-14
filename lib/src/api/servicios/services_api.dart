@@ -24,8 +24,8 @@ class ServiceApi {
 
   Future<dynamic> obtenerServicesAll() async {
     try {
-      var response =
-          await http.post("$apiBaseURL/api/Negocio/listar_all_servicio");
+      var response = await http
+          .post(Uri.parse("$apiBaseURL/api/Negocio/listar_all_servicio"));
 
       List decodedData = json.decode(response.body);
 
@@ -88,12 +88,13 @@ class ServiceApi {
       }
     }
 
-    final response = await http
-        .post('$apiBaseURL/api/Negocio/listar_servicios_por_sucursal', body: {
-      'id_sucursal': '$id',
-      'limite_sup': mayor.toString(),
-      'limite_inf': menor.toString()
-    });
+    final response = await http.post(
+        Uri.parse('$apiBaseURL/api/Negocio/listar_servicios_por_sucursal'),
+        body: {
+          'id_sucursal': '$id',
+          'limite_sup': mayor.toString(),
+          'limite_inf': menor.toString()
+        });
 
     final decodedDataSimple = json.decode(response.body);
     var decodedData = decodedDataSimple['results'];
@@ -228,10 +229,11 @@ class ServiceApi {
    */
   Future<dynamic> detalleSerivicioPorIdSubsidiaryService(String id) async {
     try {
-      final response = await http
-          .post('$apiBaseURL/api/Negocio/listar_detalle_servicio', body: {
-        'id': '$id',
-      });
+      final response = await http.post(
+          Uri.parse('$apiBaseURL/api/Negocio/listar_detalle_servicio'),
+          body: {
+            'id': '$id',
+          });
 
       final decodedData = json.decode(response.body);
       print(decodedData);
@@ -245,13 +247,14 @@ class ServiceApi {
   Future<dynamic> deshabilitarSubsidiaryService(
       String id, String estado) async {
     try {
-      final response = await http
-          .post('$apiBaseURL/api/Negocio/deshabilitar_servicio', body: {
-        'id_subsidiaryservice': '$id',
-        'app': 'true',
-        'tn': prefs.token,
-        'estado': '$estado',
-      });
+      final response = await http.post(
+          Uri.parse('$apiBaseURL/api/Negocio/deshabilitar_servicio'),
+          body: {
+            'id_subsidiaryservice': '$id',
+            'app': 'true',
+            'tn': prefs.token,
+            'estado': '$estado',
+          });
 
       final decodedData = json.decode(response.body);
 
@@ -265,7 +268,7 @@ class ServiceApi {
 
   Future<int> listarServiciosAllPorCiudad() async {
     final response = await http.post(
-        "$apiBaseURL/api/Inicio/listar_servicios_por_id_ciudad",
+        Uri.parse("$apiBaseURL/api/Inicio/listar_servicios_por_id_ciudad"),
         body: {'id_ciudad': '1'});
 
     final decodedData = json.decode(response.body);
@@ -428,7 +431,7 @@ class ServiceApi {
 
   Future<int> listarServiciosPorIdItemSubcategoria(String id) async {
     final response = await http.post(
-        "$apiBaseURL/api/Inicio/listar_servicios_por_id_itemsu",
+        Uri.parse("$apiBaseURL/api/Inicio/listar_servicios_por_id_itemsu"),
         body: {'id_ciudad': '1', 'id_itemsubcategoria': '$id'});
 
     final decodedData = json.decode(response.body);

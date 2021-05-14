@@ -14,7 +14,7 @@ class EditarSubsidaryApi {
   final subsidiaryDatabase = SubsidiaryDatabase();
   Future<int> editarSubsidiary(SubsidiaryModel subsidiaryModel) async {
     try {
-      final url = '$apiBaseURL/api/Negocio/guardar_edicion_sede';
+      final url = Uri.parse('$apiBaseURL/api/Negocio/guardar_edicion_sede');
       final resp = await http.post(url, body: {
         'empresa_nombre': '${subsidiaryModel.subsidiaryName}',
         'id': '${subsidiaryModel.idSubsidiary}',

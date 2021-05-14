@@ -29,8 +29,9 @@ class CategoriasApi {
   Future<int> obtenerCategorias() async {
     //List<CategoriaModel> categoriaList = [];
     try {
-      var response =
-          await http.post("$apiBaseURL/api/Inicio/listar_categorias", body: {});
+      var response = await http.post(
+          Uri.parse("$apiBaseURL/api/Inicio/listar_categorias"),
+          body: {});
       var res = jsonDecode(response.body);
 
       for (var i = 0; i < res.length; i++) {

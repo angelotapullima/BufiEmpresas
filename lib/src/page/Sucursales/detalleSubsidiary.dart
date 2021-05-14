@@ -1,10 +1,10 @@
 import 'package:bufi_empresas/src/models/subsidiaryModel.dart';
 import 'package:bufi_empresas/src/bloc/Sucursal/detalleSubisidiaryBloc.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Productos/GridviewProductosPorSucursal.dart';
+import 'package:bufi_empresas/src/page/Sucursales/Productos/agregarProductoPage.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Servicios/GridviewServiciosPorSucursal.dart';
 import 'package:bufi_empresas/src/page/Sucursales/editarSubsidiaryPage.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
-import 'package:bufi_empresas/src/utils/customCacheManager.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -151,8 +151,26 @@ class _DetalleSubsidiaryState extends State<DetalleSubsidiary>
                 ),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    //   Navigator.pushNamed(context, 'registroSubsidiary',
-                    //       arguments: company.idCompany);
+                    Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return AgregarProductoPage();
+                      },
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = Offset(0.0, 1.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+
+                        var tween = Tween(begin: begin, end: end).chain(
+                          CurveTween(curve: curve),
+                        );
+
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ));
                   },
                   child: Icon(Icons.add),
                   backgroundColor: Colors.redAccent,
@@ -204,7 +222,6 @@ class CebeceraItem extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
-                    cacheManager: CustomCacheManager(),
                     placeholder: (context, url) => Container(
                       width: double.infinity,
                       height: double.infinity,

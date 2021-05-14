@@ -12,7 +12,8 @@ class PagosApi {
   Future<bool> obtenerPagosXIdSubsidiary(
       String idSubsidiary, String fechaIni, String fechaFin) async {
     try {
-      final url = '$apiBaseURL/api/Cuentaempresa/pagos_por_subsidiary';
+      final url =
+          Uri.parse('$apiBaseURL/api/Cuentaempresa/pagos_por_subsidiary');
 
       final resp = await http.post(url, body: {
         'id_subsidiary': '$idSubsidiary',

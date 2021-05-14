@@ -25,13 +25,14 @@ class PedidoApi {
   final goodDb = GoodDatabase();
 
   Future<dynamic> obtenerPedidosPorIdSucursal(String idSucursal) async {
-    final response = await http
-        .post("$apiBaseURL/api/Pedido/pedidos_por_subsidiary_ws", body: {
-      'id_subsidiary': '$idSucursal',
-      'estado': '99',
-      'tn': prefs.token,
-      'app': 'true'
-    });
+    final response = await http.post(
+        Uri.parse("$apiBaseURL/api/Pedido/pedidos_por_subsidiary_ws"),
+        body: {
+          'id_subsidiary': '$idSucursal',
+          'estado': '99',
+          'tn': prefs.token,
+          'app': 'true'
+        });
 
     final decodedData = json.decode(response.body);
 
@@ -238,8 +239,8 @@ class PedidoApi {
 
   Future<dynamic> updateStatus(String id, String estado) async {
     try {
-      final response =
-          await http.post('$apiBaseURL/api/Pedido/update_status', body: {
+      final response = await http
+          .post(Uri.parse('$apiBaseURL/api/Pedido/update_status'), body: {
         'id': '$id',
         'app': 'true',
         'tn': prefs.token,

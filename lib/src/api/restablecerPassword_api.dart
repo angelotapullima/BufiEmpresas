@@ -8,7 +8,7 @@ class RestablecerPasswordApi {
   // ----------------- Cambiar la contraseña ---------------------
   Future<int> send(String pass) async {
     try {
-      final url = '$apiBaseURL/api/datos/guardar_contrasenha_app';
+      final url = Uri.parse('$apiBaseURL/api/datos/guardar_contrasenha_app');
       final resp = await http.post(url,
           body: {'tn': prefs.token, 'contrasenha': '$pass', 'app': 'true'});
       final decodedData = json.decode(resp.body);
@@ -45,7 +45,7 @@ class RestablecerPasswordApi {
   //Envio de email para verificar si existe usuario
   Future<int> restablecerPass(String email) async {
     try {
-      final url = '$apiBaseURL/api/Login/restaurar_clave';
+      final url = Uri.parse('$apiBaseURL/api/Login/restaurar_clave');
       final resp = await http.post(url, body: {'email': '$email'});
       final decodedData = json.decode(resp.body);
 
@@ -66,7 +66,7 @@ class RestablecerPasswordApi {
   //Envío del codigo de verificación
   Future<int> restablecerPass1(String param) async {
     try {
-      final url = '$apiBaseURL/api/Login/restaurar_clave';
+      final url = Uri.parse('$apiBaseURL/api/Login/restaurar_clave');
       final resp = await http
           .post(url, body: {'id': '${prefs.idUser}', 'param': '$param'});
       final decodedData = json.decode(resp.body);
@@ -88,7 +88,7 @@ class RestablecerPasswordApi {
   //Envío de la nueva contraseña
   Future<int> restablecerPassOk(String pass) async {
     try {
-      final url = '$apiBaseURL/api/Login/restaurar_clave';
+      final url = Uri.parse('$apiBaseURL/api/Login/restaurar_clave');
       final resp = await http
           .post(url, body: {'id': '${prefs.idUser}', 'pass': '$pass'});
       final decodedData = json.decode(resp.body);

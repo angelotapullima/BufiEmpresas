@@ -17,7 +17,7 @@ class LoginApi {
 
   Future<int> login(String user, String pass) async {
     try {
-      final url = '$apiBaseURL/api/Login/validar_sesion_empresa';
+      final url = Uri.parse('$apiBaseURL/api/Login/validar_sesion_empresa');
 
       final resp = await http.post(url, body: {
         'usuario_nickname': '$user',
@@ -34,7 +34,6 @@ class LoginApi {
 
         //agrego los datos de usuario al sharePreferences
         prefs.idUser = decodedData['data']['c_u'];
-        prefs.idCity = prodTemp.idCity;
         prefs.idPerson = prodTemp.idPerson;
         prefs.userNickname = prodTemp.userNickname;
         prefs.userEmail = prodTemp.userEmail;

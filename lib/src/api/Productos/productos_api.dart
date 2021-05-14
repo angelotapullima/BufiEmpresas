@@ -33,14 +33,14 @@ class ProductosApi {
   Future<dynamic> listarProductosPorSucursal(String id) async {
     print('listar_productos_por_sucursal');
 
-    final response = await http
-        .post('$apiBaseURL/api/Negocio/listar_productos_por_sucursal', body: {
-      'id_sucursal': '$id',
-      'id_ciudad': '1',
-    });
+    final response = await http.post(
+        Uri.parse('$apiBaseURL/api/Negocio/listar_productos_por_sucursal'),
+        body: {
+          'id_sucursal': '$id',
+          'id_ciudad': '1',
+        });
 
     final decodedData = json.decode(response.body);
-    print(decodedData['results']);
 
     if (decodedData['results'].length > 0) {
       for (var i = 0; i < decodedData['results'].length; i++) {
@@ -157,13 +157,14 @@ class ProductosApi {
 
   Future<int> deshabilitarSubsidiaryProducto(String id, String status) async {
     try {
-      final response = await http
-          .post('$apiBaseURL/api/Negocio/deshabilitar_producto', body: {
-        'id_subsidiarygood': '$id',
-        'app': 'true',
-        'tn': prefs.token,
-        'estado': '$status',
-      });
+      final response = await http.post(
+          Uri.parse('$apiBaseURL/api/Negocio/deshabilitar_producto'),
+          body: {
+            'id_subsidiarygood': '$id',
+            'app': 'true',
+            'tn': prefs.token,
+            'estado': '$status',
+          });
 
       final decodedData = json.decode(response.body);
 
@@ -177,8 +178,8 @@ class ProductosApi {
 
   Future<int> cambiarStock(String id, String status) async {
     try {
-      final response =
-          await http.post('$apiBaseURL/api/Negocio/cambiar_stock', body: {
+      final response = await http
+          .post(Uri.parse('$apiBaseURL/api/Negocio/cambiar_stock'), body: {
         'id_subsidiarygood': '$id',
         'app': 'true',
         'tn': prefs.token,
@@ -259,10 +260,11 @@ class ProductosApi {
    */
   Future<int> listarDetalleProductoPorIdProducto(String idProducto) async {
     try {
-      final response = await http
-          .post('$apiBaseURL/api/Negocio/listar_detalle_producto', body: {
-        'id': idProducto,
-      });
+      final response = await http.post(
+          Uri.parse('$apiBaseURL/api/Negocio/listar_detalle_producto'),
+          body: {
+            'id': idProducto,
+          });
 
       final decodedData = json.decode(response.body);
 
@@ -469,6 +471,34 @@ class ProductosApi {
       }
 
       return 1;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+
+      return 0;
+    }
+  }
+
+  //Retorna el nombre del bien
+  Future<dynamic> obtenerGoodAll2() async {
+    try {
+      var response = await http.post(
+          Uri.parse("$apiBaseURL/api/Negocio/listar_all_good"),
+          body: {/*'app': 'true', 'tn': prefs.token*/});
+
+      List decodedData = json.decode(response.body);
+
+      for (int i = 0; i < decodedData.length; i++) {
+        //final listGood = await goodDatabase.obtenerGood();
+
+        BienesModel goodmodel = BienesModel();
+
+        goodmodel.idGood = decodedData[i]['id_good'];
+        goodmodel.goodName = decodedData[i]['good_name'];
+        goodmodel.goodSynonyms = decodedData[i]['good_synonyms'];
+
+        await goodDatabase.insertarGood(goodmodel);
+      }
+      return 0;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
 

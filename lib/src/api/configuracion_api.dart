@@ -9,7 +9,7 @@ class ConfiguracionApi {
 
   Future<bool> obtenerConfiguracion() async {
     try {
-      final url = '$apiBaseURL/api/Inicio/configuracion';
+      final url = Uri.parse('$apiBaseURL/api/Inicio/configuracion');
 
       final resp = await http.post(url);
 

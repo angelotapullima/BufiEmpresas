@@ -7,13 +7,13 @@ import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share/share.dart';
 
 class TicketPago extends StatefulWidget {
   final String idPago;
@@ -24,7 +24,8 @@ class TicketPago extends StatefulWidget {
 }
 
 class _TicketPagoState extends State<TicketPago> {
-  File _imageFile;
+  Uint8List _imageFile;
+  List<String> imagePaths = [];
   ScreenshotController screenshotController = ScreenshotController();
   @override
   Widget build(BuildContext context) {
@@ -248,7 +249,7 @@ class _TicketPagoState extends State<TicketPago> {
                             ),
                             child: Icon(Icons.share)),
                         onTap: () async {
-                          takeScreenshotandShare();
+                          takeScreenshotandShare(widget.idPago);
                         },
                       ),
                     )
@@ -270,25 +271,34 @@ class _TicketPagoState extends State<TicketPago> {
     );
   }
 
-  takeScreenshotandShare() async {
+  takeScreenshotandShare(String nombre) async {
+    var now = DateTime.now();
+    nombre = now.microsecond.toString();
     _imageFile = null;
     screenshotController
         .capture(delay: Duration(milliseconds: 10), pixelRatio: 2.0)
-        .then((File image) async {
+        .then((Uint8List image) async {
       setState(() {
         _imageFile = image;
       });
 
-      await ImageGallerySaver.saveImage(image.readAsBytesSync());
+      await ImageGallerySaver.saveImage(image);
+
       // Save image to gallery,  Needs plugin  https://pub.dev/packages/image_gallery_saver
       print("File Saved to Gallery");
 
       final directory = (await getApplicationDocumentsDirectory()).path;
-      Uint8List pngBytes = _imageFile.readAsBytesSync();
-      File imgFile = new File('$directory/screenshot.png');
+      Uint8List pngBytes = _imageFile;
+      File imgFile = new File('$directory/Screenshot$nombre.png');
       imgFile.writeAsBytes(pngBytes);
       print("File Saved to Gallery");
-      await Share.file('Anupam', 'screenshot.png', pngBytes, 'image/png');
+
+      imagePaths.add(imgFile.path);
+      final RenderBox box = context.findRenderObject() as RenderBox;
+      await Share.shareFiles(imagePaths,
+          text: '',
+          subject: '',
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     }).catchError((onError) {
       print(onError);
     });
