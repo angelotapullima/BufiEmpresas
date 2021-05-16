@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:bufi_empresas/src/bloc/categoria_bloc.dart';
 import 'package:bufi_empresas/src/bloc/producto/producto_bloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/models/CompanySubsidiaryModel.dart';
 import 'package:bufi_empresas/src/models/goodModel.dart';
 import 'package:bufi_empresas/src/models/itemSubcategoryModel.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
@@ -16,6 +15,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AgregarProductoPage extends StatefulWidget {
+  final String idSucursal;
+  AgregarProductoPage({this.idSucursal});
   @override
   _AgregarProductoPage createState() => _AgregarProductoPage();
 }
@@ -68,9 +69,8 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-    final editarNegocioBloc = ProviderBloc.editarNegocio(context);
-    editarNegocioBloc.changeCargandoEditNegocio(false);
     final goodBloc = ProviderBloc.productos(context);
+    goodBloc.changeCargando(false);
     goodBloc.obtenerAllGood();
     final categoriasBloc = ProviderBloc.categoria(context);
     categoriasBloc.obtenerItemSubcategoria();
@@ -118,7 +118,7 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
               child: Form(
                 key: keyForm,
                 child: StreamBuilder(
-                  stream: editarNegocioBloc.cargandoEditNegocioStream,
+                  stream: goodBloc.cargandotream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Stack(
@@ -712,9 +712,8 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
   }
 
   Widget _button(Responsive responsive) {
-    final editarNegocioBloc = ProviderBloc.editarNegocio(context);
-    final companySubsidiaryModel = CompanySubsidiaryModel();
-
+    final productoModel = ProductoModel();
+    final goodBloc = ProviderBloc.productos(context);
     return SizedBox(
       width: double.infinity,
       child: MaterialButton(
@@ -737,50 +736,34 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
             } else if (!regExp.hasMatch(_stockProductoController.text)) {
               utils.showToast(
                   context, 'Por favor ingresar solo números en Stock');
-              // } else {
-              // companySubsidiaryModel.idCompany = widget.companyModel.idCompany;
-              // companySubsidiaryModel.companyName =
-              //     _nombreEmpresaController.text;
-              // companySubsidiaryModel.companyType = dropdownTipo;
-              // companySubsidiaryModel.idCategory = idCategoria;
-              // companySubsidiaryModel.subsidiaryCellphone =
-              //     _cellEmpresaController.text;
-              // companySubsidiaryModel.subsidiaryCellphone2 =
-              //     _cell2EmpresaController.text;
-              // companySubsidiaryModel.companyRuc = _rucEmpresaController.text;
-              // companySubsidiaryModel.subsidiaryAddress =
-              //     _direccionEmpresaController.text;
-              // companySubsidiaryModel.subsidiaryCoordX =
-              //     _coordXEmpresaController.text;
-              // companySubsidiaryModel.subsidiaryCoordY =
-              //     _coordYEmpresaController.text;
-              // companySubsidiaryModel.subsidiaryOpeningHours =
-              //     _openingHoursEmpresaController.text;
-              // companySubsidiaryModel.companyShortcode =
-              //     widget.companyModel.companyShortcode;
-              // if (_d) {
-              //   companySubsidiaryModel.companyDelivery = 'on';
-              // }
-              // if (_e) {
-              //   companySubsidiaryModel.companyEntrega = 'on';
-              // }
-              // if (_t) {
-              //   companySubsidiaryModel.companyTarjeta = 'on';
-              // }
+            } else if (foto == null) {
+              utils.showToast(context, 'Por favor debe subir una foto');
+            } else {
+              productoModel.idGood = idGood;
+              productoModel.idItemsubcategory = idCategoria;
+              productoModel.idSubsidiary = widget.idSucursal;
+              productoModel.productoName = _nombreProductoController.text;
+              productoModel.productoPrice = _precioProductoController.text;
+              productoModel.productoCurrency = dropdownid;
+              productoModel.productoMeasure = _measureProductoController.text;
+              productoModel.productoBrand = _marcaProductoController.text;
+              productoModel.productoModel = _modeloProductoController.text;
+              productoModel.productoSize = _sizeProductoController.text;
+              productoModel.productoStock = _stockProductoController.text;
 
-              // final int code =
-              //     await editarNegocioBloc.updateNegocio(companySubsidiaryModel);
-              // if (code == 1) {
-              //   final detallenegocio = ProviderBloc.negocios(context);
-              //   detallenegocio
-              //       .obtenernegociosxID(widget.companyModel.idCompany);
-              //   print(code);
-              //   print("Información Actualizada");
-              //   utils.showToast(context, 'Información Actualizada');
-              //   Navigator.pop(context);
-              // } else {
-              //   utils.showToast(context, 'Faltan registrar datos');
-              // }
+              print(productoModel.productoMeasure);
+
+              final int code =
+                  await goodBloc.guardarProducto(foto, productoModel);
+              if (code == 1) {
+                print(code);
+                print("Producto agregado");
+                goodBloc.listarProductosPorSucursal(widget.idSucursal);
+                utils.showToast(context, 'Producto agregado');
+                Navigator.pop(context);
+              } else {
+                utils.showToast(context, 'Ocurrió un error');
+              }
             }
           }
         },

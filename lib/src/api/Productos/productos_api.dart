@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart';
 
 import 'package:bufi_empresas/src/models/itemSubcategoryModel.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
@@ -196,8 +198,7 @@ class ProductosApi {
     }
   }
 
-  /* Future<int> guardarProducto(File _image, CompanyModel cmodel,
-      BienesModel bienModel, ProductoModel producModel) async {
+  Future<int> guardarProducto(File _image, ProductoModel producModel) async {
     final preferences = Preferences();
 
     // open a byteStream
@@ -215,8 +216,8 @@ class ProductosApi {
     request.fields["tn"] = preferences.token;
     request.fields["app"] = 'true';
     request.fields["id_sucursal"] = producModel.idSubsidiary;
-    request.fields["id_good"] = bienModel.idGood;
-    request.fields["categoria"] = cmodel.idCategory;
+    request.fields["id_good"] = producModel.idGood;
+    request.fields["categoria"] = producModel.idItemsubcategory;
     request.fields["nombre"] = producModel.productoName;
     request.fields["precio"] = producModel.productoPrice;
     request.fields["currency"] = producModel.productoCurrency;
@@ -257,7 +258,6 @@ class ProductosApi {
     return 1;
   }
 
-   */
   Future<int> listarDetalleProductoPorIdProducto(String idProducto) async {
     try {
       final response = await http.post(

@@ -153,7 +153,9 @@ class _DetalleSubsidiaryState extends State<DetalleSubsidiary>
                   onPressed: () {
                     Navigator.of(context).push(PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) {
-                        return AgregarProductoPage();
+                        return AgregarProductoPage(
+                          idSucursal: widget.idSucursal,
+                        );
                       },
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {

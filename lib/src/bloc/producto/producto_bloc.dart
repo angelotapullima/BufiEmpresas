@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bufi_empresas/src/api/productos/productos_api.dart';
 import 'package:bufi_empresas/src/database/carrito_db.dart';
 import 'package:bufi_empresas/src/database/good_db.dart';
@@ -21,6 +23,11 @@ class ProductoBloc {
   final _productoController = BehaviorSubject<List<ProductoModel>>();
   final _detailsproductoController = BehaviorSubject<List<ProductoModel>>();
 
+  final _cargandoController = new BehaviorSubject<bool>();
+  Stream<bool> get cargandotream => _cargandoController.stream;
+
+  Function(bool) get changeCargando => _cargandoController.sink.add;
+
   Stream<List<BienesServiciosModel>> get productoSubsidiaryCarritoStream =>
       _productosSubsidiaryCarritoController.stream;
   Stream<List<ProductoModel>> get detailsproductostream =>
@@ -34,6 +41,7 @@ class ProductoBloc {
     _detailsproductoController?.close();
     _productoController?.close();
     _goodController?.close();
+    _cargandoController?.close();
   }
 
 //función que se llama al mostrar la vista de los paneles negro y blanco luego de agregar un producto al carrito
@@ -65,6 +73,13 @@ class ProductoBloc {
 
   Future<int> cambiarStock(String id, String status) async {
     final resp = await productosApi.cambiarStock(id, status);
+    return resp;
+  }
+
+  Future<int> guardarProducto(File foto, ProductoModel productoModel) async {
+    _cargandoController.sink.add(true);
+    final resp = await productosApi.guardarProducto(foto, productoModel);
+    _cargandoController.sink.add(false);
     return resp;
   }
 
