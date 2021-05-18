@@ -477,6 +477,8 @@ class _EditarServicioPage extends State<EditarServicioPage> {
               servicioModel.subsidiaryServiceDescription =
                   _descripcinServicioController.text;
 
+              print(servicioModel.idSubsidiaryservice);
+
               final int code =
                   await serviceBloc.editarServicio(foto, servicioModel);
               if (code == 1) {
