@@ -1,4 +1,7 @@
+import 'package:bufi_empresas/src/api/Productos/productos_api.dart';
+import 'package:bufi_empresas/src/api/categorias_api.dart';
 import 'package:bufi_empresas/src/api/configuracion_api.dart';
+import 'package:bufi_empresas/src/api/servicios/services_api.dart';
 import 'package:bufi_empresas/src/preferencias/preferencias_usuario.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +20,13 @@ class _SplashState extends State<Splash> with AfterLayoutMixin {
   void afterFirstLayout(BuildContext context) async {
     final preferences = Preferences();
     final configuracionApi = ConfiguracionApi();
+    final productosApi = ProductosApi();
+    final categoriaApi = CategoriasApi();
+    final serviceApi = ServiceApi();
+
+    await serviceApi.obtenerServicesAll();
+    await productosApi.obtenerGoodAll2();
+    await categoriaApi.obtenerCategorias();
 
     if (preferences.cargaCategorias == null) {
       await configuracionApi.obtenerConfiguracion();

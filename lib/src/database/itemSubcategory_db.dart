@@ -20,7 +20,8 @@ class ItemsubCategoryDatabase {
   Future<List<ItemSubCategoriaModel>> obtenerItemSubCategoria() async {
     try {
       final db = await dbProvider.database;
-      final res = await db.rawQuery("SELECT * FROM ItemSubcategorias");
+      final res = await db.rawQuery(
+          "SELECT * FROM ItemSubcategorias ORDER BY itemsubcategory_name");
 
       List<ItemSubCategoriaModel> list = res.isNotEmpty
           ? res.map((c) => ItemSubCategoriaModel.fromJson(c)).toList()

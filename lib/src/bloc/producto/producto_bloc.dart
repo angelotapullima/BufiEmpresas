@@ -53,8 +53,6 @@ class ProductoBloc {
 
   void obtenerAllGood() async {
     _goodController.sink.add(await goodDatabase.obtenerGood());
-    await productosApi.obtenerGoodAll2();
-    _goodController.sink.add(await goodDatabase.obtenerGood());
   }
 
   //funcion que se llama cuando muestras los productos por sucursal
@@ -79,6 +77,13 @@ class ProductoBloc {
   Future<int> guardarProducto(File foto, ProductoModel productoModel) async {
     _cargandoController.sink.add(true);
     final resp = await productosApi.guardarProducto(foto, productoModel);
+    _cargandoController.sink.add(false);
+    return resp;
+  }
+
+  Future<int> editarProducto(File foto, ProductoModel productoModel) async {
+    _cargandoController.sink.add(true);
+    final resp = await productosApi.editarProducto(foto, productoModel);
     _cargandoController.sink.add(false);
     return resp;
   }

@@ -493,25 +493,6 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
         });
   }
 
-  // Widget _imputFieldNull(
-  //     Responsive responsive, String text, TextEditingController controller) {
-  //   return TextFormField(
-  //     controller: controller,
-  //     cursorColor: Colors.black,
-  //     keyboardType: TextInputType.text,
-  //     decoration: InputDecoration(
-  //       hintStyle: form2,
-  //       hintText: text,
-  //       border: OutlineInputBorder(
-  //         borderSide: BorderSide(color: Colors.blue[300]),
-  //         borderRadius: BorderRadius.all(
-  //           Radius.circular(5),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _currency(Responsive responsive, List<String> list) {
     return Container(
       padding: EdgeInsets.symmetric(

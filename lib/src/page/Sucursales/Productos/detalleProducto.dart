@@ -53,7 +53,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
     final datosProdBloc = ProviderBloc.datosProductos(context);
-    datosProdBloc.listarDatosProducto(widget.producto.idGood);
+    datosProdBloc.listarDatosProducto(widget.producto.idProducto);
 
     Widget _icon(
       IconData icon, {
@@ -406,8 +406,11 @@ class _DetalleProductosState extends State<DetalleProductos> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        TitleText(
-                            text: "${producto.productoName}", fontSize: 25),
+                        Container(
+                          width: responsive.wp(50),
+                          child: TitleText(
+                              text: "${producto.productoName}", fontSize: 25),
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
@@ -415,7 +418,7 @@ class _DetalleProductosState extends State<DetalleProductos> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 TitleText(
-                                  text: "S/ ",
+                                  text: "${producto.productoCurrency}",
                                   fontSize: 18,
                                   color: LightColor.red,
                                 ),

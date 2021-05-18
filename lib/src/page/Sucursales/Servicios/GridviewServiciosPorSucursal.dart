@@ -35,7 +35,7 @@ class _GridviewProductoPorSucursalState
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.65,
                 ),
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {

@@ -56,9 +56,6 @@ class CategoriaBloc {
   void obtenerItemSubcategoria() async {
     _itemSubCatController.sink
         .add(await itemSubCategoryDtabase.obtenerItemSubCategoria());
-    await categoriaApi.obtenerCategorias();
-    _itemSubCatController.sink
-        .add(await itemSubCategoryDtabase.obtenerItemSubCategoria());
   }
 
   void obtenerSubcategoriaPorIdCategoria(String id) async {

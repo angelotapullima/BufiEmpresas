@@ -238,7 +238,7 @@ class ProductosApi {
     await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
-        // print(value);
+        print(value);
 
         final decodedData = json.decode(value);
         final int code = decodedData['result']['code'];
@@ -256,6 +256,71 @@ class ProductosApi {
       print(e);
     });
     return 1;
+  }
+
+  Future<int> editarProducto(File _image, ProductoModel producModel) async {
+    final preferences = Preferences();
+    var multipartFile;
+    int cod;
+
+    if (_image != null) {
+      // open a byteStream
+      var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
+      // get file length
+      var length = await _image.length();
+      // multipart that takes file.. here this "image_file" is a key of the API request
+      multipartFile = new http.MultipartFile('producto_img', stream, length,
+          filename: basename(_image.path));
+    }
+
+    // string to uri
+    var uri = Uri.parse("$apiBaseURL/api/Negocio/guardar_producto");
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+
+    // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
+    request.fields["tn"] = preferences.token;
+    request.fields["app"] = 'true';
+    request.fields["id_subsidiarygood"] = producModel.idProducto;
+    request.fields["nombre"] = producModel.productoName;
+    request.fields["precio"] = producModel.productoPrice;
+    request.fields["currency"] = producModel.productoCurrency;
+    request.fields["measure"] = producModel.productoMeasure;
+    request.fields["marca"] = producModel.productoBrand;
+    request.fields["modelo"] = producModel.productoModel;
+    request.fields["size"] = producModel.productoSize;
+    request.fields["stock"] = producModel.productoStock;
+
+    // add file to multipart
+    if (_image != null) {
+      request.files.add(multipartFile);
+    }
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) async {
+        print(value);
+        final decodedData = json.decode(value);
+        final int code = decodedData['result']['code'];
+        cod = code;
+        if (decodedData['result']['code'] == 1) {
+          cod = 1;
+          return cod;
+        } else if (code == 2) {
+          cod = 2;
+          return cod;
+        } else {
+          cod = cod;
+          return cod;
+        }
+      });
+    }).catchError((e) {
+      print(e);
+    });
+
+    return cod;
   }
 
   Future<int> listarDetalleProductoPorIdProducto(String idProducto) async {

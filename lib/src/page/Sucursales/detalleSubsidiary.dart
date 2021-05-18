@@ -3,6 +3,7 @@ import 'package:bufi_empresas/src/bloc/Sucursal/detalleSubisidiaryBloc.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Productos/GridviewProductosPorSucursal.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Productos/agregarProductoPage.dart';
 import 'package:bufi_empresas/src/page/Sucursales/Servicios/GridviewServiciosPorSucursal.dart';
+import 'package:bufi_empresas/src/page/Sucursales/Servicios/agregarServicioPage.dart';
 import 'package:bufi_empresas/src/page/Sucursales/editarSubsidiaryPage.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
@@ -184,8 +185,28 @@ class _DetalleSubsidiaryState extends State<DetalleSubsidiary>
                 ),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {
-                    //   Navigator.pushNamed(context, 'registroSubsidiary',
-                    //       arguments: company.idCompany);
+                    Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return AgregarServicioPage(
+                          idSucursal: widget.idSucursal,
+                        );
+                      },
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = Offset(0.0, 1.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+
+                        var tween = Tween(begin: begin, end: end).chain(
+                          CurveTween(curve: curve),
+                        );
+
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ));
                   },
                   child: Icon(Icons.add),
                   backgroundColor: Colors.redAccent,

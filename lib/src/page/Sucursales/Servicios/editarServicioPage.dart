@@ -1,60 +1,54 @@
 import 'dart:io';
 
+import 'package:bufi_empresas/src/bloc/categoria_bloc.dart';
 import 'package:bufi_empresas/src/bloc/provider_bloc.dart';
-import 'package:bufi_empresas/src/models/productoModel.dart';
-import 'package:bufi_empresas/src/utils/constants.dart';
+import 'package:bufi_empresas/src/bloc/servicios/servicios_bloc.dart';
+import 'package:bufi_empresas/src/models/subsidiaryService.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
 import 'package:bufi_empresas/src/utils//utils.dart' as utils;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditarProductoPage extends StatefulWidget {
-  final ProductoModel productoModel;
-  const EditarProductoPage({Key key, this.productoModel}) : super(key: key);
-
+class EditarServicioPage extends StatefulWidget {
+  final SubsidiaryServiceModel serviceModel;
+  EditarServicioPage({this.serviceModel});
   @override
-  _EditarProductoPage createState() => _EditarProductoPage();
+  _EditarServicioPage createState() => _EditarServicioPage();
 }
 
-class _EditarProductoPage extends State<EditarProductoPage> {
+class _EditarServicioPage extends State<EditarServicioPage> {
   final keyForm = GlobalKey<FormState>();
   final _cargando = ValueNotifier<bool>(false);
 
   File foto;
 
   //DropdownMoneda
-  String dropdownTipo = 'Seleccionar';
+  String dropdownTipo = 'Moneda';
   String dropdownid = 'S/';
   List<String> spinnerItemsTipo = [
-    'Seleccionar',
+    'Moneda',
     'Soles',
     'Dólares',
   ];
 
   //TextEditingProducto
-  TextEditingController _nombreProductoController = TextEditingController();
-  TextEditingController _precioProductoController = TextEditingController();
-  TextEditingController _measureProductoController = TextEditingController();
-  TextEditingController _marcaProductoController = TextEditingController();
-  TextEditingController _modeloProductoController = TextEditingController();
-  TextEditingController _sizeProductoController = TextEditingController();
-  TextEditingController _stockProductoController = TextEditingController();
+  TextEditingController _nombreServicioController = TextEditingController();
+  TextEditingController _precioServicioController = TextEditingController();
+  TextEditingController _descripcinServicioController = TextEditingController();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _nombreProductoController.text = widget.productoModel.productoName;
-      _precioProductoController.text = widget.productoModel.productoPrice;
-      _measureProductoController.text = widget.productoModel.productoMeasure;
-      _marcaProductoController.text = widget.productoModel.productoBrand;
-      _modeloProductoController.text = widget.productoModel.productoModel;
-      _sizeProductoController.text = widget.productoModel.productoSize;
-      _stockProductoController.text = widget.productoModel.productoStock;
-      if (widget.productoModel.productoCurrency == '${r"$"}') {
+      _nombreServicioController.text =
+          widget.serviceModel.subsidiaryServiceName;
+      _precioServicioController.text =
+          widget.serviceModel.subsidiaryServicePrice;
+      _descripcinServicioController.text =
+          widget.serviceModel.subsidiaryServiceDescription;
+      if (widget.serviceModel.subsidiaryServiceCurrency == '${r"$"}') {
         dropdownTipo = 'Dólares';
         dropdownid = '${r"$"}';
       } else {
@@ -67,8 +61,11 @@ class _EditarProductoPage extends State<EditarProductoPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-    final goodBloc = ProviderBloc.productos(context);
-    goodBloc.changeCargando(false);
+    final serviceBloc = ProviderBloc.servi(context);
+    serviceBloc.changeCargando(false);
+    serviceBloc.obtenerAllServices();
+    final categoriasBloc = ProviderBloc.categoria(context);
+    categoriasBloc.obtenerItemSubcategoria();
 
     return Scaffold(
       backgroundColor: Colors.red,
@@ -98,7 +95,7 @@ class _EditarProductoPage extends State<EditarProductoPage> {
                 BackButton(),
                 Expanded(
                     child: Text(
-                  "EDITAR: ${widget.productoModel.productoName}",
+                  "Agregar nuevo Servicio",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: responsive.ip(2.5),
@@ -110,36 +107,43 @@ class _EditarProductoPage extends State<EditarProductoPage> {
               ],
             ),
             Expanded(
-                child: Form(
-                    key: keyForm,
-                    child: StreamBuilder(
-                      stream: goodBloc.cargandotream,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Stack(
-                            children: [
-                              _form(responsive, context),
-                              (snapshot.data)
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Container()
-                            ],
-                          );
-                        } else {
-                          return Stack(
-                            children: [_form(responsive, context)],
-                          );
-                        }
-                      },
-                    ))),
+              child: Form(
+                key: keyForm,
+                child: StreamBuilder(
+                  stream: serviceBloc.cargandotream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Stack(
+                        children: [
+                          _form(
+                              responsive, context, categoriasBloc, serviceBloc),
+                          (snapshot.data)
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container()
+                        ],
+                      );
+                    } else {
+                      return Stack(
+                        children: [
+                          _form(
+                              responsive, context, categoriasBloc, serviceBloc)
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       )),
     );
   }
 
-  Widget _form(Responsive responsive, BuildContext context) {
+  Widget _form(Responsive responsive, BuildContext context,
+      CategoriaBloc categoriaBloc, ServiciosBloc serviceBloc) {
     return Stack(
       children: [
         Container(
@@ -154,17 +158,17 @@ class _EditarProductoPage extends State<EditarProductoPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Nombre Producto',
+                    'Nombre Servicio',
                     style: formtexto,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputField(
-                      responsive, 'Nombre Producto', _nombreProductoController),
+                  child: _imputField(responsive, 'Nombre Servicio',
+                      _nombreServicioController, 1),
                 ),
                 SizedBox(
-                  height: responsive.hp(2),
+                  height: responsive.hp(1),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
@@ -179,8 +183,8 @@ class _EditarProductoPage extends State<EditarProductoPage> {
                     children: [
                       Container(
                         width: responsive.wp(45),
-                        child: _imputFieldNull(
-                            responsive, 'Precio', _precioProductoController),
+                        child: _precio(
+                            responsive, 'Precio', _precioServicioController),
                       ),
                       Spacer(),
                       Container(
@@ -196,70 +200,17 @@ class _EditarProductoPage extends State<EditarProductoPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: Text(
-                    'Marca',
+                    'Descripción',
                     style: formtexto,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
                   child: _imputField(
-                      responsive, 'Marca', _marcaProductoController),
-                ),
-                SizedBox(height: responsive.hp(2)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Modelo',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputField(
-                      responsive, 'Modelo', _modeloProductoController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Tamaño',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: _imputField(
-                      responsive, 'Tamaño', _sizeProductoController),
-                ),
-                SizedBox(
-                  height: responsive.hp(2),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Text(
-                    'Stock',
-                    style: formtexto,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(3)),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: responsive.wp(45),
-                        child: _imputField(
-                            responsive, 'Stock', _stockProductoController),
-                      ),
-                      Spacer(),
-                      Container(
-                        width: responsive.wp(45),
-                        child: _imputField(
-                            responsive, 'Unidad', _measureProductoController),
-                      ),
-                    ],
-                  ),
+                      responsive,
+                      'Ingrese una breve descripción',
+                      _descripcinServicioController,
+                      2),
                 ),
                 SizedBox(height: responsive.hp(2)),
                 Padding(
@@ -305,7 +256,7 @@ class _EditarProductoPage extends State<EditarProductoPage> {
     );
   }
 
-  //Widgets Para selecionar y Recortar la foto
+//Widgets Para selecionar y Recortar la foto
   Future _subirFoto(BuildContext context) {
     return showDialog(
         context: context,
@@ -399,36 +350,19 @@ class _EditarProductoPage extends State<EditarProductoPage> {
         ),
       );
     } else {
-      return Container(
-        child: ClipRRect(
-          child: CachedNetworkImage(
-            placeholder: (context, url) => Image(
-                image: AssetImage('assets/jar-loading.gif'), fit: BoxFit.cover),
-            errorWidget: (context, url, error) => Image(
-                image: AssetImage('assets/carga_fallida.jpg'),
-                fit: BoxFit.cover),
-            imageUrl: '$apiBaseURL/${widget.productoModel.productoImage}',
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
+      return Container();
     }
   }
 //--------------------------------------------------------------------------
 
-  Widget _imputField(
-      Responsive responsive, String text, TextEditingController controller) {
+//Input para Rellenar los campos
+  Widget _imputField(Responsive responsive, String text,
+      TextEditingController controller, int line) {
     return TextFormField(
         controller: controller,
         cursorColor: Colors.black,
         keyboardType: TextInputType.text,
+        maxLines: line,
         decoration: InputDecoration(
           hintStyle: form2,
           hintText: text,
@@ -448,13 +382,12 @@ class _EditarProductoPage extends State<EditarProductoPage> {
         });
   }
 
-  Widget _celularEmpresa(
+  Widget _precio(
       Responsive responsive, String text, TextEditingController controller) {
     return TextFormField(
         controller: controller,
         cursorColor: Colors.black,
-        keyboardType: TextInputType.text,
-        maxLength: 9,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           hintStyle: form2,
           hintText: text,
@@ -466,53 +399,12 @@ class _EditarProductoPage extends State<EditarProductoPage> {
           ),
         ),
         validator: (value) {
-          Pattern pattern = '^(\[[0-9]{9}\)';
-          RegExp regExp = new RegExp(pattern);
-          if (regExp.hasMatch(value)) {
-            return null;
+          if (value.isEmpty) {
+            return 'El campo no debe estar vacio';
           } else {
-            return 'Sólo 9 números';
+            return null;
           }
         });
-  }
-
-  Widget _celularEmpresaNull(
-      Responsive responsive, String text, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      cursorColor: Colors.black,
-      keyboardType: TextInputType.text,
-      maxLength: 9,
-      decoration: InputDecoration(
-        hintStyle: form2,
-        hintText: text,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue[300]),
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _imputFieldNull(
-      Responsive responsive, String text, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      cursorColor: Colors.black,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        hintStyle: form2,
-        hintText: text,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue[300]),
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _currency(Responsive responsive, List<String> list) {
@@ -556,9 +448,8 @@ class _EditarProductoPage extends State<EditarProductoPage> {
   }
 
   Widget _button(Responsive responsive) {
-    final goodBloc = ProviderBloc.productos(context);
-    final productoModel = ProductoModel();
-
+    final serviceBloc = ProviderBloc.servi(context);
+    final servicioModel = SubsidiaryServiceModel();
     return SizedBox(
       width: double.infinity,
       child: MaterialButton(
@@ -569,47 +460,39 @@ class _EditarProductoPage extends State<EditarProductoPage> {
             if (dropdownTipo == 'Moneda') {
               utils.showToast(
                   context, 'Por favor debe selecionar un tipo de moneda');
-            } else if (!regExp.hasMatch(_precioProductoController.text)) {
+            } else if (!regExp.hasMatch(_precioServicioController.text)) {
               utils.showToast(
                   context, 'Por favor ingresar solo números en Precio');
-            } else if (!regExp.hasMatch(_stockProductoController.text)) {
-              utils.showToast(
-                  context, 'Por favor ingresar solo números en Stock');
+              // } else if (foto == null) {
+              //   utils.showToast(context, 'Por favor debe subir una foto');
             } else {
-              productoModel.idProducto = widget.productoModel.idProducto;
-              productoModel.productoName = _nombreProductoController.text;
-              productoModel.productoPrice = _precioProductoController.text;
-              productoModel.productoCurrency = dropdownid;
-              productoModel.productoBrand = _marcaProductoController.text;
-              productoModel.productoModel = _modeloProductoController.text;
-              productoModel.productoSize = _sizeProductoController.text;
-              productoModel.productoStock = _stockProductoController.text;
-              productoModel.productoMeasure = _measureProductoController.text;
-
-              // print(productoModel.productoMeasure);
-
-              // print(productoModel.productoStock);
+              servicioModel.idSubsidiaryservice =
+                  widget.serviceModel.idSubsidiaryservice;
+              servicioModel.idSubsidiary = widget.serviceModel.idSubsidiary;
+              servicioModel.subsidiaryServiceName =
+                  _nombreServicioController.text;
+              servicioModel.subsidiaryServicePrice =
+                  _precioServicioController.text;
+              servicioModel.subsidiaryServiceCurrency = dropdownid;
+              servicioModel.subsidiaryServiceDescription =
+                  _descripcinServicioController.text;
 
               final int code =
-                  await goodBloc.editarProducto(foto, productoModel);
+                  await serviceBloc.editarServicio(foto, servicioModel);
               if (code == 1) {
                 print(code);
-                print("Información Actualizada");
-                goodBloc.listarProductosPorSucursal(
-                    widget.productoModel.idSubsidiary);
-                utils.showToast(context, 'Información Actualizada');
+                print("Producto agregado");
+                //goodBloc.listarProductosPorSucursal(widget.idSucursal);
+                utils.showToast(context, 'Producto agregado');
                 Navigator.pop(context);
               } else {
-                utils.showToast(context, 'Faltan registrar datos');
-                final datosProdBloc = ProviderBloc.datosProductos(context);
-                datosProdBloc
-                    .listarDatosProducto(widget.productoModel.idProducto);
+                utils.showToast(context, 'Ocurrió un error');
               }
             }
           }
         },
         textColor: Colors.white,
-        child: Text('ACTUALIZAR', style: utils.subtitulotexto),
+        child: Text('AGREGAR', style: utils.subtitulotexto),
         color: Colors.redAccent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

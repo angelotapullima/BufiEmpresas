@@ -27,7 +27,7 @@ class GoodDatabase {
 
   Future<List<BienesModel>> obtenerGood() async {
     final db = await dbProvider.database;
-    final res = await db.rawQuery("SELECT * FROM Good");
+    final res = await db.rawQuery("SELECT * FROM Good ORDER BY good_name");
 
     List<BienesModel> list =
         res.isNotEmpty ? res.map((c) => BienesModel.fromJson(c)).toList() : [];

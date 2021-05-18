@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart';
 import 'package:bufi_empresas/src/database/company_db.dart';
 import 'package:bufi_empresas/src/database/itemSubcategory_db.dart';
 import 'package:bufi_empresas/src/database/service_db.dart';
@@ -177,9 +179,8 @@ class ServiceApi {
     return 0;
   }
 
-  /* Future<int> guardarServicio(File _image, CompanyModel cmodel,
-      ServiciosModel serviceData, SubsidiaryServiceModel servicioModel) async {
-
+  Future<int> guardarServicio(
+      File _image, SubsidiaryServiceModel servicioModel) async {
     // open a byteStream
     var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
     // get file length
@@ -195,8 +196,8 @@ class ServiceApi {
     request.fields["app"] = 'true';
     request.fields["tn"] = prefs.token;
     request.fields["id_sucursal2"] = servicioModel.idSubsidiary;
-    request.fields["id_servicio"] = serviceData.idService;
-    request.fields["categoria_s"] = cmodel.idCategory;
+    request.fields["id_servicio"] = servicioModel.idService;
+    request.fields["categoria_s"] = servicioModel.idItemsubcategory;
     request.fields["nombre_s"] = servicioModel.subsidiaryServiceName;
     request.fields["precio_s"] = servicioModel.subsidiaryServicePrice;
     request.fields["currency_s"] = servicioModel.subsidiaryServiceCurrency;
@@ -226,7 +227,54 @@ class ServiceApi {
     return 1;
   }
 
-   */
+  Future<int> editarServicio(
+      File _image, SubsidiaryServiceModel servicioModel) async {
+    var multipartFile;
+    if (_image != null) {
+      // open a byteStream
+      var stream = new http.ByteStream(Stream.castFrom(_image.openRead()));
+      // get file length
+      var length = await _image.length();
+      // multipart that takes file.. here this "image_file" is a key of the API request
+      multipartFile = new http.MultipartFile('servicio_img', stream, length,
+          filename: basename(_image.path));
+    }
+
+    // string to uri
+    var uri = Uri.parse("$apiBaseURL/api/Negocio/guardar_servicio");
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+
+    // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
+    request.fields["app"] = 'true';
+    request.fields["tn"] = prefs.token;
+    request.fields["id_subsidiaryservice"] = servicioModel.idSubsidiaryservice;
+    request.fields["nombre_s"] = servicioModel.subsidiaryServiceName;
+    request.fields["precio_s"] = servicioModel.subsidiaryServicePrice;
+    request.fields["currency_s"] = servicioModel.subsidiaryServiceCurrency;
+    request.fields["descripcion"] = servicioModel.subsidiaryServiceDescription;
+
+    // add file to multipart
+    if (_image != null) request.files.add(multipartFile);
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+
+        final decodedData = json.decode(value);
+        if (decodedData['result']['code'] == 1) {
+          print('amonos');
+        }
+      });
+    }).catchError((e) {
+      print(e);
+    });
+    return 1;
+  }
+
   Future<dynamic> detalleSerivicioPorIdSubsidiaryService(String id) async {
     try {
       final response = await http.post(

@@ -92,7 +92,7 @@ class ProductoDatabase {
       String id) async {
     final db = await dbProvider.database;
     final res =
-        await db.rawQuery("SELECT * FROM Producto WHERE id_good= '$id'");
+        await db.rawQuery("SELECT * FROM Producto WHERE id_producto= '$id'");
 
     List<ProductoModel> list = res.isNotEmpty
         ? res.map((c) => ProductoModel.fromJson(c)).toList()
