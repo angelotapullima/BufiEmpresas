@@ -42,8 +42,8 @@ class ServiciosBloc {
 
   void obtenerAllServices() async {
     _serviAllController.sink.add(await servicesDatabase.obtenerService());
-    await serviciosApi.obtenerServicesAll();
-    _serviAllController.sink.add(await servicesDatabase.obtenerService());
+    // await serviciosApi.obtenerServicesAll();
+    // _serviAllController.sink.add(await servicesDatabase.obtenerService());
   }
 
   void listarServiciosPorSucursal(String id) async {

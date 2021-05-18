@@ -95,7 +95,7 @@ class _EditarServicioPage extends State<EditarServicioPage> {
                 BackButton(),
                 Expanded(
                     child: Text(
-                  "Agregar nuevo Servicio",
+                  "Editar: ${widget.serviceModel.subsidiaryServiceName}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: responsive.ip(2.5),
@@ -468,7 +468,6 @@ class _EditarServicioPage extends State<EditarServicioPage> {
             } else {
               servicioModel.idSubsidiaryservice =
                   widget.serviceModel.idSubsidiaryservice;
-              servicioModel.idSubsidiary = widget.serviceModel.idSubsidiary;
               servicioModel.subsidiaryServiceName =
                   _nombreServicioController.text;
               servicioModel.subsidiaryServicePrice =
@@ -477,24 +476,30 @@ class _EditarServicioPage extends State<EditarServicioPage> {
               servicioModel.subsidiaryServiceDescription =
                   _descripcinServicioController.text;
 
-              print(servicioModel.idSubsidiaryservice);
+              print(
+                  'id_subsidiaryservice: ${servicioModel.idSubsidiaryservice}');
+              print('id_service: ${widget.serviceModel.idService}');
+              print('Categoria: ${widget.serviceModel.idItemsubcategory}');
 
               final int code =
                   await serviceBloc.editarServicio(foto, servicioModel);
               if (code == 1) {
                 print(code);
-                print("Producto agregado");
+                print("Servicio actualizado");
+                final serviciosBloc = ProviderBloc.servi(context);
+                serviciosBloc
+                    .listarServiciosPorSucursal(widget.serviceModel.idService);
                 //goodBloc.listarProductosPorSucursal(widget.idSucursal);
-                utils.showToast(context, 'Producto agregado');
+                utils.showToast(context, 'Servicio actualizado');
                 Navigator.pop(context);
               } else {
-                utils.showToast(context, 'Ocurrió un error');
+                utils.showToast(context, 'Servicio actualizado');
               }
             }
           }
         },
         textColor: Colors.white,
-        child: Text('AGREGAR', style: utils.subtitulotexto),
+        child: Text('ACTUALIZAR', style: utils.subtitulotexto),
         color: Colors.redAccent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

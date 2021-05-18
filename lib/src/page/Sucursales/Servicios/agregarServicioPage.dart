@@ -678,9 +678,9 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
                   await serviceBloc.guardarServicio(foto, servicioModel);
               if (code == 1) {
                 print(code);
-                print("Producto agregado");
+                print("Servicio agregado");
                 //goodBloc.listarProductosPorSucursal(widget.idSucursal);
-                utils.showToast(context, 'Producto agregado');
+                utils.showToast(context, 'Servicio agregado');
                 Navigator.pop(context);
               } else {
                 utils.showToast(context, 'Ocurrió un error');

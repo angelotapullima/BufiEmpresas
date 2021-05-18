@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:bufi_empresas/src/models/productoModel.dart';
+import 'package:bufi_empresas/src/page/Sucursales/Productos/editarProductoPage.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -105,7 +106,45 @@ class _BienesWidgetState extends State<BienesWidget> {
                 ),
               ],
             ),
-          )
+          ),
+          Center(
+            child: SizedBox(
+              width: responsive.wp(80),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(3),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return EditarProductoPage(productoModel: widget.producto);
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      var begin = Offset(0.0, 1.0);
+                      var end = Offset.zero;
+                      var curve = Curves.ease;
+
+                      var tween = Tween(begin: begin, end: end).chain(
+                        CurveTween(curve: curve),
+                      );
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ));
+                },
+                child: Text("Editar Producto",
+                    style: TextStyle(
+                        color: Colors.white, fontSize: responsive.ip(2.2))),
+              ),
+            ),
+          ),
         ],
       ),
     );

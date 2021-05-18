@@ -261,7 +261,6 @@ class ProductosApi {
   Future<int> editarProducto(File _image, ProductoModel producModel) async {
     final preferences = Preferences();
     var multipartFile;
-    int cod;
 
     if (_image != null) {
       // open a byteStream
@@ -300,27 +299,18 @@ class ProductosApi {
     // send request to upload image
     await request.send().then((response) async {
       // listen for response
-      response.stream.transform(utf8.decoder).listen((value) async {
+      response.stream.transform(utf8.decoder).listen((value) {
         print(value);
+
         final decodedData = json.decode(value);
-        final int code = decodedData['result']['code'];
-        cod = code;
         if (decodedData['result']['code'] == 1) {
-          cod = 1;
-          return cod;
-        } else if (code == 2) {
-          cod = 2;
-          return cod;
-        } else {
-          cod = cod;
-          return cod;
+          print('amonos');
         }
       });
     }).catchError((e) {
       print(e);
     });
-
-    return cod;
+    return 1;
   }
 
   Future<int> listarDetalleProductoPorIdProducto(String idProducto) async {

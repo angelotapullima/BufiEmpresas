@@ -41,7 +41,7 @@ class ServiceApi {
           servicemodel.serviceName = decodedData[i]['service_name'];
           servicemodel.serviceSynonyms = decodedData[i]['service_synonyms'];
 
-          await serviceDatabase.obtenerService();
+          await serviceDatabase.insertarService(servicemodel);
         } else {
           ServiciosModel servicemodel = ServiciosModel();
 
@@ -49,7 +49,7 @@ class ServiceApi {
           servicemodel.serviceName = decodedData[i]['service_name'];
           servicemodel.serviceSynonyms = decodedData[i]['service_synonyms'];
 
-          await serviceDatabase.obtenerService();
+          await serviceDatabase.insertarService(serviceModel);
         }
       }
       return 0;
@@ -61,41 +61,12 @@ class ServiceApi {
   }
 
   Future<dynamic> listarServiciosPorSucursal(String id) async {
-    //funcion para obtener el producto con el id mas alto de la lista
-    final serviciosSucursal =
-        await subisdiaryServiceDatabase.obtenerServiciosPorIdSucursal(id);
-
-    double mayor = 0;
-    double mayor2 = 0;
-    double menor = 0;
-    if (serviciosSucursal.length > 0) {
-      for (var i = 0; i < serviciosSucursal.length; i++) {
-        if (double.parse(serviciosSucursal[i].idSubsidiaryservice) > mayor) {
-          mayor = double.parse(serviciosSucursal[i].idSubsidiaryservice);
-          print('mayor $mayor');
-        }
-      }
-    }
-    mayor2 = mayor;
-
-    if (serviciosSucursal.length > 0) {
-      for (var x = 0; x < serviciosSucursal.length; x++) {
-        if (double.parse(serviciosSucursal[x].idSubsidiaryservice) < mayor2) {
-          menor = double.parse(serviciosSucursal[x].idSubsidiaryservice);
-          mayor2 = menor;
-          print('menor $menor');
-        } else {
-          menor = mayor2;
-        }
-      }
-    }
-
+    print('listar_servicios_por_sucursal');
+    print('Id : $id');
     final response = await http.post(
         Uri.parse('$apiBaseURL/api/Negocio/listar_servicios_por_sucursal'),
         body: {
           'id_sucursal': '$id',
-          'limite_sup': mayor.toString(),
-          'limite_inf': menor.toString()
         });
 
     final decodedDataSimple = json.decode(response.body);
