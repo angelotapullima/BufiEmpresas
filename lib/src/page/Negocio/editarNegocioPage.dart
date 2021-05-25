@@ -32,14 +32,14 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
   //DropdownCategorias
   String dropdownCategorias = 'Seleccionar';
   int cantItems = 0;
-  var list;
+  List<String> list;
   String idCategoria = 'false';
 
   //SwitchListTile
   bool _d = false;
   bool _e = false;
   bool _t = false;
-  int cant_item = 0;
+  int cantItem = 0;
 
   //TextEditingNegocio
   TextEditingController _nombreEmpresaController = TextEditingController();
@@ -523,7 +523,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
                 if (cantItems == 0) {
-                  list = List<String>();
+                  list = [];
 
                   list.add('Seleccionar');
                   for (int i = 0; i < snapshot.data.length; i++) {
@@ -596,7 +596,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
         activeColor: Colors.redAccent,
         onChanged: (value) {
           setState(() {
-            cant_item++;
+            cantItem++;
             _d = value;
             //_d = value;s
           });
@@ -609,7 +609,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
         title: Text('¿Realiza Entregas?'),
         activeColor: Colors.redAccent,
         onChanged: (value) => setState(() {
-              cant_item++;
+              cantItem++;
               _e = value;
             }));
   }
@@ -620,7 +620,7 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
         title: Text('¿Acepta Tarjeta?'),
         activeColor: Colors.redAccent,
         onChanged: (value) => setState(() {
-              cant_item++;
+              cantItem++;
               _t = value;
             }));
   }

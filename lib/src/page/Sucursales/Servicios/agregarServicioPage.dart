@@ -39,13 +39,13 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
   //DropdownCategorias
   String dropdownCategorias = 'Seleccionar';
   int cantItemsCategoria;
-  var listCategoria;
+  List<String> listCategoria;
   String idCategoria = 'false';
 
   //DropdownGood
   String dropdownGood = 'Seleccionar';
   int cantItemsGood;
-  var listGood;
+  List<String> listGood;
   String idGood = 'false';
 
   //TextEditingProducto
@@ -492,7 +492,7 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
                 if (cantItemsCategoria == 0) {
-                  listCategoria = List<String>();
+                  listCategoria = [];
                   listCategoria.add('Seleccionar');
                   for (int i = 0; i < snapshot.data.length; i++) {
                     String nombreCategoria =
@@ -572,7 +572,7 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
                 if (cantItemsGood == 0) {
-                  listGood = List<String>();
+                  listGood = [];
 
                   listGood.add('Seleccionar');
                   for (int i = 0; i < snapshot.data.length; i++) {

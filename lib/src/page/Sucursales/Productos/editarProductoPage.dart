@@ -448,54 +448,6 @@ class _EditarProductoPage extends State<EditarProductoPage> {
         });
   }
 
-  Widget _celularEmpresa(
-      Responsive responsive, String text, TextEditingController controller) {
-    return TextFormField(
-        controller: controller,
-        cursorColor: Colors.black,
-        keyboardType: TextInputType.text,
-        maxLength: 9,
-        decoration: InputDecoration(
-          hintStyle: form2,
-          hintText: text,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue[300]),
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
-          ),
-        ),
-        validator: (value) {
-          Pattern pattern = '^(\[[0-9]{9}\)';
-          RegExp regExp = new RegExp(pattern);
-          if (regExp.hasMatch(value)) {
-            return null;
-          } else {
-            return 'Sólo 9 números';
-          }
-        });
-  }
-
-  Widget _celularEmpresaNull(
-      Responsive responsive, String text, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      cursorColor: Colors.black,
-      keyboardType: TextInputType.text,
-      maxLength: 9,
-      decoration: InputDecoration(
-        hintStyle: form2,
-        hintText: text,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue[300]),
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _imputFieldNull(
       Responsive responsive, String text, TextEditingController controller) {
     return TextFormField(

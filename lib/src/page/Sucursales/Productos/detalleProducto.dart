@@ -3,7 +3,6 @@ import 'package:bufi_empresas/src/database/marcaProducto_database.dart';
 import 'package:bufi_empresas/src/database/modeloProducto_database.dart';
 import 'package:bufi_empresas/src/database/tallaProducto_database.dart';
 import 'package:bufi_empresas/src/models/productoModel.dart';
-import 'package:bufi_empresas/src/page/Sucursales/Productos/editarProductoPage.dart';
 import 'package:bufi_empresas/src/utils/constants.dart';
 import 'package:bufi_empresas/src/utils/responsive.dart';
 import 'package:bufi_empresas/src/utils/utils.dart';
@@ -559,63 +558,6 @@ class _DetalleProductosState extends State<DetalleProductos> {
       },
       activeTrackColor: Colors.yellow,
       activeColor: Colors.orangeAccent,
-    );
-  }
-
-  Widget _marca(Responsive responsive, List<ProductoModel> listProd) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TitleText(
-          text: "Marcas",
-          fontSize: 14,
-        ),
-        SizedBox(
-          height: responsive.hp(1),
-        ),
-        Container(
-          height: responsive.hp(8),
-          child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: listProd[0].listMarcaProd.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _marcaWidget(listProd, index);
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _marcaWidget(List<ProductoModel> listProd, int index,
-      {bool isSelected = false}) {
-    return Padding(
-      padding: EdgeInsets.all(4.0),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          border: Border.all(
-              color: LightColor.iconColor,
-              style: !isSelected ? BorderStyle.solid : BorderStyle.none),
-          borderRadius: BorderRadius.all(Radius.circular(13)),
-          color: (listProd[0].listMarcaProd[index].estado == '1')
-              ? LightColor.red
-              : Theme.of(context).backgroundColor,
-        ),
-        child: TitleText(
-          text: listProd[0].listMarcaProd[index].marcaProducto,
-          fontSize: 16,
-          color: (listProd[0].listMarcaProd[index].estado == '1')
-              ? LightColor.background
-              : LightColor.titleTextColor,
-        ),
-      ).ripple(
-        () async {},
-        borderRadius: BorderRadius.all(
-          Radius.circular(13),
-        ),
-      ),
     );
   }
 }
