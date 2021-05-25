@@ -285,13 +285,10 @@ class _TicketPagoState extends State<TicketPago> {
       await ImageGallerySaver.saveImage(image);
 
       // Save image to gallery,  Needs plugin  https://pub.dev/packages/image_gallery_saver
-      print("File Saved to Gallery");
-
       final directory = (await getApplicationDocumentsDirectory()).path;
       Uint8List pngBytes = _imageFile;
       File imgFile = new File('$directory/Screenshot$nombre.png');
       imgFile.writeAsBytes(pngBytes);
-      print("File Saved to Gallery");
 
       imagePaths.add(imgFile.path);
       final RenderBox box = context.findRenderObject() as RenderBox;

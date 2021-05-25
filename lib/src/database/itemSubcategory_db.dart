@@ -29,7 +29,6 @@ class ItemsubCategoryDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -47,7 +46,6 @@ class ItemsubCategoryDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -65,7 +63,6 @@ class ItemsubCategoryDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }

@@ -159,7 +159,6 @@ class _SwichtStatusState extends State<SwichtStatus> {
           if (value) {
             estatus = '1';
           }
-          print('value $estatus');
           habilitarDesServicio(context, widget.serviceData.idService, estatus,
               widget.serviceData.idSubsidiary);
         });

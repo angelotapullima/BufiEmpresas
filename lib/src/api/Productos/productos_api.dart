@@ -33,8 +33,6 @@ class ProductosApi {
   final prefs = Preferences();
 
   Future<dynamic> listarProductosPorSucursal(String id) async {
-    print('listar_productos_por_sucursal');
-
     final response = await http.post(
         Uri.parse('$apiBaseURL/api/Negocio/listar_productos_por_sucursal'),
         body: {
@@ -84,8 +82,6 @@ class ProductosApi {
             decodedData['results'][i]['subsidiary_good_updated'];
         productoModel.productoStatus =
             decodedData['results'][i]['subsidiary_good_status'];
-
-        print(decodedData['results'][i]['subsidiary_good_status']);
 
         var productList =
             await productoDatabase.obtenerProductoPorIdSubsidiaryGood(
@@ -238,13 +234,10 @@ class ProductosApi {
     await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-
         final decodedData = json.decode(value);
         final int code = decodedData['result']['code'];
 
         if (decodedData['result']['code'] == 1) {
-          print('amonos');
           return 1;
         } else if (code == 2) {
           return 2;
@@ -300,12 +293,8 @@ class ProductosApi {
     await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-
         final decodedData = json.decode(value);
-        if (decodedData['result']['code'] == 1) {
-          print('amonos');
-        }
+        if (decodedData['result']['code'] == 1) {}
       });
     }).catchError((e) {
       print(e);

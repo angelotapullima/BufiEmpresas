@@ -55,7 +55,6 @@ class ProductoDatabase {
           "producto_favourite= '${productoModel.productoFavourite}' "
           "WHERE id_producto='${productoModel.idProducto}' ");
 
-      print('database $res');
       return res;
     } catch (exception) {
       print(exception);

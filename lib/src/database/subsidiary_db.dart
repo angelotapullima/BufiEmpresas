@@ -79,7 +79,6 @@ class SubsidiaryDatabase {
           "subsidiary_status_pedidos='${subsidiaryModel.subsidiaryStatusPedidos}'"
           "WHERE id_subsidiary='${subsidiaryModel.idSubsidiary}' ");
 
-      // print('database actualizada $res');
       return res;
     } catch (exception) {
       print(exception);
@@ -102,7 +101,6 @@ class SubsidiaryDatabase {
           .rawUpdate("UPDATE Subsidiary SET subsidiary_status_pedidos= '0'"
               "WHERE subsidiary_status_pedidos='1' ");
 
-      // print('database actualizada $res');
       return res;
     } catch (exception) {
       print(exception);
@@ -129,7 +127,6 @@ class SubsidiaryDatabase {
           .rawUpdate("UPDATE Subsidiary SET subsidiary_status_pedidos= '1'"
               "WHERE id_subsidiary='$idSubsidiary' ");
 
-      // print('database actualizada $res');
       return res;
     } catch (exception) {
       print(exception);

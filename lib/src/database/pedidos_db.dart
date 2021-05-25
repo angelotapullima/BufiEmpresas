@@ -21,7 +21,6 @@ class PedidosDatabase {
       return res;
     } catch (e) {
       print("$e Error en la base de datos de Pedidos");
-      print(e);
     }
   }
 
@@ -116,7 +115,6 @@ class PedidosDatabase {
       return res;
     } catch (e) {
       print(" $e Error en la base de datos");
-      print(e);
       return [];
     }
   }

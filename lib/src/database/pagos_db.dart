@@ -15,7 +15,6 @@ class PagosDataBase {
       return res;
     } catch (e) {
       print("$e Error en la base de datos de Sugerencia");
-      print(e);
     }
   }
 

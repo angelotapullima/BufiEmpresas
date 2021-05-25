@@ -59,7 +59,6 @@ class CompanyDatabase {
           "mi_negocio='${companyModel.miNegocio}',"
           "negocio_estado_seleccion='${companyModel.negocioEstadoSeleccion}'"
           "WHERE id_company = '${companyModel.idCompany}'");
-      print(res);
       return res;
     } catch (exception) {
       print(exception);

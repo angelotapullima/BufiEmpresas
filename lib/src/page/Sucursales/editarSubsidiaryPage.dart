@@ -419,7 +419,6 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
               subsidiaryModel.subsidiaryCoordY = _coordYEmpresaController.text;
               subsidiaryModel.subsidiaryOpeningHours =
                   _openingHoursEmpresaController.text;
-              print(subsidiaryModel.subsidiaryCellphone);
 
               final int code =
                   await editarSubsidiaryBloc.editarSubsidiary(subsidiaryModel);
@@ -427,8 +426,6 @@ class _EditarSubsidiaryPage extends State<EditarSubsidiaryPage> {
                 final sucursalBloc = ProviderBloc.sucursal(context);
                 sucursalBloc
                     .obtenerSucursalporId(widget.subsidiaryModel.idSubsidiary);
-                print(code);
-                print("Información Actualizada");
                 utils.showToast(context, 'Información Actualizada');
                 Navigator.pop(context);
               } else {

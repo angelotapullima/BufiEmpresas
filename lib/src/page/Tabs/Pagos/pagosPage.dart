@@ -262,9 +262,6 @@ class _ObtenerFechaState1 extends State<ObtenerFecha1> {
       lastDate: DateTime.now(),
     );
     if (picked != null) {
-      /* print('no se por que se muestra ${picked.year}-${picked.month}-${picked.day}');
-      String dia = ''; */
-
       setState(() {
         _fecha =
             "${picked.year.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
@@ -325,9 +322,6 @@ class _ObtenerFechaState2 extends State<ObtenerFecha2> {
     );
 
     if (picked != null) {
-      /* print('no se por que se muestra ${picked.year}-${picked.month}-${picked.day}');
-      String dia = ''; */
-
       setState(() {
         _fecha =
             "${picked.year.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";

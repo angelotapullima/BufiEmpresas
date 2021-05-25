@@ -178,10 +178,8 @@ habilitarDesServicio(
     BuildContext context, String id, String status, String idSubsidiary) async {
   final serviciosBloc = ProviderBloc.servi(context);
   final servicesDB = SubsidiaryServiceDatabase();
-  print(id);
 
   final res = await serviciosBloc.habilitarDesService(id, status);
-  print(res);
   if (res == 1) {
     servicesDB.cambiarStatusServiceDb(id, status);
     serviciosBloc.listarServiciosPorSucursal(idSubsidiary);

@@ -19,7 +19,6 @@ class CarritoDb {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
     }
   }
 
@@ -36,7 +35,6 @@ class CarritoDb {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -55,7 +53,6 @@ class CarritoDb {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -109,13 +106,8 @@ class CarritoDb {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
-
-    // } catch (e) {
-    //   print("Error");
-    // }
   }
 
   Future<List<CarritoModel>> obtenerProductoXCarritoPorIdProductoTalla(
@@ -133,7 +125,6 @@ class CarritoDb {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -152,13 +143,8 @@ class CarritoDb {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
-
-    // } catch (e) {
-    //   print("Error");
-    // }
   }
 
   Future<List<CarritoModel>> obtenerProductosSeleccionadoAgrupados() async {
@@ -175,13 +161,8 @@ class CarritoDb {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
-
-    // } catch (e) {obtenerProductoXCarritoSeleccionado
-    //   print("Error");
-    // }
   }
 
   deleteCarritoPorIdSudsidiaryGood(String idSubsidiaryGood) async {
@@ -194,7 +175,6 @@ class CarritoDb {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -210,7 +190,6 @@ class CarritoDb {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -233,7 +212,6 @@ class CarritoDb {
           "cantidad='${carritoModel.cantidad}',"
           "estado_seleccionado='${carritoModel.estadoSeleccionado}' "
           "WHERE id_subsidiarygood = '${carritoModel.idSubsidiaryGood}'");
-      print(res);
       return res;
     } catch (exception) {
       print(exception);
@@ -258,7 +236,6 @@ class CarritoDb {
           "cantidad='${carritoModel.cantidad}',"
           "estado_seleccionado='${carritoModel.estadoSeleccionado}' "
           "WHERE id_subsidiarygood = '${carritoModel.idSubsidiaryGood}' and marca= '${carritoModel.marca}' and modelo= '${carritoModel.modelo}' and talla= '${carritoModel.talla}'");
-      print(res);
       return res;
     } catch (exception) {
       print(exception);
@@ -273,7 +250,6 @@ class CarritoDb {
       final res = await db.rawUpdate("UPDATE Carrito SET "
           "estado_seleccionado='$seleccion' "
           "WHERE id_subsidiarygood = '$idProducto' and talla = '$talla' and modelo ='$modelo' and marca='$marca' ");
-      print(res);
       return res;
     } catch (exception) {
       print(exception);

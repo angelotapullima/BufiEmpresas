@@ -18,7 +18,6 @@ class TallaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Talla de Productos");
     }
   }
 
@@ -31,7 +30,6 @@ class TallaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Marca de Productos");
     }
   }
 
@@ -45,7 +43,6 @@ class TallaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Talla de Productos");
     }
   }
 
@@ -61,7 +58,6 @@ class TallaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -80,7 +76,6 @@ class TallaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -98,7 +93,6 @@ class TallaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -117,7 +111,6 @@ class TallaProductoDatabase {
       return list;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Talla de Productos");
       return [];
     }
   }

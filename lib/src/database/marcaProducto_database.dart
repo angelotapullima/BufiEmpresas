@@ -18,7 +18,6 @@ class MarcaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Marca de Productos");
     }
   }
 
@@ -37,7 +36,6 @@ class MarcaProductoDatabase {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -51,7 +49,6 @@ class MarcaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Marca de Productos");
     }
   }
 
@@ -65,7 +62,6 @@ class MarcaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Marca de Productos");
     }
   }
 
@@ -81,7 +77,6 @@ class MarcaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -100,7 +95,6 @@ class MarcaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -119,7 +113,6 @@ class MarcaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }

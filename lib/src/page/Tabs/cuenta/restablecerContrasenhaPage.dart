@@ -231,14 +231,11 @@ class _RestablecerContrasenhaPageState
     final int code = await bloc.restablecerPassword('${bloc.password}');
 
     if (code == 1) {
-      print(code);
       showToast1('Contraseña Actualizada', 2, ToastGravity.CENTER);
       Navigator.of(context).pop();
     } else if (code == 2) {
-      print(code);
       showToast1('Ocurrio un error', 2, ToastGravity.CENTER);
     } else if (code == 3) {
-      print(code);
       showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
     }
     _cargando.value = false;

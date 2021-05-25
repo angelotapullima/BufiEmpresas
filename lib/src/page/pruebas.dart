@@ -60,7 +60,6 @@ class _PuebasPageState extends State<PuebasPage> {
                           id = value;
                           final prefs = Preferences();
                           prefs.idSeleccionNegocioInicio = id;
-                          print(id);
                           this.setState(() {});
                         },
                       );

@@ -247,10 +247,8 @@ class _LoginPageState extends State<LoginPage> {
       obtenerprimerIdSubsidiary(context, pref.idSeleccionNegocioInicio);
       Navigator.pushReplacementNamed(context, 'home');
     } else if (code == 2) {
-      print(code);
       showToast1('Ocurrio un error', 2, ToastGravity.CENTER);
     } else if (code == 3) {
-      print(code);
       showToast1('Datos incorrectos', 2, ToastGravity.CENTER);
     }
 

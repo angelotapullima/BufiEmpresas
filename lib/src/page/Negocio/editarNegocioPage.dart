@@ -586,7 +586,6 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
         idCategoria = list[i].idCategory;
       }
     }
-    print('id $idCategoria');
   }
 
   Widget _delivery() {
@@ -688,8 +687,6 @@ class _EditarNegocioPage extends State<EditarNegocioPage> {
                 final detallenegocio = ProviderBloc.negocios(context);
                 detallenegocio
                     .obtenernegociosxID(widget.companyModel.idCompany);
-                print(code);
-                print("Información Actualizada");
                 utils.showToast(context, 'Información Actualizada');
                 Navigator.pop(context);
               } else {

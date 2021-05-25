@@ -362,7 +362,6 @@ class _EditarProductoPage extends State<EditarProductoPage> {
     if (file == null) return;
     setState(() {
       foto = file;
-      print('FOTO: ${foto.path}');
     });
   }
 
@@ -538,15 +537,9 @@ class _EditarProductoPage extends State<EditarProductoPage> {
               productoModel.productoStock = _stockProductoController.text;
               productoModel.productoMeasure = _measureProductoController.text;
 
-              // print(productoModel.productoMeasure);
-
-              // print(productoModel.productoStock);
-
               final int code =
                   await goodBloc.editarProducto(foto, productoModel);
               if (code == 1) {
-                print(code);
-                print("Información Actualizada");
                 goodBloc.listarProductosPorSucursal(
                     widget.productoModel.idSubsidiary);
                 utils.showToast(context, 'Información Actualizada');

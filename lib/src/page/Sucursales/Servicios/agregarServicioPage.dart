@@ -345,7 +345,6 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
     if (file == null) return;
     setState(() {
       foto = file;
-      print('FOTO: ${foto.path}');
     });
   }
 
@@ -555,7 +554,6 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
         idCategoria = list[i].idItemsubcategory;
       }
     }
-    print('id $idCategoria');
   }
 
   Widget _service(ServiciosBloc serviceBloc, Responsive responsive) {
@@ -635,7 +633,6 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
         idGood = listBienes[i].idService;
       }
     }
-    print('id Good: $idGood');
   }
 
   Widget _button(Responsive responsive) {
@@ -677,9 +674,6 @@ class _AgregarServicioPage extends State<AgregarServicioPage> {
               final int code =
                   await serviceBloc.guardarServicio(foto, servicioModel);
               if (code == 1) {
-                print(code);
-                print("Servicio agregado");
-                //goodBloc.listarProductosPorSucursal(widget.idSucursal);
                 utils.showToast(context, 'Servicio agregado');
                 Navigator.pop(context);
               } else {

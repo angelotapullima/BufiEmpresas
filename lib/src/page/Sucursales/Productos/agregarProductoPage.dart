@@ -400,7 +400,6 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
     if (file == null) return;
     setState(() {
       foto = file;
-      print('FOTO: ${foto.path}');
     });
   }
 
@@ -609,7 +608,6 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
         idCategoria = list[i].idItemsubcategory;
       }
     }
-    print('id $idCategoria');
   }
 
   Widget _good(ProductoBloc productoBloc, Responsive responsive) {
@@ -689,7 +687,6 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
         idGood = listBienes[i].idGood;
       }
     }
-    print('id Good: $idGood');
   }
 
   Widget _button(Responsive responsive) {
@@ -732,13 +729,9 @@ class _AgregarProductoPage extends State<AgregarProductoPage> {
               productoModel.productoSize = _sizeProductoController.text;
               productoModel.productoStock = _stockProductoController.text;
 
-              print(productoModel.productoMeasure);
-
               final int code =
                   await goodBloc.guardarProducto(foto, productoModel);
               if (code == 1) {
-                print(code);
-                print("Producto agregado");
                 goodBloc.listarProductosPorSucursal(widget.idSucursal);
                 utils.showToast(context, 'Producto agregado');
                 Navigator.pop(context);

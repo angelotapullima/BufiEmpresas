@@ -61,8 +61,6 @@ class ServiceApi {
   }
 
   Future<dynamic> listarServiciosPorSucursal(String id) async {
-    print('listar_servicios_por_sucursal');
-    print('Id : $id');
     final response = await http.post(
         Uri.parse('$apiBaseURL/api/Negocio/listar_servicios_por_sucursal'),
         body: {
@@ -185,12 +183,8 @@ class ServiceApi {
     await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-
         final decodedData = json.decode(value);
-        if (decodedData['result']['code'] == 1) {
-          print('amonos');
-        }
+        if (decodedData['result']['code'] == 1) {}
       });
     }).catchError((e) {
       print(e);
@@ -233,12 +227,8 @@ class ServiceApi {
     await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-
         final decodedData = json.decode(value);
-        if (decodedData['result']['code'] == 1) {
-          print('amonos');
-        }
+        if (decodedData['result']['code'] == 1) {}
       });
     }).catchError((e) {
       print(e);

@@ -40,7 +40,6 @@ class SubsidiaryServiceDatabase {
           "subsidiary_service_favourite= '${subServicesModel.subsidiaryServiceFavourite}'"
           "WHERE id_subsidiaryservice='${subServicesModel.idSubsidiaryservice}' ");
 
-      print('database $res');
       return res;
     } catch (exception) {
       print(exception);
@@ -60,7 +59,6 @@ class SubsidiaryServiceDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -78,7 +76,6 @@ class SubsidiaryServiceDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -96,7 +93,6 @@ class SubsidiaryServiceDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -112,7 +108,6 @@ class SubsidiaryServiceDatabase {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -128,7 +123,6 @@ class SubsidiaryServiceDatabase {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -144,7 +138,6 @@ class SubsidiaryServiceDatabase {
       return res;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -162,7 +155,6 @@ class SubsidiaryServiceDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -181,7 +173,6 @@ class SubsidiaryServiceDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }

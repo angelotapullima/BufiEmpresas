@@ -45,7 +45,6 @@ class _DetalleSubsidiaryState extends State<DetalleSubsidiary>
 
         _scrollController.addListener(
           () {
-            print(_scrollController.position.pixels);
             if (_scrollController.position.pixels > 200) {
               provider.ocultarSafeArea.value = false;
             } else if (_scrollController.position.pixels < 10) {

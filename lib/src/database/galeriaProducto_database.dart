@@ -18,7 +18,6 @@ class GaleriaProductoDatabase {
       return res;
     } catch (exception) {
       print(exception);
-      print("Error en la tabla Galeria de Productos");
     }
   }
 
@@ -34,7 +33,6 @@ class GaleriaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }
@@ -53,7 +51,6 @@ class GaleriaProductoDatabase {
       return list;
     } catch (e) {
       print(" $e Error en la base de datossss");
-      print(e);
       return [];
     }
   }

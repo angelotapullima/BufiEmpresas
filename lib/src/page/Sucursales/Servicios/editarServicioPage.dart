@@ -313,7 +313,6 @@ class _EditarServicioPage extends State<EditarServicioPage> {
     if (file == null) return;
     setState(() {
       foto = file;
-      print('FOTO: ${foto.path}');
     });
   }
 
@@ -476,16 +475,9 @@ class _EditarServicioPage extends State<EditarServicioPage> {
               servicioModel.subsidiaryServiceDescription =
                   _descripcinServicioController.text;
 
-              print(
-                  'id_subsidiaryservice: ${servicioModel.idSubsidiaryservice}');
-              print('id_service: ${widget.serviceModel.idService}');
-              print('Categoria: ${widget.serviceModel.idItemsubcategory}');
-
               final int code =
                   await serviceBloc.editarServicio(foto, servicioModel);
               if (code == 1) {
-                print(code);
-                print("Servicio actualizado");
                 final serviciosBloc = ProviderBloc.servi(context);
                 serviciosBloc
                     .listarServiciosPorSucursal(widget.serviceModel.idService);
