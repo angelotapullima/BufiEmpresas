@@ -71,9 +71,7 @@ class PrincipalPage extends StatelessWidget {
                               placeholder: (context, url) => Container(
                                 width: double.infinity,
                                 height: double.infinity,
-                                child: Image(
-                                    image: AssetImage('assets/loading.gif'),
-                                    fit: BoxFit.cover),
+                                child: Image(image: AssetImage('assets/loading.gif'), fit: BoxFit.cover),
                               ),
                               errorWidget: (context, url, error) => Container(
                                 width: double.infinity,
@@ -104,11 +102,9 @@ class PrincipalPage extends StatelessWidget {
   Widget _backgroundNegocio(BuildContext context, Responsive responsive) {
     final preferences = Preferences();
     final pedidoAtendidoBloc = ProviderBloc.pedido(context);
-    pedidoAtendidoBloc
-        .obtenerPedidosAtendidos(preferences.idSeleccionNegocioInicio);
+    pedidoAtendidoBloc.obtenerPedidosAtendidos(preferences.idSeleccionNegocioInicio);
     final pedidoPendienteBloc = ProviderBloc.pedido(context);
-    pedidoPendienteBloc
-        .obtenerPedidosPendientes(preferences.idSeleccionNegocioInicio);
+    pedidoPendienteBloc.obtenerPedidosPendientes(preferences.idSeleccionNegocioInicio);
     return Container(
       margin: EdgeInsets.only(
         top: responsive.hp(10),
@@ -128,9 +124,7 @@ class PrincipalPage extends StatelessWidget {
                   final prefs = Preferences();
                   prefs.idStatusPedidos = '5';
                   final pedidosBloc = ProviderBloc.pedido(context);
-                  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                      prefs.idSeleccionSubsidiaryPedidos,
-                      prefs.idStatusPedidos);
+                  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(prefs.idSeleccionSubsidiaryPedidos, prefs.idStatusPedidos);
                   final buttonBloc = ProviderBloc.tabs(context);
                   buttonBloc.changePage(1);
                 },
@@ -140,11 +134,7 @@ class PrincipalPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Atendidos',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: responsive.ip(2),
-                              fontWeight: FontWeight.bold)),
+                      Text('Atendidos', style: TextStyle(color: Colors.white, fontSize: responsive.ip(2), fontWeight: FontWeight.bold)),
                       StreamBuilder(
                           stream: pedidoAtendidoBloc.pedidosAtendidosStream,
                           builder: (context, snapshot) {
@@ -172,9 +162,7 @@ class PrincipalPage extends StatelessWidget {
                           }),
                     ],
                   ),
-                  decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(10)),
                 ),
               ),
               SizedBox(
@@ -185,9 +173,7 @@ class PrincipalPage extends StatelessWidget {
                   final prefs = Preferences();
                   prefs.idStatusPedidos = '99';
                   final pedidosBloc = ProviderBloc.pedido(context);
-                  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                      prefs.idSeleccionSubsidiaryPedidos,
-                      prefs.idStatusPedidos);
+                  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(prefs.idSeleccionSubsidiaryPedidos, prefs.idStatusPedidos);
                   final buttonBloc = ProviderBloc.tabs(context);
                   buttonBloc.changePage(1);
                 },
@@ -197,11 +183,7 @@ class PrincipalPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Pendientes',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: responsive.ip(2),
-                              fontWeight: FontWeight.bold)),
+                      Text('Pendientes', style: TextStyle(color: Colors.white, fontSize: responsive.ip(2), fontWeight: FontWeight.bold)),
                       StreamBuilder(
                           stream: pedidoPendienteBloc.pedidosPendientesStream,
                           builder: (context, snapshot) {
@@ -229,9 +211,7 @@ class PrincipalPage extends StatelessWidget {
                           }),
                     ],
                   ),
-                  decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: Colors.redAccent, borderRadius: BorderRadius.circular(10)),
                 ),
               )
             ],
@@ -307,8 +287,7 @@ class Sucursales extends StatelessWidget {
             children: [
               Text(
                 'Mis Sucursales',
-                style: TextStyle(
-                    fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -323,8 +302,7 @@ class Sucursales extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
-                        return _crearItem(
-                            context, snapshot.data[index], responsive);
+                        return _crearItem(context, snapshot.data[index], responsive);
                       });
                 } else {
                   return Center(child: Text('No tiene Sucursales'));
@@ -339,12 +317,10 @@ class Sucursales extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(BuildContext context, SubsidiaryModel servicioData,
-      Responsive responsive) {
+  Widget _crearItem(BuildContext context, SubsidiaryModel servicioData, Responsive responsive) {
     return GestureDetector(
       onTap: () {
-        final provider =
-            Provider.of<DetailSubsidiaryBloc>(context, listen: false);
+        final provider = Provider.of<DetailSubsidiaryBloc>(context, listen: false);
 
         provider.changeToInformation();
 
@@ -412,9 +388,7 @@ class Sucursales extends StatelessWidget {
                         image: AssetImage('assets/jar-loading.gif'),
                         fit: BoxFit.cover,
                       ),
-                      errorWidget: (context, url, error) => Image(
-                          image: AssetImage('assets/carga_fallida.jpg'),
-                          fit: BoxFit.cover),
+                      errorWidget: (context, url, error) => Image(image: AssetImage('assets/carga_fallida.jpg'), fit: BoxFit.cover),
                       imageUrl: '$apiBaseURL/${servicioData.subsidiaryImg}',
                       imageBuilder: (context, imageProvider) => Container(
                         decoration: BoxDecoration(
@@ -443,10 +417,7 @@ class Sucursales extends StatelessWidget {
                           children: [
                             Text(
                               '${servicioData.subsidiaryName}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsive.ip(2),
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.white, fontSize: responsive.ip(2), fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -463,9 +434,7 @@ class Sucursales extends StatelessWidget {
                 children: [
                   Text(
                     '${servicioData.subsidiaryName}',
-                    style: TextStyle(
-                        fontSize: responsive.ip(2.3),
-                        fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: responsive.ip(2.3), fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
                   Text('${servicioData.subsidiaryAddress}'),
@@ -478,14 +447,9 @@ class Sucursales extends StatelessWidget {
                           width: responsive.wp(30),
                           child: RatingBar.readOnly(
                             size: 20,
-                            initialRating:
-                                ('${servicioData.listCompany.companyRating}' !=
-                                            null &&
-                                        '${servicioData.listCompany.companyRating}' !=
-                                            'null')
-                                    ? double.parse(
-                                        '${servicioData.listCompany.companyRating}')
-                                    : 0,
+                            initialRating: ('${servicioData.listCompany.companyRating}' != null && '${servicioData.listCompany.companyRating}' != 'null')
+                                ? double.parse('${servicioData.listCompany.companyRating}')
+                                : 0,
                             isHalfAllowed: true,
                             halfFilledIcon: Icons.star_half,
                             filledIcon: Icons.star,

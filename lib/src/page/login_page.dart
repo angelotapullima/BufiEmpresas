@@ -31,24 +31,16 @@ class _LoginPageState extends State<LoginPage> {
                 (dataToque)
                     ? Center(
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(10)),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: responsive.wp(10)),
+                          margin: EdgeInsets.symmetric(horizontal: responsive.wp(10)),
+                          padding: EdgeInsets.symmetric(horizontal: responsive.wp(10)),
                           width: double.infinity,
                           height: responsive.hp(13),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                           child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: responsive.wp(10),
-                                vertical: responsive.wp(6)),
+                            margin: EdgeInsets.symmetric(horizontal: responsive.wp(10), vertical: responsive.wp(6)),
                             height: responsive.ip(4),
                             width: responsive.ip(4),
-                            child: Image(
-                                image: AssetImage('assets/loading.gif'),
-                                fit: BoxFit.contain),
+                            child: Image(image: AssetImage('assets/loading.gif'), fit: BoxFit.contain),
                           ),
                         ),
                       )
@@ -59,8 +51,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _form(
-      BuildContext context, Responsive responsive, LoginBloc loginBloc) {
+  Widget _form(BuildContext context, Responsive responsive, LoginBloc loginBloc) {
     return SingleChildScrollView(
       child: SafeArea(
         child: Container(
@@ -71,8 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Text(
                 "Bienvenido",
-                style: TextStyle(
-                    fontSize: responsive.ip(3), fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: responsive.ip(3), fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
@@ -94,10 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RecuperarPasswordPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RecuperarPasswordPage()));
                     },
                     child: Text("Olvidé mi Contraseña")),
               ),
@@ -124,10 +111,7 @@ class _LoginPageState extends State<LoginPage> {
             decoration: InputDecoration(
                 fillColor: Theme.of(context).dividerColor,
                 hintText: 'Ingrese su nickname',
-                hintStyle: TextStyle(
-                    fontSize: responsive.ip(1.8),
-                    fontFamily: 'Montserrat',
-                    color: Colors.black54),
+                hintStyle: TextStyle(fontSize: responsive.ip(1.8), fontFamily: 'Montserrat', color: Colors.black54),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide(
@@ -168,10 +152,7 @@ class _LoginPageState extends State<LoginPage> {
             decoration: InputDecoration(
               fillColor: Theme.of(context).dividerColor,
               hintText: 'Ingrese su contraseña',
-              hintStyle: TextStyle(
-                  fontSize: responsive.ip(1.8),
-                  fontFamily: 'Montserrat',
-                  color: Colors.black54),
+              hintStyle: TextStyle(fontSize: responsive.ip(1.8), fontFamily: 'Montserrat', color: Colors.black54),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(
@@ -196,8 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _botonLogin(
-      BuildContext context, LoginBloc bloc, Responsive responsive) {
+  Widget _botonLogin(BuildContext context, LoginBloc bloc, Responsive responsive) {
     return StreamBuilder(
         stream: bloc.formValidStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -210,12 +190,10 @@ class _LoginPageState extends State<LoginPage> {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed:
-                    (snapshot.hasData) ? () => _submit(context, bloc) : null,
+                onPressed: (snapshot.hasData) ? () => _submit(context, bloc) : null,
                 child: Text('Iniciar Sesión'),
                 style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                   padding: EdgeInsets.all(0.0),
                   primary: Color(0xFFF93963),
                   onPrimary: Colors.white,

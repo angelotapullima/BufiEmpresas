@@ -18,44 +18,33 @@ void showToast(BuildContext context, String msg, {int duration, int gravity}) {
 
 void showToast1(String msg, int duration, ToastGravity gravity) {
   Fluttertoast.showToast(
-      msg: '$msg',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: gravity,
-      timeInSecForIosWeb: duration,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-      fontSize: 16.0);
+      msg: '$msg', toastLength: Toast.LENGTH_SHORT, gravity: gravity, timeInSecForIosWeb: duration, backgroundColor: Colors.black, textColor: Colors.white, fontSize: 16.0);
 }
 
 TextStyle subtitulotexto = TextStyle(fontFamily: 'Syne', fontSize: 20);
-TextStyle gridTitulo =
-    TextStyle(fontFamily: 'Syne', fontSize: 16, fontWeight: FontWeight.bold);
-TextStyle formtexto =
-    TextStyle(fontFamily: 'Syne', fontSize: 18, fontWeight: FontWeight.bold);
+TextStyle gridTitulo = TextStyle(fontFamily: 'Syne', fontSize: 16, fontWeight: FontWeight.bold);
+TextStyle formtexto = TextStyle(fontFamily: 'Syne', fontSize: 18, fontWeight: FontWeight.bold);
 TextStyle form2 = TextStyle(fontFamily: 'Syne', fontSize: 16);
 
 String format(double n) {
   return n.toStringAsFixed(n.truncateToDouble() == n ? 2 : 2);
 }
 
-void actualizarEstadoSucursal(BuildContext context, String idSubsdiary) async {
+void actualizarEstadoSucursal2(BuildContext context, String idSubsdiary) async {
   final sucursalesBloc = ProviderBloc.negocios(context);
   final preferences = Preferences();
   preferences.idSeleccionSubsidiaryPedidos = idSubsdiary;
   sucursalesBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
   final pedidosBloc = ProviderBloc.pedido(context);
-  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-      preferences.idSeleccionSubsidiaryPedidos, preferences.idStatusPedidos);
+  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(preferences.idSeleccionSubsidiaryPedidos, preferences.idStatusPedidos);
 }
 
-void actualizarIdStatusPedidos(
-    BuildContext context, String idTipoEstadoPago) async {
+void actualizarIdStatusPedidos(BuildContext context, String idTipoEstadoPago) async {
   final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
   final tipoEstadoPedidos = ProviderBloc.tipoEstadoPedidos(context);
 
   await tiposEstadosPedidosDatabase.desSeleccionarTiposEstadosPedido();
-  await tiposEstadosPedidosDatabase
-      .updateSeleccionarTipoEstadoPedido(idTipoEstadoPago);
+  await tiposEstadosPedidosDatabase.updateSeleccionarTipoEstadoPedido(idTipoEstadoPago);
   tipoEstadoPedidos.obtenerTiposEstadosPedidos();
 }
 
@@ -64,15 +53,12 @@ void obtenerprimerIdSubsidiary(BuildContext context, String idCompany) async {
   final preferences = Preferences();
 
   //Obtener el primer sucursal de cada Negocio
-  final listSucursal =
-      await subsidiaryDatabase.obtenerPrimerIdSubsidiary(idCompany);
-  if (listSucursal.length > 0)
-    preferences.idSeleccionSubsidiaryPedidos = listSucursal[0].idSubsidiary;
+  final listSucursal = await subsidiaryDatabase.obtenerPrimerIdSubsidiary(idCompany);
+  if (listSucursal.length > 0) preferences.idSeleccionSubsidiaryPedidos = listSucursal[0].idSubsidiary;
 
   //Actualizar lista de Pedidos de la Pagina de Pedidos
   final pedidosBloc = ProviderBloc.pedido(context);
-  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-      preferences.idSeleccionSubsidiaryPedidos, preferences.idStatusPedidos);
+  pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(preferences.idSeleccionSubsidiaryPedidos, preferences.idStatusPedidos);
   preferences.idStatusPedidos = '99';
 }
 
@@ -105,8 +91,7 @@ void actualizarBusquedaPagos(BuildContext context) {
   final prefs = Preferences();
   // pagosBloc.obtenerPagosXFecha(
   //     prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
-  pagosBloc.obtenerPagosGeneral(
-      prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
+  pagosBloc.obtenerPagosGeneral(prefs.idSeleccionSubsidiaryPedidos, prefs.fechaI, prefs.fechaF);
 }
 
 obtenerNombreMes(String date) {
@@ -127,8 +112,7 @@ obtenerFecha(String date) {
 
 Future<TipoEstadoPedidoModel> getEstadoPedido(String id) async {
   final tiposEstadosPedidosDatabase = TiposEstadoPedidosDatabase();
-  final listEstado =
-      await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedidoXid(id);
+  final listEstado = await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedidoXid(id);
   return listEstado[0];
 }
 
@@ -137,11 +121,9 @@ obtenerEstadoPedido(String id) async {
 
   final preferences = Preferences();
 
-  final listEstado =
-      await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedidoXid(id);
+  final listEstado = await tiposEstadosPedidosDatabase.obtenerTiposEstadoPedidoXid(id);
 
-  for (int i = 0; i < listEstado.length; i++)
-    preferences.nombreEstadoPedido = listEstado[i].tipoEstadoNombre;
+  for (int i = 0; i < listEstado.length; i++) preferences.nombreEstadoPedido = listEstado[i].tipoEstadoNombre;
 }
 
 habilitarDesProducto(BuildContext context, String id, String status) async {
@@ -174,8 +156,7 @@ cambiarStock(BuildContext context, String id, String status) async {
   }
 }
 
-habilitarDesServicio(
-    BuildContext context, String id, String status, String idSubsidiary) async {
+habilitarDesServicio(BuildContext context, String id, String status, String idSubsidiary) async {
   final serviciosBloc = ProviderBloc.servi(context);
   final servicesDB = SubsidiaryServiceDatabase();
 

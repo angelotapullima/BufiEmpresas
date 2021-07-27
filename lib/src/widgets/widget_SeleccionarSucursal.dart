@@ -37,9 +37,7 @@ class ListarSucursales extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Text(
                       empresaNameBloc.empresaName,
-                      style: TextStyle(
-                          fontSize: responsive.ip(2.5),
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: responsive.ip(2.5), fontWeight: FontWeight.bold),
                     );
                   } else {
                     return Center(child: Text(''));
@@ -52,8 +50,7 @@ class ListarSucursales extends StatelessWidget {
           child: StreamBuilder(
             //stream: negociosBloc.negociosStream,
             stream: sucursalesBloc.suscursaStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<SubsidiaryModel>> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<List<SubsidiaryModel>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
                   final size = MediaQuery.of(context).size;
@@ -77,14 +74,12 @@ class ListarSucursales extends StatelessWidget {
                       },*/
                       onPageChanged: (index, reason) {
                         contadorBloc.changeContador(index);
-                        actualizarEstadoSucursal(
-                            context, snapshot.data[index].idSubsidiary);
+                        actualizarEstadoSucursal2(context, snapshot.data[index].idSubsidiary);
                         actualizarBusquedaPagos(context);
                       },
                     ),
                     itemBuilder: (BuildContext context, int index, int) {
-                      return _crearItem(context, snapshot.data[index],
-                          responsive, contadorBloc, index);
+                      return _crearItem(context, snapshot.data[index], responsive, contadorBloc, index);
                     },
                   );
 
@@ -117,10 +112,7 @@ class ListarSucursales extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                          snapshot.data.length, (index) => _Puntos(index)));
+                  return Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(snapshot.data.length, (index) => _Puntos(index)));
                 } else {
                   return Center(child: Text(''));
                 }
@@ -134,12 +126,7 @@ class ListarSucursales extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(
-      BuildContext context,
-      SubsidiaryModel servicioData,
-      Responsive responsive,
-      ContadorPaginaListarSucursalesBloc contadorBloc,
-      int index) {
+  Widget _crearItem(BuildContext context, SubsidiaryModel servicioData, Responsive responsive, ContadorPaginaListarSucursalesBloc contadorBloc, int index) {
     return GestureDetector(
       onTap: () {
         //Navigator.pushNamed(context, "detalleNegocio", arguments: servicioData);
@@ -151,22 +138,10 @@ class ListarSucursales extends StatelessWidget {
           /*Colors.primaries[Random().nextInt(Colors.primaries.length)]*/,
           boxShadow: [
             BoxShadow(
-              color: (contadorBloc.pageContador >= index - 0.5 &&
-                      contadorBloc.pageContador < index + 0.5)
-                  ? Colors.redAccent
-                  : Colors.grey.withOpacity(0.5),
-              spreadRadius: (contadorBloc.pageContador >= index - 0.5 &&
-                      contadorBloc.pageContador < index + 0.5)
-                  ? 4
-                  : 1,
-              blurRadius: (contadorBloc.pageContador >= index - 0.5 &&
-                      contadorBloc.pageContador < index + 0.5)
-                  ? 4
-                  : 2,
-              offset: (contadorBloc.pageContador >= index - 0.5 &&
-                      contadorBloc.pageContador < index + 0.5)
-                  ? Offset(0, 0)
-                  : Offset(2, 3),
+              color: (contadorBloc.pageContador >= index - 0.5 && contadorBloc.pageContador < index + 0.5) ? Colors.redAccent : Colors.grey.withOpacity(0.5),
+              spreadRadius: (contadorBloc.pageContador >= index - 0.5 && contadorBloc.pageContador < index + 0.5) ? 4 : 1,
+              blurRadius: (contadorBloc.pageContador >= index - 0.5 && contadorBloc.pageContador < index + 0.5) ? 4 : 2,
+              offset: (contadorBloc.pageContador >= index - 0.5 && contadorBloc.pageContador < index + 0.5) ? Offset(0, 0) : Offset(2, 3),
             ),
           ],
         ),
@@ -178,8 +153,7 @@ class ListarSucursales extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: responsive.wp(5),
-                backgroundColor:
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                 child: Icon(Icons.store, color: Colors.white),
               ),
               SizedBox(
@@ -217,10 +191,7 @@ class _Puntos extends StatelessWidget {
       height: 10,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: (contadorBloc.pageContador >= index - 0.5 &&
-                contadorBloc.pageContador < index + 0.5)
-            ? Colors.redAccent
-            : Colors.grey,
+        color: (contadorBloc.pageContador >= index - 0.5 && contadorBloc.pageContador < index + 0.5) ? Colors.redAccent : Colors.grey,
         shape: BoxShape.circle,
       ),
     );

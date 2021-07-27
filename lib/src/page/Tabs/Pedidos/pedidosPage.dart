@@ -128,8 +128,7 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
           child: StreamBuilder(
             //stream: negociosBloc.negociosStream,
             stream: tipoEstadoPedidos.tiposEstadosPedidosStream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<TipoEstadoPedidoModel>> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<List<TipoEstadoPedidoModel>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length > 0) {
                   return CrearItemChoice(datos: snapshot);
@@ -159,22 +158,17 @@ class ListarTiposEstadosPedidos extends StatelessWidget {
 class ListarPedidosPorIdSubsidiary extends StatefulWidget {
   final String idSucursal;
   final String idStatus;
-  const ListarPedidosPorIdSubsidiary(
-      {Key key, @required this.idSucursal, @required this.idStatus})
-      : super(key: key);
+  const ListarPedidosPorIdSubsidiary({Key key, @required this.idSucursal, @required this.idStatus}) : super(key: key);
   @override
-  _ListarPedidosPorIdSubsidiaryState createState() =>
-      _ListarPedidosPorIdSubsidiaryState();
+  _ListarPedidosPorIdSubsidiaryState createState() => _ListarPedidosPorIdSubsidiaryState();
 }
 
-class _ListarPedidosPorIdSubsidiaryState
-    extends State<ListarPedidosPorIdSubsidiary> {
+class _ListarPedidosPorIdSubsidiaryState extends State<ListarPedidosPorIdSubsidiary> {
   ValueNotifier<bool> switchFiltro = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     final pedidosBloc = ProviderBloc.pedido(context);
-    pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-        widget.idSucursal, widget.idStatus);
+    pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(widget.idSucursal, widget.idStatus);
     final responsive = Responsive.of(context);
     final preferences = new Preferences();
     return Container(
@@ -207,13 +201,11 @@ class _ListarPedidosPorIdSubsidiaryState
                                   color: Colors.white,
                                 ),
                                 const Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                                 ),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
                                         width: double.infinity,
@@ -221,8 +213,7 @@ class _ListarPedidosPorIdSubsidiaryState
                                         color: Colors.white,
                                       ),
                                       const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 2.0),
+                                        padding: EdgeInsets.symmetric(vertical: 2.0),
                                       ),
                                       Container(
                                         width: double.infinity,
@@ -230,8 +221,7 @@ class _ListarPedidosPorIdSubsidiaryState
                                         color: Colors.white,
                                       ),
                                       const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 2.0),
+                                        padding: EdgeInsets.symmetric(vertical: 2.0),
                                       ),
                                       Container(
                                         width: 40.0,
@@ -259,18 +249,14 @@ class _ListarPedidosPorIdSubsidiaryState
                       children: [
                         StreamBuilder(
                             stream: pedidosBloc.pedidoStream,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<dynamic> snapshot) {
+                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                               if (snapshot.hasData) {
                                 if (snapshot.data.length > 0) {
                                 } else {
-                                  return Center(
-                                      child:
-                                          Text("No hay pedidos para mostrar"));
+                                  return Center(child: Text("No hay pedidos para mostrar"));
                                 }
                               } else {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                                return Center(child: CircularProgressIndicator());
                               }
                               return Expanded(
                                 child: ListView.builder(
@@ -367,9 +353,7 @@ class _ListarPedidosPorIdSubsidiaryState
                 children: [
                   Text(
                     'Pedido N° ${pedidosData.idPedido}',
-                    style: TextStyle(
-                        fontSize: responsive.ip(2.1),
-                        fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: responsive.ip(2.1), fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
                   Text('${pedidosData.deliveryName}'),
@@ -387,13 +371,9 @@ class _ListarPedidosPorIdSubsidiaryState
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           FutureBuilder(
-                              future:
-                                  getEstadoPedido(pedidosData.deliveryStatus),
-                              builder: (context,
-                                  AsyncSnapshot<TipoEstadoPedidoModel>
-                                      snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                              future: getEstadoPedido(pedidosData.deliveryStatus),
+                              builder: (context, AsyncSnapshot<TipoEstadoPedidoModel> snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center();
                                 } else {
                                   return Flexible(
@@ -414,10 +394,7 @@ class _ListarPedidosPorIdSubsidiaryState
                           ),
                           Text(
                             'S/. ${pedidosData.deliveryTotalOrden}',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: responsive.ip(2),
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.red, fontSize: responsive.ip(2), fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -426,10 +403,7 @@ class _ListarPedidosPorIdSubsidiaryState
                   : Center(
                       child: Text(
                         'S/. ${pedidosData.deliveryTotalOrden}',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: responsive.ip(2),
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Colors.red, fontSize: responsive.ip(2), fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -463,11 +437,7 @@ class _CrearItemChoiceState extends State<CrearItemChoice> {
             margin: EdgeInsets.all(2),
             child: ChoiceChip(
               selected: _selectedIndex == index,
-              label: Text(widget.datos.data[index].tipoEstadoNombre,
-                  style: TextStyle(
-                      color: (_selectedIndex == index)
-                          ? Colors.white
-                          : Colors.black)),
+              label: Text(widget.datos.data[index].tipoEstadoNombre, style: TextStyle(color: (_selectedIndex == index) ? Colors.white : Colors.black)),
               selectedColor: Colors.redAccent,
               onSelected: (bool selected) {
                 setState(() {
@@ -476,13 +446,10 @@ class _CrearItemChoiceState extends State<CrearItemChoice> {
                   }
                 });
                 final preferences = new Preferences();
-                preferences.idStatusPedidos =
-                    widget.datos.data[index].idTipoEstado;
+                preferences.idStatusPedidos = widget.datos.data[index].idTipoEstado;
 
                 final pedidosBloc = ProviderBloc.pedido(context);
-                pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(
-                    preferences.idSeleccionSubsidiaryPedidos,
-                    widget.datos.data[index].idTipoEstado);
+                pedidosBloc.obtenerPedidosPorIdSubsidiaryAndIdStatus(preferences.idSeleccionSubsidiaryPedidos, widget.datos.data[index].idTipoEstado);
               },
             ),
           );

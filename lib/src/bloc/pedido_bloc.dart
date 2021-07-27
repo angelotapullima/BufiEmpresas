@@ -26,12 +26,9 @@ class PedidoBloc {
   final _pedidosPendientesController = BehaviorSubject<List<PedidosModel>>();
 
   Stream<List<PedidosModel>> get pedidoStream => _pedidoController.stream;
-  Stream<List<PedidosModel>> get pedidosAtendidosStream =>
-      _pedidosAtendidosController.stream;
-  Stream<List<PedidosModel>> get pedidosPendientesStream =>
-      _pedidosPendientesController.stream;
-  Stream<List<PedidosModel>> get pedidoPorIdStream =>
-      _pedidoIDController.stream;
+  Stream<List<PedidosModel>> get pedidosAtendidosStream => _pedidosAtendidosController.stream;
+  Stream<List<PedidosModel>> get pedidosPendientesStream => _pedidosPendientesController.stream;
+  Stream<List<PedidosModel>> get pedidoPorIdStream => _pedidoIDController.stream;
   Stream<bool> get cargandoItemsStream => _cargandoItems.stream;
 
   void dispose() {
@@ -44,37 +41,30 @@ class PedidoBloc {
   }
 
   void obtenerPedidosAtendidos(String idCompany) async {
-    _pedidosAtendidosController.sink
-        .add(await pedidoDb.obtenerTotalPedidosAtendidos(idCompany));
+    _pedidosAtendidosController.sink.add(await pedidoDb.obtenerTotalPedidosAtendidos(idCompany));
   }
 
   void obtenerPedidosPendientes(String idCompany) async {
-    _pedidosPendientesController.sink
-        .add(await pedidoDb.obtenerTotalPedidosPendientes(idCompany));
+    _pedidosPendientesController.sink.add(await pedidoDb.obtenerTotalPedidosPendientes(idCompany));
   }
 
-  void obtenerPedidosPorIdSubsidiaryAndIdStatus(
-      String idSubsidiary, String idStatus) async {
+  void obtenerPedidosPorIdSubsidiaryAndIdStatus(String idSubsidiary, String idStatus) async {
     _cargandoItems.sink.add(true);
     if (idStatus == '99') {
       _pedidoController.sink.add([]);
 
-      _pedidoController.sink
-          .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
+      _pedidoController.sink.add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
       //_cargandoItems.sink.add(false);
       _pedidoController.sink.add([]);
-      _pedidoController.sink
-          .add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
+      _pedidoController.sink.add(await pedidoDb.obtenerPedidosXidSubsidiary(idSubsidiary));
     } else {
       //_cargandoItems.sink.add(true);
-      _pedidoController.sink.add(await pedidoDb
-          .obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
+      _pedidoController.sink.add(await pedidoDb.obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
 
       pedidoApi.obtenerPedidosPorIdSucursal(idSubsidiary);
 
-      _pedidoController.sink.add(await pedidoDb
-          .obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
+      _pedidoController.sink.add(await pedidoDb.obtenerPedidosXidSubsidiaryAndIdEstado(idSubsidiary, idStatus));
     }
     _cargandoItems.sink.add(false);
   }
@@ -116,8 +106,7 @@ class PedidoBloc {
       pedidosModel.deliveryMt = listPedidos[i].deliveryMt;
 
       //funcion que llama desde la bd a todos los detalles del pedido pasando el idPedido como argumento
-      final listdetallePedido = await detallePedidoDb
-          .obtenerDetallePedidoxIdPedido(listPedidos[i].idPedido);
+      final listdetallePedido = await detallePedidoDb.obtenerDetallePedidoxIdPedido(listPedidos[i].idPedido);
       //crear lista vacia para llenar el detalle del pedido
       final List<DetallePedidoModel> listDetallePedidoModel = [];
 
@@ -129,15 +118,12 @@ class PedidoBloc {
         detallePedido.idPedido = listdetallePedido[j].idPedido;
         detallePedido.idProducto = listdetallePedido[j].idProducto;
         detallePedido.cantidad = listdetallePedido[j].cantidad;
-        detallePedido.detallePedidoSubtotal =
-            listdetallePedido[j].detallePedidoSubtotal;
+        detallePedido.detallePedidoSubtotal = listdetallePedido[j].detallePedidoSubtotal;
 
         //crear lista vacia para el modelo de Producto
         final List<ProductoModel> listProductosModel = [];
 
-        final listProductos =
-            await productoDb.obtenerProductoPorIdSubsidiaryGood(
-                listdetallePedido[j].idProducto);
+        final listProductos = await productoDb.obtenerProductoPorIdSubsidiaryGood(listdetallePedido[j].idProducto);
         //Recorrer la lista de la tabla productos para obtenr todos los datos
         for (var l = 0; l < listProductos.length; l++) {
           final productoModel = ProductoModel();
@@ -148,8 +134,7 @@ class PedidoBloc {
           productoModel.productoPrice = listProductos[0].productoPrice;
           productoModel.productoCurrency = listProductos[l].productoCurrency;
           productoModel.productoImage = listProductos[0].productoImage;
-          productoModel.productoCharacteristics =
-              listProductos[0].productoCharacteristics;
+          productoModel.productoCharacteristics = listProductos[0].productoCharacteristics;
           productoModel.productoBrand = listProductos[0].productoBrand;
           productoModel.productoModel = listProductos[0].productoModel;
           productoModel.productoSize = listProductos[0].productoSize;
@@ -168,27 +153,21 @@ class PedidoBloc {
       //------Recorrer la lista de compañías y sucursales---------
 
       //funcion que llama desde la bd a todas las sucursales y compañías
-      final listCompany =
-          await companyDb.obtenerCompanyPorId(listPedidos[i].idCompany);
-      final listSucursal = await subsidiaryDb
-          .obtenerSubsidiaryPorIdSubsidiary(listPedidos[i].idSubsidiary);
+      final listCompany = await companyDb.obtenerCompanyPorId(listPedidos[i].idCompany);
+      final listSucursal = await subsidiaryDb.obtenerSubsidiaryPorIdSubsidiary(listPedidos[i].idSubsidiary);
       final List<CompanySubsidiaryModel> listCompsucursalModel = [];
 
       final compSucursalModel = CompanySubsidiaryModel();
       //Sucursal
       compSucursalModel.subsidiaryName = listSucursal[0].subsidiaryName;
       compSucursalModel.subsidiaryAddress = listSucursal[0].subsidiaryAddress;
-      compSucursalModel.subsidiaryCellphone =
-          listSucursal[0].subsidiaryCellphone;
-      compSucursalModel.subsidiaryCellphone2 =
-          listSucursal[0].subsidiaryCellphone2;
+      compSucursalModel.subsidiaryCellphone = listSucursal[0].subsidiaryCellphone;
+      compSucursalModel.subsidiaryCellphone2 = listSucursal[0].subsidiaryCellphone2;
       compSucursalModel.subsidiaryEmail = listSucursal[0].subsidiaryEmail;
       compSucursalModel.subsidiaryCoordX = listSucursal[0].subsidiaryCoordX;
       compSucursalModel.subsidiaryCoordY = listSucursal[0].subsidiaryCoordY;
-      compSucursalModel.subsidiaryOpeningHours =
-          listSucursal[0].subsidiaryOpeningHours;
-      compSucursalModel.subsidiaryPrincipal =
-          listSucursal[0].subsidiaryPrincipal;
+      compSucursalModel.subsidiaryOpeningHours = listSucursal[0].subsidiaryOpeningHours;
+      compSucursalModel.subsidiaryPrincipal = listSucursal[0].subsidiaryPrincipal;
       compSucursalModel.subsidiaryStatus = listSucursal[0].subsidiaryStatus;
 
       //Company
@@ -197,8 +176,7 @@ class PedidoBloc {
       compSucursalModel.companyImage = listCompany[0].companyImage;
       compSucursalModel.companyType = listCompany[0].companyType;
       compSucursalModel.companyShortcode = listCompany[0].companyShortcode;
-      compSucursalModel.companyDeliveryPropio =
-          listCompany[0].companyDeliveryPropio;
+      compSucursalModel.companyDeliveryPropio = listCompany[0].companyDeliveryPropio;
       compSucursalModel.companyDelivery = listCompany[0].companyDelivery;
       compSucursalModel.companyEntrega = listCompany[0].companyEntrega;
       compSucursalModel.companyTarjeta = listCompany[0].companyTarjeta;
