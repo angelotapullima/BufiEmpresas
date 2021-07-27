@@ -72,7 +72,7 @@ void actualizarSeleccionCompany(BuildContext context, String idCompany) async {
   contadorBloc.changeContador(0);
 }
 
-void obtenerprimerIdCompany(BuildContext context) async {
+Future<String> obtenerprimerIdCompany(BuildContext context) async {
   final companyDatabase = CompanyDatabase();
   final preferences = Preferences();
   final listCompany = await companyDatabase.obtenerCompany();
@@ -84,6 +84,8 @@ void obtenerprimerIdCompany(BuildContext context) async {
   negociosBloc.obtenersucursales(preferences.idSeleccionNegocioInicio);
   final contadorBloc = ProviderBloc.contadorPagina(context);
   contadorBloc.changeContador(0);
+
+  return '';
 }
 
 void actualizarBusquedaPagos(BuildContext context) {
